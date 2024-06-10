@@ -9,7 +9,15 @@ import { RouterOutlet } from '@angular/router';
   template: `
     <main class="h-screen">
       <header>
-        Hello world!
+        <p class="text-3xl font-manuale">
+          Hello world!
+        </p>
+        <p class="text-3xl font-marcellus-sc">
+          Hello world!
+        </p>
+        <p class="text-3xl font-major-mono-display">
+          Hello world!
+        </p>
       </header>
       <section>
         <router-outlet></router-outlet>
