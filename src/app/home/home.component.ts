@@ -5,24 +5,25 @@ import { CountdownComponent } from "../countdown/countdown.component";
 /*
 TODO:
 - add moving clock countdown
-- add lato font
 - finish layout
 */
 
 @Component({
-    selector: 'app-home',
-    standalone: true,
-    template: `
+  selector: 'app-home',
+  standalone: true,
+  template: `
     <header class="h-[66vh] bg-white">
       <app-navigation-bar></app-navigation-bar>
       <div>
-        <div class="w-full flex flex-col justify-center items-center p-7">
+        <div class="w-full flex flex-col justify-center items-center p-7 text-primary">
           <p class="font-manuale text-[1.6875rem] font-bold justify-center">YOU'RE</p>
           <p class="font-manuale text-[1.6875rem] font-bold justify-center">INVITED</p>
         </div>
         <div class="w-full flex flex-col justify-center items-center">
-          <div class="flex justify-center items-center w-[18rem] h-[6.5rem] bg-primary rounded-md">
-            <p class="font-manuale text-[2rem] font-bold text-white">TO THE BIG DAY!</p>
+          <div class="
+            flex justify-center items-center w-[18rem] h-[6.5rem] bg-primary rounded-md
+            animate animate-scale-in animate-fast">
+            <p class="font-manuale text-[2rem] font-semibold text-white">TO THE BIG DAY!</p>
           </div>
         </div>
         <div class="h-[1.75rem]"></div>
@@ -144,8 +145,8 @@ TODO:
       </p>
     </section>
   `,
-    styleUrl: './home.component.css',
-    imports: [NavigationBarComponent, CountdownComponent]
+  styleUrl: './home.component.css',
+  imports: [NavigationBarComponent, CountdownComponent]
 })
 export class HomeComponent {
 

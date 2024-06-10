@@ -50,7 +50,6 @@ export class CounterComponent implements OnChanges {
     const tickChange = changes['tick'];
     if (tickChange) {
       let { currentValue } = tickChange;
-      console.log(currentValue);
       let nextDigits = [];
       while (currentValue > 0 || nextDigits.length < 2) {
         nextDigits.push(currentValue % 10);

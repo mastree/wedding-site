@@ -17,7 +17,8 @@ module.exports = {
     fontFamily: {
       'manuale': ['manuale', 'sans-serif'],
       'marcellus-sc': ['Marcellus SC', 'serif'],
-      'major-mono-display': ['Major Mono Display', 'monospace']
+      'major-mono-display': ['Major Mono Display', 'monospace'],
+      'lato': ['Lato', 'sans-serif'],
     },
   },
   plugins: [],
