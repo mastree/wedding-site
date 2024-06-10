@@ -1,30 +1,18 @@
 import { Component, inject } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
+import { NavigationBarComponent } from "./navigation-bar/navigation-bar.component";
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet],
-  template: `
-    <main class="h-screen">
-      <header>
-        <p class="text-3xl font-manuale">
-          Hello world!
-        </p>
-        <p class="text-3xl font-marcellus-sc">
-          Hello world!
-        </p>
-        <p class="text-3xl font-major-mono-display">
-          Hello world!
-        </p>
-      </header>
-      <section>
-        <router-outlet></router-outlet>
-      </section>
+    selector: 'app-root',
+    standalone: true,
+    template: `
+    <main class="h-full relative">
+      <router-outlet></router-outlet>
     </main>
   `,
-  styleUrl: './app.component.css'
+    styleUrl: './app.component.css',
+    imports: [RouterOutlet, NavigationBarComponent]
 })
 export class AppComponent {
   titleService: Title = inject(Title);
