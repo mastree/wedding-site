@@ -11,6 +11,7 @@ module.exports = {
         darkItem: '#474747',
         bgSkin: '#C3B8AF',
         shadow: '#E8E8E8',
+        bgGrey: '#D9D9D9',
       }
     },
     fontFamily: {
