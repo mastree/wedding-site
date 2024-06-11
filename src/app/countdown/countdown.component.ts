@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { CounterComponent } from "./counter/counter.component";
+import { CounterComponent } from './counter/counter.component';
 
 @Component({
-    selector: 'app-countdown',
-    standalone: true,
-    template: `
+  selector: 'app-countdown',
+  standalone: true,
+  template: `
     <div class="flex flex-col items-center">
       <p class="font-manuale text-[1rem] font-bold p-2">countdown</p>
       <div class="flex flex-row gap-7">
@@ -13,10 +13,10 @@ import { CounterComponent } from "./counter/counter.component";
       </div>
     </div>
   `,
-    styleUrl: './countdown.component.css',
-    imports: [CounterComponent]
+  styleUrl: './countdown.component.css',
+  imports: [CounterComponent],
 })
 export class CountdownComponent {
   days: number = 9;
-  hours: number = 14
+  hours: number = 14;
 }

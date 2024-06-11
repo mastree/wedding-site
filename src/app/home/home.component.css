@@ -22,3 +22,11 @@
 .animate-scale-in {
   animation-name: scaleIn;
 }
+
+.active-go-up {
+  transition: all 0.05s;
+}
+
+.active-go-up:active {
+  transform: translate(0.06rem, -0.1rem);
+}
