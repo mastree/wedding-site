@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavigationBarComponent } from '../navigation-bar/navigation-bar.component';
 import { CountdownComponent } from '../countdown/countdown.component';
+import { CardComponent } from "../card/card.component";
 
 /*
 TODO:
@@ -9,9 +10,9 @@ TODO:
 */
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  template: `
+    selector: 'app-home',
+    standalone: true,
+    template: `
     <header class="h-[66vh] bg-white">
       <app-navigation-bar></app-navigation-bar>
       <div>
@@ -107,135 +108,25 @@ TODO:
       </div>
     </section>
 
-    <section>
-      <p class="text-3xl font-manuale">Hello world!</p>
-      <p class="text-3xl font-marcellus-sc">Hello world!</p>
-      <p class="text-3xl font-major-mono-display">Hello world!</p>
+    <section class="h-[100vh] py-16 gap-8 bg-white flex flex-col">
+      <div class="flex flex-col justify-center">
+        <p class="font-manuale text-xl font-semibold text-center">SCHEDULE & LOCATION</p>
+        <p class="font-manuale text-md font-light text-center">Jadwal & Tempat</p>
+      </div>
+      <div class="flex flex-col flex-grow gap-8 justify-start items-center">
+        <app-card></app-card>
+        <app-card></app-card>
+      </div>
+    </section>
+
+    <section class="h-[100vh] bg-secondary">
+      <p class="text-3xl font-manuale">RSVP!</p>
+      <p class="text-3xl font-marcellus-sc">Number of people!</p>
+      <p class="text-3xl font-major-mono-display">Leave a message!</p>
       <p class="text-3xl font-manuale">
-        Hello world! Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world!Hello world! Hello world! Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world!Hello world! Hello
-        world! Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world! Hello world!
-        Hello world!Hello world!Hello world!Hello world!Hello world!Hello
-        world!Hello world! Hello world! Hello world!Hello world!Hello
-        world!Hello world!Hello world!Hello world!Hello world!
-      </p>
     </section>
   `,
-  styleUrl: './home.component.css',
-  imports: [NavigationBarComponent, CountdownComponent],
+    styleUrl: './home.component.css',
+    imports: [NavigationBarComponent, CountdownComponent, CardComponent]
 })
 export class HomeComponent {}
