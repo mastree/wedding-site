@@ -7,7 +7,7 @@ import { NavigationBarComponent } from './navigation-bar/navigation-bar.componen
   selector: 'app-root',
   standalone: true,
   template: `
-    <main class="h-full relative">
+    <main class="relative h-full">
       <router-outlet></router-outlet>
     </main>
   `,

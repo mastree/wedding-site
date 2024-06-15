@@ -25,6 +25,7 @@ module.exports = {
         "bg-skin": "#C3B8AF",
         shadow: "#E8E8E8",
         "bg-grey": "#D9D9D9",
+        "dark-secondary": "#342C20",
       },
     },
     fontFamily: {

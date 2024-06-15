@@ -6,7 +6,7 @@ import { CounterComponent } from './counter/counter.component';
   standalone: true,
   template: `
     <div class="flex flex-col items-center">
-      <p class="font-manuale text-[1rem] font-bold p-2">countdown</p>
+      <p class="p-2 font-manuale text-[1rem] font-bold">countdown</p>
       <div class="flex flex-row gap-7">
         <app-counter [tick]="days" title="DAYS"></app-counter>
         <app-counter [tick]="hours" title="HOURS"></app-counter>

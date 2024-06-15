@@ -1,37 +1,21 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  SimpleChanges,
-  input,
-} from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, input } from '@angular/core';
 
 @Component({
   selector: 'app-counter',
   standalone: true,
   imports: [],
   template: `
-    <div class=" text-primary">
-      <div
-        class="
-          flex flex-row gap-1 w-32 items-center justify-center 
-          font-major-mono-display text-[70px]"
-      >
+    <div class="text-primary">
+      <div class="flex w-32 flex-row items-center justify-center gap-1 font-major-mono-display text-[70px]">
         @for (digit of digits; track $index) {
-          <div class="relative flex justify-center items-center">
+          <div class="relative flex items-center justify-center">
             <div class="absolute z-10">
               <p>
                 {{ digit }}
               </p>
             </div>
             <div class="relative">
-              <svg
-                width="50"
-                height="80"
-                viewBox="0 0 50 80"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg width="50" height="80" viewBox="0 0 50 80" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   fill-rule="evenodd"
                   clip-rule="evenodd"
@@ -43,7 +27,7 @@ import {
           </div>
         }
       </div>
-      <div class="flex justify-center items-center w-full">
+      <div class="flex w-full items-center justify-center">
         <p class="font-manuale text-[1rem]">{{ title }}</p>
       </div>
     </div>
