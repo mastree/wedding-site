@@ -85,11 +85,11 @@ TODO:
         <p class="text-md text-center font-manuale font-light">Jadwal & Tempat</p>
       </div>
       <div class="flex flex-grow flex-col items-center justify-start gap-8">
-        <app-card icon="calendar.svg" title="Schedule">
+        <app-card [classOnView]="animateGoFromLeft" icon="calendar.svg" title="Schedule">
           <p class="font-manuale text-[1rem]"><span class="font-semibold">Date:</span> Saturday, 16 Nov 2024</p>
           <p class="font-manuale text-[1rem]"><span class="font-semibold">Time:</span> 15.00 &mdash; 19.00 WIB</p>
         </app-card>
-        <app-card icon="location-pin.svg" title="Location">
+        <app-card [classOnView]="animateGoFromRight" icon="location-pin.svg" title="Location">
           <p class="font-manuale text-[1rem] font-semibold">Maxi's Resto</p>
           <p class="font-manuale text-[1rem]">Jl. Gunung Agung No.8, Ciumbuleuit, Kota Bandung</p>
           <a
@@ -131,6 +131,9 @@ TODO:
 })
 export class HomeComponent {
   @ViewChild('bigDay') bigDayElement: ElementRef | undefined;
+
+  animateGoFromLeft = ['animate-go-from-left'];
+  animateGoFromRight = ['animate-go-from-right'];
 
   get currentYear(): number {
     return new Date().getFullYear();
