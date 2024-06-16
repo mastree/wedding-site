@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NavigationBarComponent } from '../navigation-bar/navigation-bar.component';
 import { CountdownComponent } from '../countdown/countdown.component';
 import { CardComponent } from '../card/card.component';
+import { RsvpComponent } from '../rsvp/rsvp.component';
 
 /*
 TODO:
@@ -49,7 +50,7 @@ TODO:
         <a href="">
           <div class="active-go-up flex gap-2 font-lato font-light text-white">
             <img src="download.svg" />
-            <p class="line-2 text-[0.75rem] active:text-slate-100">Download invitation as PDF</p>
+            <p class="line-2 text-[0.75rem] active:text-sky-700">Download invitation as PDF</p>
           </div>
         </a>
       </div>
@@ -111,23 +112,20 @@ TODO:
       </div>
     </section>
 
-    <section class="h-[100vh] bg-secondary">
-      <p class="font-manuale text-3xl">RSVP!</p>
-      <p class="font-marcellus-sc text-3xl">Number of people!</p>
-      <p class="font-major-mono-display text-3xl">Leave a message!</p>
-      <p class="font-manuale text-3xl"></p>
+    <section class="bg-secondary">
+      <app-rsvp></app-rsvp>
     </section>
 
     <footer class="w-full bg-dark-secondary p-3">
-      <p class="text-center font-manuale text-sm text-white">
+      <p class="text-center font-manuale text-[0.7rem] text-white">
         <span class="font-semibold">Copyright</span> ©{{ currentYear }}
-        <a href="https://kamalshafi.me"><span class="text-semibold underline active:text-sky-700">kamalshafi</span></a
+        <a href="https://kamalshafi.me"><span class="font-semibold underline active:text-sky-700">kamalshafi</span></a
         >, All Rights Reserved
       </p>
     </footer>
   `,
   styleUrl: './home.component.css',
-  imports: [NavigationBarComponent, CountdownComponent, CardComponent],
+  imports: [NavigationBarComponent, CountdownComponent, CardComponent, RsvpComponent],
 })
 export class HomeComponent {
   @ViewChild('bigDay') bigDayElement: ElementRef | undefined;

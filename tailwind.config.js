@@ -42,12 +42,13 @@ module.exports = {
       },
       colors: {
         primary: "#0D271A",
+        "light-primary": "#2D473A",
         secondary: "#AC8E5D",
+        "dark-secondary": "#342C20",
         "dark-item": "#474747",
         "bg-skin": "#C3B8AF",
         shadow: "#E8E8E8",
         "bg-grey": "#D9D9D9",
-        "dark-secondary": "#342C20",
       },
     },
     fontFamily: {
