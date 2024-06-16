@@ -7,7 +7,7 @@ import { NavigationBarComponent } from './navigation-bar/navigation-bar.componen
   selector: 'app-root',
   standalone: true,
   template: `
-    <main class="relative h-full">
+    <main class="relative h-full w-screen overflow-hidden">
       <router-outlet></router-outlet>
     </main>
   `,
