@@ -50,7 +50,29 @@ import { FormsModule } from '@angular/forms';
                 </button>
               </div>
             </div>
+          } @else {}
+          @if (rsvpPicked) {
+            <div class="flex flex-row items-center gap-5">
+              <p class="text-md font-manuale text-white">Confirm RSVP?</p>
+              <div class="flex flex-row items-center gap-2">
+                <button
+                  (click)="onSubmitRsvp()"
+                  class="rounded-lg bg-dark-secondary p-2 font-manuale font-semibold text-white ring-white active:bg-light-primary active:shadow-inner active:shadow-primary active:ring-2 md:p-3"
+                  #buttonYesAttend
+                >
+                  Confirm
+                </button>
+                <button
+                  (click)="onSubmitRsvp(true)"
+                  class="rounded-lg bg-slate-100 p-2 font-manuale font-semibold text-primary ring-white active:bg-red-100 active:shadow-inner active:shadow-red-200 active:ring-2 md:p-3"
+                  #buttonYesAttend
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
           }
+          <div class="my-3 h-[2px] w-full bg-dark-secondary opacity-30"></div>
           <div class="flex w-full flex-col items-center gap-2">
             <p class="text-md font-manuale text-white">Leave a message or wishes for bride and groom!</p>
             <form class="flex w-full flex-col gap-2" (submit)="onSubmitMessage($event)">
@@ -87,6 +109,7 @@ export class RsvpComponent {
 
   numAttend: number = 0;
   willAttend: boolean = false;
+  rsvpPicked: boolean = false;
   messageText: string = '';
 
   @ViewChild('buttonYesAttend') buttonYesAttend: ElementRef | undefined;
@@ -107,6 +130,7 @@ export class RsvpComponent {
   }
 
   onWillAttend(willAttend: boolean) {
+    this.rsvpPicked = true;
     this.willAttend = willAttend;
     if (this.willAttend) {
       this.addClasses(this.buttonYesAttend?.nativeElement, ['shadow-primary', 'ring-2', 'bg-light-primary']);
@@ -119,6 +143,15 @@ export class RsvpComponent {
 
   onAddNumAttend(inc: number) {
     this.numAttend = Math.min(this.maxAttend, Math.max(0, this.numAttend + inc));
+  }
+
+  onSubmitRsvp(cancel: boolean = false) {
+    if (cancel) {
+      this.rsvpPicked = false;
+      this.willAttend = false;
+      this.removeClasses(this.buttonNoAttend?.nativeElement, ['shadow-red-200', 'ring-2', 'bg-red-100']);
+      this.removeClasses(this.buttonYesAttend?.nativeElement, ['shadow-primary', 'ring-2', 'bg-light-primary']);
+    }
   }
 
   onSubmitMessage(event: SubmitEvent) {

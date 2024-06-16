@@ -14,9 +14,15 @@ TODO:
   selector: 'app-home',
   standalone: true,
   template: `
-    <header class="relative h-[66vh] bg-white">
+    <header class="relative h-[66vh] bg-white bg-opacity-30">
       <div class="absolute bottom-0 top-0 z-10 h-full w-full">
         <app-navigation-bar></app-navigation-bar>
+      </div>
+      <div class="absolute left-0 top-0 -z-10 h-full w-full overflow-y-hidden object-cover">
+        <video class="absolute h-full w-full object-cover object-left-top" autoplay muted loop id="myVideo">
+          <source src="invitation-bg-video.mp4" type="video/mp4" />
+          Your browser does not support HTML5 video.
+        </video>
       </div>
       <div class="relative mx-auto h-full max-w-screen-lg">
         <div class="flex h-full w-full flex-col items-center justify-center pt-5">
@@ -34,6 +40,13 @@ TODO:
           <div class="h-[1.75rem]"></div>
           <app-countdown [eventDate]="eventDate"></app-countdown>
         </div>
+      </div>
+      <div
+        class="absolute bottom-0 right-0 z-[-2] mt-16 font-manuale text-xs text-slate-400 [writing-mode:vertical-lr] md:text-sm"
+      >
+        <a href="https://www.vecteezy.com/free-videos/invitation">
+          <p>Invitation Stock Videos by Vecteezy</p>
+        </a>
       </div>
     </header>
 
@@ -84,7 +97,13 @@ TODO:
       </div>
     </section>
 
-    <section class="flex flex-col gap-8 bg-white pb-20 pt-16">
+    <section class="relative flex flex-col gap-8 bg-white bg-opacity-30 pb-20 pt-16">
+      <div class="absolute right-0 top-0 -z-20 h-full w-full overflow-y-hidden object-cover">
+        <video class="absolute h-full w-full object-cover object-right-top" autoplay muted loop id="myVideo">
+          <source src="invitation-bg-video.mp4" type="video/mp4" />
+          Your browser does not support HTML5 video.
+        </video>
+      </div>
       <div class="relative mx-auto h-full w-full max-w-screen-lg">
         <div class="flex w-full flex-col justify-center">
           <p class="text-center font-manuale text-xl font-semibold md:text-2xl">SCHEDULE & LOCATION</p>
