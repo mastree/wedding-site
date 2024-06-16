@@ -12,17 +12,17 @@ import { FormsModule } from '@angular/forms';
           <p class="font-regular w-full text-center align-top font-manuale text-3xl font-semibold text-white">RSVP</p>
           <div class="flex w-full flex-col items-center">
             <p class="text-md font-manuale text-white">Would you be able to attend?</p>
-            <div class="mt-2 flex w-full flex-col gap-1">
+            <div class="mt-2 flex w-full flex-col gap-2">
               <button
                 (click)="onWillAttend(true)"
-                class="rounded-lg bg-dark-secondary p-1 font-manuale font-semibold text-white ring-white focus:bg-light-primary focus:shadow-primary focus:ring-2 active:shadow-inner"
+                class="rounded-lg bg-dark-secondary p-2 font-manuale font-semibold text-white ring-white focus:bg-light-primary focus:shadow-primary focus:ring-2 active:shadow-inner md:p-3"
                 #buttonYesAttend
               >
                 Yes, I will attend
               </button>
               <button
                 (click)="onWillAttend(false)"
-                class="rounded-lg bg-slate-100 p-1 font-manuale font-semibold text-primary ring-white focus:bg-red-100 focus:shadow-red-200 focus:ring-2 active:shadow-inner"
+                class="rounded-lg bg-slate-100 p-2 font-manuale font-semibold text-primary ring-white focus:bg-red-100 focus:shadow-red-200 focus:ring-2 active:shadow-inner md:p-3"
                 #buttonNoAttend
               >
                 No
@@ -69,7 +69,7 @@ import { FormsModule } from '@angular/forms';
                 ></textarea>
               </div>
               <button
-                class="rounded-lg bg-dark-secondary p-1 font-manuale font-semibold text-white active:bg-light-primary active:shadow-inner active:shadow-primary"
+                class="rounded-lg bg-dark-secondary p-2 font-manuale font-semibold text-white active:bg-light-primary active:shadow-inner active:shadow-primary md:p-3"
                 type="submit"
               >
                 Submit

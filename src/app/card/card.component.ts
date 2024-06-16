@@ -6,15 +6,15 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
   imports: [],
   template: `
     <div class="flex min-h-40 w-[90%] items-center rounded-lg bg-slate-50 shadow-lg" #container>
-      <div class="flex h-full w-full flex-row items-center p-5">
-        <div class="flex h-full min-w-[25%] max-w-[35%] flex-col items-center justify-center">
-          <img class="max-h-32 max-w-[4.5rem]" [src]="icon" />
+      <div class="flex h-full w-full flex-col items-center justify-center gap-2 p-3">
+        <div class="flex grow items-center justify-center">
+          <p class="font-manuale text-xl font-semibold md:text-2xl">{{ title }}</p>
         </div>
-        <div class="flex h-full grow flex-col items-center justify-center gap-2 pl-3">
-          <div class="flex grow items-center justify-center">
-            <p class="font-manuale text-xl font-semibold md:text-2xl">{{ title }}</p>
+        <div class="flex h-full w-full flex-row items-center">
+          <div class="flex h-full min-w-[25%] max-w-[35%] flex-col items-center justify-center">
+            <img class="max-h-32 max-w-[4.5rem]" [src]="icon" />
           </div>
-          <div class="w-full grow-[2]">
+          <div class="w-full grow-[2] pl-3">
             <ng-content></ng-content>
           </div>
         </div>
