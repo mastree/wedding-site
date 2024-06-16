@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NavigationBarComponent } from '../navigation-bar/navigation-bar.component';
 import { CountdownComponent } from '../countdown/countdown.component';
 import { CardComponent } from '../card/card.component';
@@ -20,9 +20,9 @@ TODO:
           <p class="justify-center font-manuale text-[1.6875rem] font-bold">YOU'RE</p>
           <p class="justify-center font-manuale text-[1.6875rem] font-bold">INVITED</p>
         </div>
-        <div class="flex w-full flex-col items-center justify-center">
+        <div class="flex w-full flex-col items-center justify-center" #bigDay>
           <div
-            class="animate animate-scale-in animate-fast flex h-[6.5rem] w-[18rem] items-center justify-center rounded-md bg-primary"
+            class="animate-scale-in animate-fast flex h-[6.5rem] w-[18rem] items-center justify-center rounded-md bg-primary shadow-lg"
           >
             <p class="font-manuale text-[2rem] font-semibold text-white">TO THE BIG DAY!</p>
           </div>
@@ -92,8 +92,20 @@ TODO:
         <app-card icon="location-pin.svg" title="Location">
           <p class="font-manuale text-[1rem] font-semibold">Maxi's Resto</p>
           <p class="font-manuale text-[1rem]">Jl. Gunung Agung No.8, Ciumbuleuit, Kota Bandung</p>
-          <a class="text-sky-400" href="https://maps.app.goo.gl/9kLNCJA7acvwyxJB8">
-            <p class="mt-2">Open in GMaps</p>
+          <a
+            class="mt-2 flex flex-row items-center gap-1 fill-sky-400 text-sky-400 active:fill-sky-700 active:text-sky-700"
+            href="https://maps.app.goo.gl/9kLNCJA7acvwyxJB8"
+          >
+            <p class="font-manuale text-[1rem] active:underline">Open in GMaps</p>
+            <span class="size-3">
+              <svg viewBox="0 0 33 33" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M32 0H23C22.4477 0 22 0.447716 22 1C22 1.55228 22.4477 2 23 2H29.5858L15.2929 16.2929L16.7071 17.7071L31 3.41421V10C31 10.5523 31.4477 11 32 11C32.5523 11 33 10.5523 33 10V1C33 0.447716 32.5523 0 32 0ZM7 3H16V1H7C3.13401 1 0 4.13401 0 8V26C0 29.866 3.13401 33 7 33H25C28.866 33 32 29.866 32 26V17H30V26C30 28.7614 27.7614 31 25 31H7C4.23858 31 2 28.7614 2 26V8C2 5.23858 4.23858 3 7 3Z"
+                />
+              </svg>
+            </span>
           </a>
         </app-card>
       </div>
@@ -108,8 +120,8 @@ TODO:
 
     <footer class="w-full bg-dark-secondary p-3">
       <p class="text-center font-manuale text-sm text-white">
-        <span class="font-semibold">Copyright</span> ©{{ current_year }}
-        <a href="https://kamalshafi.me"><span class="text-semibold underline">kamalshafi</span></a
+        <span class="font-semibold">Copyright</span> ©{{ currentYear }}
+        <a href="https://kamalshafi.me"><span class="text-semibold underline active:text-sky-700">kamalshafi</span></a
         >, All Rights Reserved
       </p>
     </footer>
@@ -118,7 +130,31 @@ TODO:
   imports: [NavigationBarComponent, CountdownComponent, CardComponent],
 })
 export class HomeComponent {
-  get current_year(): number {
+  @ViewChild('bigDay') bigDayElement: ElementRef | undefined;
+
+  get currentYear(): number {
     return new Date().getFullYear();
+  }
+
+  ngAfterViewInit() {
+    const threshold = [0, 0.1];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          // WAR to handle weird intersection logic when animation active.
+          // - Observe the container for its child animation activation.
+          const child = entry.target.firstElementChild;
+          if (entry.intersectionRatio <= 0) {
+            child?.classList.add('opacity-0');
+            child?.classList.remove('animate');
+          } else {
+            child?.classList.remove('opacity-0');
+            child?.classList.add('animate');
+          }
+        });
+      },
+      { threshold },
+    );
+    observer.observe(this.bigDayElement!.nativeElement);
   }
 }

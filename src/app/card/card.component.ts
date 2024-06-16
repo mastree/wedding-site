@@ -5,7 +5,7 @@ import { Component, Input } from '@angular/core';
   standalone: true,
   imports: [],
   template: `
-    <div class="flex min-h-40 w-[90%] flex-row items-center rounded-lg bg-slate-100 p-5 shadow-md">
+    <div class="flex min-h-40 w-[90%] flex-row items-center rounded-lg bg-slate-100 p-5 shadow-lg">
       <div class="flex h-full min-w-[25%] max-w-[35%] flex-col items-center justify-center">
         <img class="max-h-32 max-w-[4.5rem]" [src]="icon" />
       </div>
