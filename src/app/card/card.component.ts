@@ -5,8 +5,8 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
   standalone: true,
   imports: [],
   template: `
-    <div class="flex min-h-40 w-[90%] items-center rounded-lg bg-slate-50 shadow-lg" #container>
-      <div class="flex h-full w-full flex-col items-center justify-center gap-2 p-3">
+    <div class="flex min-h-40 w-[90%] items-center rounded-lg bg-slate-50 px-3 pb-7 pt-3 shadow-lg" #container>
+      <div class="flex h-full w-full flex-col items-center justify-center gap-2">
         <div class="flex grow items-center justify-center">
           <p class="font-manuale text-xl font-semibold md:text-2xl">{{ title }}</p>
         </div>

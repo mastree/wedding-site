@@ -105,7 +105,7 @@ TODO:
         </video>
       </div>
       <div class="relative mx-auto h-full w-full max-w-screen-lg">
-        <div class="flex w-full flex-col justify-center">
+        <div class="mb-5 flex w-full flex-col justify-center">
           <p class="text-center font-manuale text-xl font-semibold md:text-2xl">SCHEDULE & LOCATION</p>
           <p class="text-md text-center font-manuale font-light">Jadwal & Tempat</p>
         </div>
