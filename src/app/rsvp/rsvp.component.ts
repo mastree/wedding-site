@@ -74,7 +74,7 @@ import { FormsModule } from '@angular/forms';
           }
           <div class="my-3 h-[2px] w-full bg-dark-secondary opacity-30"></div>
           <div class="flex w-full flex-col items-center gap-2">
-            <p class="text-md font-manuale text-white">Leave a message or wishes for bride and groom!</p>
+            <p class="text-md font-manuale text-white">Leave a message or wishes for the bride and groom!</p>
             <form class="flex w-full flex-col gap-2" (submit)="onSubmitMessage($event)">
               <div
                 class="grid overflow-hidden text-sm after:invisible after:whitespace-pre-wrap after:border after:px-3.5 after:py-2.5 after:text-inherit after:content-[attr(data-cloned-val)_'_'] after:[grid-area:1/1/2/2] [&>textarea]:resize-none [&>textarea]:overflow-hidden [&>textarea]:text-inherit [&>textarea]:[grid-area:1/1/2/2]"
