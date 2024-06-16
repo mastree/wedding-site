@@ -4,11 +4,10 @@ import { CountdownComponent } from '../countdown/countdown.component';
 import { CardComponent } from '../card/card.component';
 import { RsvpComponent } from '../rsvp/rsvp.component';
 
-/*
-TODO:
-- add moving clock countdown
-- finish layout
-*/
+import domToImage from 'dom-to-image';
+import moment from 'moment';
+
+import jsPDF, { jsPDFOptions } from 'jspdf';
 
 @Component({
   selector: 'app-home',
@@ -37,7 +36,7 @@ TODO:
       </div>
     </header>
 
-    <section class="relative h-[34vh] bg-secondary">
+    <section class="relative h-[34vh] bg-secondary" #dataToExport>
       <div class="relative mx-auto h-full max-w-screen-lg">
         <div class="absolute top-0 flex w-full translate-y-[-100%] flex-col items-center justify-end">
           <p class="font-manuale text-[2rem] font-semibold text-primary">LEFT</p>
@@ -50,12 +49,10 @@ TODO:
             <p class="justify-center font-marcellus-sc text-[2rem] text-white">Kamal & Faiza's</p>
             <p class="justify-center font-marcellus-sc text-[2rem] text-white">Wedding</p>
           </div>
-          <a href="">
-            <div class="active-go-up flex gap-2 font-lato font-light text-white">
-              <img src="download.svg" />
-              <p class="line-2 text-[0.75rem] active:text-sky-700">Download invitation as PDF</p>
-            </div>
-          </a>
+          <div (click)="downloadAsPdf()" class="active-go-up flex gap-2 font-lato font-light text-white">
+            <img src="download.svg" />
+            <p class="line-2 text-[0.75rem] active:text-sky-700">Download invitation as PDF</p>
+          </div>
         </div>
         <div class="absolute bottom-0 mb-1 flex w-full items-center justify-center gap-0">
           <div class="size-8 rounded-[50%]">
@@ -141,6 +138,7 @@ TODO:
 })
 export class HomeComponent {
   @ViewChild('bigDay') bigDayElement: ElementRef | undefined;
+  @ViewChild('dataToExport', { static: false }) dataToExport!: ElementRef;
 
   eventDate: Date = new Date('2024-11-16T15:00:00.000+07:00');
 
@@ -171,5 +169,40 @@ export class HomeComponent {
       { threshold },
     );
     observer.observe(this.bigDayElement!.nativeElement);
+  }
+
+  downloadAsPdf(): void {
+    const width = this.dataToExport.nativeElement.clientWidth;
+    const height = this.dataToExport.nativeElement.clientHeight + 40;
+    const pdfName = 'test';
+    let orientation = '';
+    let imageUnit = 'pt';
+    if (width > height) {
+      orientation = 'l';
+    } else {
+      orientation = 'p';
+    }
+    domToImage
+      .toPng(this.dataToExport.nativeElement, {
+        width: width,
+        height: height,
+      })
+      .then((result) => {
+        let jsPdfOptions: jsPDFOptions = {
+          orientation: orientation as jsPDFOptions['orientation'],
+          unit: imageUnit as jsPDFOptions['unit'],
+          format: [width + 50, height + 220],
+        };
+        const pdf = new jsPDF(jsPdfOptions);
+        pdf.setFontSize(48);
+        pdf.setTextColor('#2585fe');
+        pdf.text(pdfName ? pdfName.toUpperCase() : 'Untitled dashboard'.toUpperCase(), 25, 75);
+        pdf.setFontSize(24);
+        pdf.setTextColor('#131523');
+        pdf.text('Report date: ' + moment().format('ll'), 25, 115);
+        pdf.addImage(result, 'PNG', 25, 185, width, height);
+        pdf.save('file_name' + '.pdf');
+      })
+      .catch((error) => {});
   }
 }
