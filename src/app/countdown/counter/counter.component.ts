@@ -7,7 +7,7 @@ import { Component, Input, OnChanges, SimpleChanges, input } from '@angular/core
   template: `
     <div class="text-primary">
       <div
-        class="flex flex-row items-center justify-center gap-1 font-major-mono-display text-[2rem] font-[500] md:text-[4rem]"
+        class="flex flex-row items-center justify-center gap-1 font-major-mono-display text-[2rem] font-[500] md:text-[3rem] lg:text-[4rem]"
       >
         @for (digit of digits; track $index) {
           <div class="relative flex items-center justify-center">

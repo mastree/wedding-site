@@ -1,4 +1,14 @@
-import { Component, ElementRef, Inject, Renderer2, ViewChild, inject } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  Input,
+  OnChanges,
+  Renderer2,
+  SimpleChanges,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -6,7 +16,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [FormsModule],
   template: `
-    <div class="flex w-full flex-col items-center justify-center">
+    <div class="flex w-full flex-col items-center justify-center" #container>
       <div class="flex w-[90%] items-center justify-center pb-16 pt-8">
         <div class="flex w-full flex-col items-center justify-center gap-5">
           <p class="font-regular w-full text-center align-top font-manuale text-3xl font-semibold text-white">RSVP</p>
@@ -15,14 +25,16 @@ import { FormsModule } from '@angular/forms';
             <div class="mt-2 flex w-full flex-col gap-2">
               <button
                 (click)="onWillAttend(true)"
-                class="rounded-lg bg-dark-secondary p-2 font-manuale font-semibold text-white ring-white focus:bg-light-primary focus:shadow-primary focus:ring-2 active:shadow-inner md:p-3"
+                class="rounded-lg bg-dark-secondary p-2 font-manuale font-semibold text-white ring-white focus:bg-light-primary focus:shadow-primary focus:ring-2 active:shadow-inner disabled:opacity-60 md:p-3"
+                [disabled]="!isInvited"
                 #buttonYesAttend
               >
                 Yes, I will attend
               </button>
               <button
                 (click)="onWillAttend(false)"
-                class="rounded-lg bg-slate-100 p-2 font-manuale font-semibold text-primary ring-white focus:bg-red-100 focus:shadow-red-200 focus:ring-2 active:shadow-inner md:p-3"
+                class="rounded-lg bg-slate-100 p-2 font-manuale font-semibold text-primary ring-white focus:bg-red-100 focus:shadow-red-200 focus:ring-2 active:shadow-inner disabled:opacity-60 md:p-3"
+                [disabled]="!isInvited"
                 #buttonNoAttend
               >
                 No
@@ -104,14 +116,24 @@ import { FormsModule } from '@angular/forms';
   `,
   styleUrl: './rsvp.component.css',
 })
-export class RsvpComponent {
-  private maxAttend: number = 2;
+export class RsvpComponent implements OnChanges {
+  @Input({
+    transform: (value: any) => {
+      if (typeof value === 'number') {
+        return value;
+      }
+      return 0;
+    },
+  })
+  maxAttend: number = 0;
 
+  isInvited: boolean = false;
   numAttend: number = 0;
   willAttend: boolean = false;
   rsvpPicked: boolean = false;
   messageText: string = '';
 
+  @ViewChild('container') outerContainer: ElementRef | undefined;
   @ViewChild('buttonYesAttend') buttonYesAttend: ElementRef | undefined;
   @ViewChild('buttonNoAttend') buttonNoAttend: ElementRef | undefined;
   @Inject({})
@@ -156,5 +178,17 @@ export class RsvpComponent {
 
   onSubmitMessage(event: SubmitEvent) {
     console.log(this.messageText);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const maxAttendChange = changes['maxAttend'];
+    if (maxAttendChange) {
+      let { currentValue } = maxAttendChange;
+      if (currentValue) {
+        this.isInvited = true;
+      } else {
+        this.isInvited = false;
+      }
+    }
   }
 }

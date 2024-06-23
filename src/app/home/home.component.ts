@@ -1,20 +1,16 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild, inject } from '@angular/core';
 import { NavigationBarComponent } from '../navigation-bar/navigation-bar.component';
 import { CountdownComponent } from '../countdown/countdown.component';
 import { CardComponent } from '../card/card.component';
 import { RsvpComponent } from '../rsvp/rsvp.component';
-
-/*
-TODO:
-- add moving clock countdown
-- finish layout
-*/
+import { Invitation, WeddingService } from '../wedding.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   template: `
-    <header class="relative h-[66vh] bg-white bg-opacity-30">
+    <header class="relative h-[66vh] min-h-[25rem] bg-white bg-opacity-30 md:min-h-[31.5rem]">
       <div class="absolute bottom-0 top-0 z-10 h-full w-full">
         <app-navigation-bar></app-navigation-bar>
       </div>
@@ -25,19 +21,34 @@ TODO:
         </video>
       </div>
       <div class="relative mx-auto h-full max-w-screen-lg">
-        <div class="flex h-full w-full flex-col items-center justify-center pt-5">
-          <div class="flex w-full flex-col items-center justify-center pb-7 text-primary">
-            <p class="justify-center font-manuale text-[1.6875rem] font-bold">YOU'RE</p>
-            <p class="justify-center font-manuale text-[1.6875rem] font-bold">INVITED</p>
-          </div>
-          <div class="flex w-full flex-col items-center justify-center" #bigDay>
-            <div
-              class="animate-scale-in animate-fast flex h-[6.5rem] w-[18rem] items-center justify-center rounded-md bg-primary shadow-lg"
-            >
-              <p class="font-manuale text-[2rem] font-semibold text-white">TO THE BIG DAY!</p>
+        <div class="flex h-full w-full flex-col items-center justify-center gap-6 pt-5">
+          @if (!this.invitation) {
+            <div class="flex w-full flex-col items-center justify-center pb-7 text-primary">
+              <p class="justify-center font-manuale text-[1.6875rem] font-bold">WELCOME</p>
+              <p class="justify-center font-manuale text-[1.6875rem] font-bold">TO THE</p>
             </div>
-          </div>
-          <div class="h-[1.75rem]"></div>
+            <div class="flex w-full flex-col items-center justify-center" #bigDay>
+              <div
+                class="animate-scale-in animate-fast flex h-[5rem] w-[18rem] items-center justify-center rounded-md bg-primary shadow-lg md:h-[6.5rem]"
+              >
+                <p class="font-manuale text-[1.5rem] font-semibold text-white md:text-[2rem]">
+                  Announcement! {{ this.loading ? this.invitation : '' }}
+                </p>
+              </div>
+            </div>
+          } @else {
+            <div class="flex w-full flex-col items-center justify-center pb-7 text-primary">
+              <p class="justify-center font-manuale text-[1.6875rem] font-bold">YOU'RE</p>
+              <p class="justify-center font-manuale text-[1.6875rem] font-bold">INVITED</p>
+            </div>
+            <div class="flex w-full flex-col items-center justify-center" #bigDay>
+              <div
+                class="animate-scale-in animate-fast flex h-[5rem] w-[18rem] items-center justify-center rounded-md bg-primary shadow-lg md:h-[6.5rem]"
+              >
+                <p class="font-manuale text-[1.5rem] font-semibold text-white md:text-[2rem]">TO THE BIG DAY!</p>
+              </div>
+            </div>
+          }
           <app-countdown [eventDate]="eventDate"></app-countdown>
         </div>
       </div>
@@ -63,12 +74,10 @@ TODO:
             <p class="justify-center font-marcellus-sc text-[2rem] text-white">Kamal & Faiza's</p>
             <p class="justify-center font-marcellus-sc text-[2rem] text-white">Wedding</p>
           </div>
-          <a href="">
-            <div class="active-go-up flex gap-2 font-lato font-light text-white">
-              <img src="download.svg" />
-              <p class="line-2 text-[0.75rem] active:text-sky-700">Download invitation as PDF</p>
-            </div>
-          </a>
+          <div (click)="onDownloadAsPdf()" class="active-go-up flex gap-2 font-lato font-light text-white">
+            <img src="download.svg" />
+            <p class="line-2 text-[0.75rem] active:text-sky-700">Download invitation as PDF</p>
+          </div>
         </div>
         <div class="absolute bottom-0 mb-1 flex w-full items-center justify-center gap-0">
           <div class="size-8 rounded-[50%]">
@@ -143,7 +152,7 @@ TODO:
 
     <section class="bg-secondary">
       <div class="relative mx-auto h-full w-full max-w-screen-lg">
-        <app-rsvp></app-rsvp>
+        <app-rsvp [maxAttend]="this.invitation?.invitation_pax"></app-rsvp>
       </div>
     </section>
 
@@ -158,13 +167,29 @@ TODO:
   styleUrl: './home.component.css',
   imports: [NavigationBarComponent, CountdownComponent, CardComponent, RsvpComponent],
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  // Model related members
+  route = inject(ActivatedRoute);
+  weddingService = inject(WeddingService);
+  invitation?: Invitation | undefined;
+  loading = true;
+
+  // View related members
   @ViewChild('bigDay') bigDayElement: ElementRef | undefined;
 
   eventDate: Date = new Date('2024-11-16T15:00:00.000+07:00');
 
   animateGoFromLeft = ['animate-go-from-left'];
   animateGoFromRight = ['animate-go-from-right'];
+
+  constructor() {}
+
+  async ngOnInit() {
+    const housingLocationId = this.route.snapshot.params['id'];
+    this.invitation = await this.weddingService.getInvitation(housingLocationId);
+    console.log(`Invitation: ${this.invitation}`);
+    this.loading = false;
+  }
 
   get currentYear(): number {
     return new Date().getFullYear();
@@ -190,5 +215,9 @@ export class HomeComponent {
       { threshold },
     );
     observer.observe(this.bigDayElement!.nativeElement);
+  }
+
+  onDownloadAsPdf() {
+    console.log(`Downloading for ${JSON.stringify(this.invitation)}`);
   }
 }
