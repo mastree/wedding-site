@@ -137,6 +137,7 @@ import { NgClass } from '@angular/common';
             <a
               class="mt-2 flex flex-row items-center gap-1 fill-sky-400 text-sky-400 active:fill-sky-700 active:text-sky-700"
               href="https://maps.app.goo.gl/9kLNCJA7acvwyxJB8"
+              target="_blank"
             >
               <p class="font-manuale text-[1rem] active:underline">Open in GMaps</p>
               <span class="size-3">
