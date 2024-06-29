@@ -10,6 +10,7 @@ type RsvpState = {
   willAttend: boolean;
   rsvpPicked: boolean;
   loading: boolean;
+  status?: undefined | 'sending' | 'sent' | 'error';
 };
 
 @Component({
@@ -23,7 +24,7 @@ type RsvpState = {
           <div class="relative flex w-full flex-col items-center justify-center gap-5">
             <div
               class="absolute z-10 flex items-center justify-center opacity-100"
-              [ngClass]="rsvpState.loading ? '' : 'hidden'"
+              [ngClass]="state.loading ? '' : 'hidden'"
             >
               <div class="size-8 fill-white">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -41,7 +42,7 @@ type RsvpState = {
                 </svg>
               </div>
             </div>
-            @if (rsvpState.invitation?.rsvp != undefined) {
+            @if (state.invitation?.rsvp != undefined) {
               <div class="flex w-full flex-col items-center">
                 <div class="flex flex-row items-center gap-2">
                   <p class="text-md font-manuale text-white">You have filled the RSVP</p>
@@ -53,10 +54,18 @@ type RsvpState = {
                   </button>
                 </div>
               </div>
+              <div class="pointer-events-none absolute flex h-full w-full items-center justify-center">
+                <div
+                  class="fill-mode-forwards invisible rounded-lg border-2 border-black bg-secondary p-3 shadow-lg"
+                  [ngClass]="state.status == 'sent' ? 'animate-notify-scale-in' : 'hidden'"
+                >
+                  <p class="text-md font-manuale text-white">Thanks for filling the RSVP!</p>
+                </div>
+              </div>
             } @else {
               <div
                 class="flex w-full flex-col items-center justify-center gap-5"
-                [ngClass]="rsvpState.loading ? ['pointer-events-none', 'opacity-60'] : ''"
+                [ngClass]="state.loading ? ['pointer-events-none', 'opacity-60'] : ''"
               >
                 <div class="flex w-full flex-col items-center">
                   <p class="text-md font-manuale text-white">Would you be able to attend?</p>
@@ -79,7 +88,7 @@ type RsvpState = {
                     </button>
                   </div>
                 </div>
-                @if (rsvpState.willAttend) {
+                @if (state.willAttend) {
                   <div class="flex w-full flex-col items-center">
                     <p class="font-manuale text-sm text-white">How many person? (including yourself)</p>
                     <div class="mt-2 flex w-full flex-row justify-between gap-1">
@@ -90,7 +99,7 @@ type RsvpState = {
                         -
                       </button>
                       <div class="grow rounded-lg bg-white px-2 py-2 font-manuale">
-                        <p>{{ rsvpState.numAttend }}</p>
+                        <p>{{ state.numAttend }}</p>
                       </div>
                       <button
                         (click)="onAddNumAttend(1)"
@@ -101,7 +110,7 @@ type RsvpState = {
                     </div>
                   </div>
                 } @else {}
-                @if (rsvpState.rsvpPicked) {
+                @if (state.rsvpPicked) {
                   <div class="flex flex-row items-center gap-5">
                     <p class="text-md font-manuale text-white">Confirm RSVP?</p>
                     <div class="flex flex-row items-center gap-2">
@@ -137,7 +146,7 @@ type RsvpState = {
 export class RsvpComponent {
   weddingService = inject(WeddingService);
 
-  rsvpState: RsvpState = {
+  state: RsvpState = {
     numAttend: 0,
     willAttend: false,
     rsvpPicked: false,
@@ -154,9 +163,9 @@ export class RsvpComponent {
 
   constructor() {
     this.weddingService.invitation.subscribe((data) => {
-      this.rsvpState.invitation = data.value;
-      this.isInvited = this.rsvpState.invitation != undefined;
-      this.rsvpState.loading = data.loading;
+      this.state.invitation = data.value;
+      this.isInvited = this.state.invitation != undefined;
+      this.state.loading = data.loading;
     });
   }
 
@@ -173,41 +182,40 @@ export class RsvpComponent {
   }
 
   onWillAttend(willAttend: boolean) {
-    this.rsvpState.rsvpPicked = true;
-    this.rsvpState.willAttend = willAttend;
-    if (this.rsvpState.willAttend) {
+    this.state.rsvpPicked = true;
+    this.state.willAttend = willAttend;
+    if (this.state.willAttend) {
       this.addClasses(this.buttonYesAttend?.nativeElement, ['shadow-primary', 'ring-2', 'bg-light-primary']);
       this.removeClasses(this.buttonNoAttend?.nativeElement, ['shadow-red-200', 'ring-2', 'bg-red-100']);
     } else {
-      this.rsvpState.numAttend = 0;
+      this.state.numAttend = 0;
       this.removeClasses(this.buttonYesAttend?.nativeElement, ['shadow-primary', 'ring-2', 'bg-light-primary']);
       this.addClasses(this.buttonNoAttend?.nativeElement, ['shadow-red-200', 'ring-2', 'bg-red-100']);
     }
   }
 
   onAddNumAttend(inc: number) {
-    if (this.rsvpState.invitation) {
-      this.rsvpState.numAttend = Math.min(
-        this.rsvpState.invitation!.invitation_pax,
-        Math.max(0, this.rsvpState.numAttend + inc),
-      );
+    if (this.state.invitation) {
+      this.state.numAttend = Math.min(this.state.invitation!.invitation_pax, Math.max(0, this.state.numAttend + inc));
     }
   }
 
   onUpdateRsvp() {
-    this.rsvpState.invitation!.rsvp = undefined;
+    this.state.invitation!.rsvp = undefined;
   }
 
   onSubmitRsvp(submit: boolean = true) {
     if (submit) {
-      this.rsvpState.loading = true;
-      this.weddingService.updateRsvp(this.rsvpState.invitation!, {
-        will_attend: this.rsvpState.willAttend,
-        num_attendee: this.rsvpState.numAttend,
+      this.state.status = 'sending';
+      this.state.loading = true;
+      this.weddingService.updateRsvp(this.state.invitation!, {
+        will_attend: this.state.willAttend,
+        num_attendee: this.state.numAttend,
       });
+      this.state.status = 'sent';
     } else {
-      this.rsvpState.rsvpPicked = false;
-      this.rsvpState.willAttend = false;
+      this.state.rsvpPicked = false;
+      this.state.willAttend = false;
       this.removeClasses(this.buttonNoAttend?.nativeElement, ['shadow-red-200', 'ring-2', 'bg-red-100']);
       this.removeClasses(this.buttonYesAttend?.nativeElement, ['shadow-primary', 'ring-2', 'bg-light-primary']);
     }
