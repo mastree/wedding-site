@@ -117,7 +117,7 @@ export class WeddingService {
 
   downloadInvitationPdf(name: string) {
     return this.http.post(
-      `${this.baseUrl}/invitation/pdf`,
+      `${this.baseUrl}/wedding/invitation/pdf`,
       { name },
       {
         observe: 'body',

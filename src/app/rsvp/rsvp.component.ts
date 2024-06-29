@@ -44,19 +44,19 @@ type RsvpState = {
             </div>
             @if (state.invitation?.rsvp != undefined) {
               <div class="flex w-full flex-col items-center">
-                <div class="flex flex-row items-center gap-2">
+                <div class="flex flex-row items-center gap-4">
                   <p class="text-md font-manuale text-white">You have filled the RSVP</p>
                   <button
                     (click)="onUpdateRsvp()"
                     class="rounded-lg bg-dark-secondary p-2 font-manuale font-semibold text-white ring-white active:bg-light-primary active:shadow-inner active:shadow-primary active:ring-2 md:p-3"
                   >
-                    update?
+                    update
                   </button>
                 </div>
               </div>
               <div class="pointer-events-none absolute flex h-full w-full items-center justify-center">
                 <div
-                  class="fill-mode-forwards invisible rounded-lg border-2 border-black bg-secondary p-3 shadow-lg"
+                  class="fill-mode-forwards invisible rounded-lg border-2 border-black bg-secondary px-3 py-5 shadow-lg"
                   [ngClass]="state.status == 'sent' ? 'animate-notify-scale-in' : 'hidden'"
                 >
                   <p class="text-md font-manuale text-white">Thanks for filling the RSVP!</p>

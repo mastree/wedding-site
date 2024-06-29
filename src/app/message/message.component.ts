@@ -78,7 +78,7 @@ type MessageState = {
         </div>
         <div class="pointer-events-none absolute flex h-full w-full items-center justify-center">
           <div
-            class="fill-mode-forwards invisible rounded-lg border-2 border-black bg-secondary p-3 shadow-lg"
+            class="fill-mode-forwards invisible rounded-lg border-2 border-black bg-secondary px-3 py-5 shadow-lg"
             [ngClass]="state.status == 'sent' ? 'animate-notify-scale-in' : 'hidden'"
           >
             <p class="text-md font-manuale text-white">Message sent, thanks!</p>

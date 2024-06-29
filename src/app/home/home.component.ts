@@ -235,15 +235,15 @@ export class HomeComponent implements OnInit {
       next: (blob) => {
         const file = new Blob([blob], { type: 'application/pdf' });
         const fileURL = URL.createObjectURL(file);
-        window.open(fileURL);
-        // TODO: uncomment when testing done
-        // const dummy = document.createElement('a') as HTMLAnchorElement;
-        // dummy.href = fileURL;
-        // dummy.target = '_blank';
-        // dummy.download = 'invitation.pdf';
-        // document.body.appendChild(dummy);
-        // dummy.click();
-        // document.body.removeChild(dummy);
+        // To open in new window
+        // window.open(fileURL);
+        const dummy = document.createElement('a') as HTMLAnchorElement;
+        dummy.href = fileURL;
+        dummy.target = '_blank';
+        dummy.download = 'invitation.pdf';
+        document.body.appendChild(dummy);
+        dummy.click();
+        document.body.removeChild(dummy);
       },
       error: (err) => {
         this.logger.error(`Failed to download invitation ${JSON.stringify(this.invitation)}`);
