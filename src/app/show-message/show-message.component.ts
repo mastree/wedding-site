@@ -57,7 +57,9 @@ type State = {
             <div class="flex flex-col rounded-b-lg rounded-r-lg bg-white p-2 text-primary drop-shadow-md">
               <div class="flex flex-row justify-between">
                 <p class="font-manuale font-semibold">From: {{ message.name }}</p>
-                <p class="font-manuale font-light">{{ getTimeString(message.created_at) }}</p>
+                <p class="font-manuale font-light">
+                  {{ getTimeString(message.created_at) }} <span class="text-xs">(GMT+7)</span>
+                </p>
               </div>
               <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
               <p class="min-h-16 font-lato">{{ message.message }}</p>
