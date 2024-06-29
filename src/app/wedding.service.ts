@@ -34,6 +34,7 @@ export class WeddingService {
     if (this.invitation && this.invitation?.id == id) return this.invitation;
     const res = await fetch(`${this.baseUrl}/wedding/invitation/${id}`, {
       method: 'GET',
+      mode: 'cors',
     });
     const { data = undefined } = await res.json();
     if (data) {
@@ -45,6 +46,7 @@ export class WeddingService {
   async updateRsvp(invitation: Invitation, rsvp: Rsvp) {
     const res = await fetch(`${this.baseUrl}/wedding/invitation/${invitation.id}`, {
       method: 'POST',
+      mode: 'cors',
       body: JSON.stringify(rsvp),
     });
     const { data = undefined } = await res.json();
@@ -58,6 +60,7 @@ export class WeddingService {
   async getMessage(page: number = 0, pageSize: number = 5): Promise<Message[]> {
     const res = await fetch(`${this.baseUrl}/wedding/message?page=${page}&pageSize=${pageSize}`, {
       method: 'GET',
+      mode: 'cors',
     });
     const { data = undefined } = await res.json();
     if (data) {
