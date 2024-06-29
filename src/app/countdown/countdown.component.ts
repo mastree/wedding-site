@@ -1,6 +1,5 @@
-import { Component, Inject, Input, OnChanges, PLATFORM_ID, SimpleChanges, signal } from '@angular/core';
+import { Component, Inject, Input, PLATFORM_ID, signal } from '@angular/core';
 import { CounterComponent } from './counter/counter.component';
-import { NodeWithI18n } from '@angular/compiler';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({

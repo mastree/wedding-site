@@ -1,10 +1,13 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { NavigationBarComponent } from '../navigation-bar/navigation-bar.component';
 import { CountdownComponent } from '../countdown/countdown.component';
 import { CardComponent } from '../card/card.component';
 import { RsvpComponent } from '../rsvp/rsvp.component';
 import { Invitation, WeddingService } from '../wedding.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { LoggerService } from '../logger.service';
+import { NgClass } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -31,9 +34,7 @@ import { ActivatedRoute } from '@angular/router';
               <div
                 class="animate-scale-in animate-fast flex h-[5rem] w-[18rem] items-center justify-center rounded-md bg-primary shadow-lg md:h-[6.5rem]"
               >
-                <p class="font-manuale text-[1.5rem] font-semibold text-white md:text-[2rem]">
-                  Announcement! {{ this.loading ? this.invitation : '' }}
-                </p>
+                <p class="font-manuale text-[1.5rem] font-semibold text-white md:text-[2rem]">Announcement!</p>
               </div>
             </div>
           } @else {
@@ -74,7 +75,11 @@ import { ActivatedRoute } from '@angular/router';
             <p class="justify-center font-marcellus-sc text-[2rem] text-white">Kamal & Faiza's</p>
             <p class="justify-center font-marcellus-sc text-[2rem] text-white">Wedding</p>
           </div>
-          <div (click)="onDownloadAsPdf()" class="active-go-up flex gap-2 font-lato font-light text-white">
+          <div
+            (click)="onDownloadAsPdf()"
+            class="active-go-up flex gap-2 font-lato font-light text-white"
+            [ngClass]="invitation ? '' : ['hidden']"
+          >
             <img src="download.svg" />
             <p class="line-2 text-[0.75rem] active:text-sky-700">Download invitation as PDF</p>
           </div>
@@ -133,6 +138,7 @@ import { ActivatedRoute } from '@angular/router';
             <a
               class="mt-2 flex flex-row items-center gap-1 fill-sky-400 text-sky-400 active:fill-sky-700 active:text-sky-700"
               href="https://maps.app.goo.gl/9kLNCJA7acvwyxJB8"
+              target="_blank"
             >
               <p class="font-manuale text-[1rem] active:underline">Open in GMaps</p>
               <span class="size-3">
@@ -152,7 +158,7 @@ import { ActivatedRoute } from '@angular/router';
 
     <section class="bg-secondary">
       <div class="relative mx-auto h-full w-full max-w-screen-lg">
-        <app-rsvp [maxAttend]="this.invitation?.invitation_pax"></app-rsvp>
+        <app-rsvp></app-rsvp>
       </div>
     </section>
 
@@ -165,14 +171,17 @@ import { ActivatedRoute } from '@angular/router';
     </footer>
   `,
   styleUrl: './home.component.css',
-  imports: [NavigationBarComponent, CountdownComponent, CardComponent, RsvpComponent],
+  imports: [NavigationBarComponent, CountdownComponent, CardComponent, RsvpComponent, NgClass],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   // Model related members
+  logger = inject(LoggerService);
   route = inject(ActivatedRoute);
   weddingService = inject(WeddingService);
   invitation?: Invitation | undefined;
   loading = true;
+
+  subscriptions: Subscription[] = [];
 
   // View related members
   @ViewChild('bigDay') bigDayElement: ElementRef | undefined;
@@ -182,13 +191,27 @@ export class HomeComponent implements OnInit {
   animateGoFromLeft = ['animate-go-from-left'];
   animateGoFromRight = ['animate-go-from-right'];
 
-  constructor() {}
+  constructor(private router: Router) {}
 
-  async ngOnInit() {
+  ngOnInit() {
     const housingLocationId = this.route.snapshot.params['id'];
-    this.invitation = await this.weddingService.getInvitation(housingLocationId);
-    console.log(`Invitation: ${this.invitation}`);
-    this.loading = false;
+    this.loading = true;
+    this.weddingService.getInvitation(housingLocationId);
+    this.subscriptions.push(
+      this.weddingService.invitation.subscribe((data) => {
+        this.invitation = data;
+        this.loading = false;
+        if (!this.invitation && !this.loading) {
+          this.router.navigate(['announcement']);
+        }
+      }),
+    );
+  }
+
+  ngOnDestroy() {
+    for (const sub of this.subscriptions) {
+      sub.unsubscribe();
+    }
   }
 
   get currentYear(): number {
@@ -218,6 +241,25 @@ export class HomeComponent implements OnInit {
   }
 
   onDownloadAsPdf() {
-    console.log(`Downloading for ${JSON.stringify(this.invitation)}`);
+    this.logger.info(`Downloading invitation for ${JSON.stringify(this.invitation)}...`);
+    this.weddingService.downloadInvitationPdf(this.invitation!.name).subscribe({
+      next: (blob) => {
+        const file = new Blob([blob], { type: 'application/pdf' });
+        const fileURL = URL.createObjectURL(file);
+        // To open in new window
+        // window.open(fileURL);
+        const dummy = document.createElement('a') as HTMLAnchorElement;
+        dummy.href = fileURL;
+        dummy.target = '_blank';
+        dummy.download = 'invitation.pdf';
+        document.body.appendChild(dummy);
+        dummy.click();
+        document.body.removeChild(dummy);
+      },
+      error: (err) => {
+        this.logger.error(`Failed to download invitation ${JSON.stringify(this.invitation)}`);
+        window.alert('Failed to download.');
+      },
+    });
   }
 }

@@ -1,5 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { environment } from '../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs';
+import { LoggerService } from './logger.service';
 
 export type Rsvp = {
   will_attend: boolean | undefined;
@@ -14,10 +17,16 @@ export type Invitation = {
   rsvp?: Rsvp;
 };
 
+export type Load<T> = {
+  value?: T | undefined;
+  loading: boolean;
+};
+
 export type Message = {
+  id: number;
   name: string;
   message: string;
-  created_at?: number;
+  created_at: number;
 };
 
 @Injectable({
@@ -25,44 +34,60 @@ export type Message = {
 })
 export class WeddingService {
   baseUrl = environment.API_URL;
-  invitation?: Invitation | undefined;
+
+  http = inject(HttpClient);
+  logger = inject(LoggerService);
+
+  invitation = new BehaviorSubject<Invitation | undefined>(undefined);
 
   constructor() {}
 
-  async getInvitation(id: string | undefined) {
-    if (!id) return undefined;
-    if (this.invitation && this.invitation?.id == id) return this.invitation;
-    const res = await fetch(`${this.baseUrl}/wedding/invitation/${id}`, {
-      method: 'GET',
-    });
-    const { data = undefined } = await res.json();
-    if (data) {
-      this.invitation = data as unknown as Invitation;
+  getInvitation(id: string | undefined) {
+    if (!id) {
+      this.invitation.next(undefined);
+      return;
     }
-    return this.invitation;
+    this.http.get(`${this.baseUrl}/wedding/invitation/${id}`).subscribe({
+      next: (res) => {
+        this.logger.info(`getInvitation(${id}) response: ${JSON.stringify(res)}`);
+        this.invitation.next((res as { data: Invitation | undefined }).data);
+      },
+      error: (err) => {
+        this.logger.error(`getInvitation(${id}) error: ${JSON.stringify(err)}`);
+        this.invitation.next(undefined);
+      },
+    });
   }
 
-  async updateRsvp(invitation: Invitation, rsvp: Rsvp) {
-    const res = await fetch(`${this.baseUrl}/wedding/invitation/${invitation.id}`, {
-      method: 'POST',
-      body: JSON.stringify(rsvp),
-    });
-    const { data = undefined } = await res.json();
-    if (data) {
-      this.invitation = data as unknown as Invitation;
-      return this.invitation;
-    }
-    return undefined;
+  updateRsvp(invitation: Invitation, rsvp: Rsvp) {
+    this.http
+      .post(`${this.baseUrl}/wedding/invitation/${invitation.id}`, rsvp, {
+        observe: 'body',
+      })
+      .subscribe({
+        next: (res) => {
+          this.logger.info(`updateRsvp(${invitation.id}}, ${JSON.stringify(rsvp)}) response: ${JSON.stringify(res)}`);
+          const { data } = res as { data: Invitation };
+          this.invitation.next(data);
+        },
+        error: (err) => {
+          this.logger.error(`updateRsvp(${invitation.id}}, ${JSON.stringify(rsvp)}) error: ${JSON.stringify(err)}`);
+          this.invitation.next(invitation);
+        },
+      });
   }
 
-  async getMessage(page: number = 0, pageSize: number = 5): Promise<Message[]> {
-    const res = await fetch(`${this.baseUrl}/wedding/message?page=${page}&pageSize=${pageSize}`, {
-      method: 'GET',
-    });
-    const { data = undefined } = await res.json();
-    if (data) {
-      return data as unknown as Message[];
-    }
-    return [];
+  downloadInvitationPdf(name: string) {
+    return this.http.post(
+      `${this.baseUrl}/wedding/invitation/pdf`,
+      { name },
+      {
+        observe: 'body',
+        responseType: 'blob',
+        headers: {
+          Accept: ['application/pdf', 'application/json'],
+        },
+      },
+    );
   }
 }
