@@ -1,3 +1,5 @@
+const { NONE_TYPE } = require("@angular/compiler");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{html,ts}"],
@@ -34,11 +36,32 @@ module.exports = {
             opacity: 1,
           },
         },
+        "notify-scale-in": {
+          "0%": {
+            transform: "scale(0)",
+            opacity: 0,
+            visibility: "visible",
+          },
+          "30%": {
+            transform: "scale(1)",
+            opacity: 1,
+          },
+          "70%": {
+            transform: "scale(1)",
+            opacity: 1,
+          },
+          "100%": {
+            transform: "scale(0)",
+            opacity: 0,
+            visibility: "hidden",
+          },
+        },
       },
       animation: {
         "bounce-small": "bounce-small 1s infinite",
         "go-from-left": "go-from-left 0.6s",
         "go-from-right": "go-from-right 0.6s",
+        "notify-scale-in": "notify-scale-in 2s",
       },
       colors: {
         primary: "#0D271A",

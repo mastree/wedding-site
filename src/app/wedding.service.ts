@@ -61,7 +61,11 @@ export class WeddingService {
 
   constructor() {}
 
-  getInvitation(id: string) {
+  getInvitation(id: string | undefined) {
+    if (!id) {
+      this.invitationResponse.next(undefined);
+      return;
+    }
     this.http.get(`${this.baseUrl}/wedding/invitation/${id}`).subscribe({
       next: (res) => {
         this.logger.info(`getInvitation(${id}) response: ${JSON.stringify(res)}`);
@@ -96,6 +100,19 @@ export class WeddingService {
 
   getMessage(page: number, pageSize: number = 5) {
     return this.http.get(`${this.baseUrl}/wedding/message?page=${page}&pageSize=${pageSize}`);
+  }
+
+  sendMessage(name: string, message: string) {
+    return this.http.post(
+      `${this.baseUrl}/wedding/message`,
+      {
+        name,
+        message,
+      },
+      {
+        observe: 'body',
+      },
+    );
   }
 
   downloadInvitationPdf(name: string) {

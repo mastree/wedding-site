@@ -7,7 +7,6 @@ import { Invitation, WeddingService } from '../wedding.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoggerService } from '../logger.service';
 import { NgClass } from '@angular/common';
-import { assert } from 'console';
 
 @Component({
   selector: 'app-home',

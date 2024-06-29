@@ -114,7 +114,9 @@ type RsvpState = {
             }
           }
           <div class="my-3 h-[2px] w-full bg-dark-secondary opacity-30"></div>
-          <app-message></app-message>
+          <div class="w-full">
+            <app-message></app-message>
+          </div>
         </div>
       </div>
     </div>
