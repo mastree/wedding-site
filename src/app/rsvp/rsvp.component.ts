@@ -168,9 +168,9 @@ export class RsvpComponent {
 
   constructor() {
     this.weddingService.invitation.subscribe((data) => {
-      this.state.invitation = data.value;
+      this.state.invitation = data;
       this.isInvited = this.state.invitation != undefined;
-      this.state.loading = data.loading;
+      this.state.loading = false;
     });
   }
 

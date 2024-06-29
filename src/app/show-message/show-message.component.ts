@@ -23,7 +23,27 @@ type State = {
       class="relative flex w-full flex-col items-center justify-center gap-8"
       [ngClass]="state.loading ? 'opacity-60' : ''"
     >
-      <p class="text-md font-manuale text-white">Messages from You!</p>
+      <div class="flex flex-row gap-2">
+        <button
+          class="rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400"
+          (click)="changePage(state.page - 1)"
+        >
+          <p class="font-manuale text-sm font-semibold text-primary">< prev</p>
+        </button>
+        <button
+          class="rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400"
+          (click)="changePage(state.page + 1)"
+        >
+          <p class="font-manuale text-sm font-semibold text-primary">next ></p>
+        </button>
+
+        <button
+          class="absolute right-0 top-0 rounded-md bg-primary px-5 py-2 font-semibold drop-shadow-md active:bg-light-primary active:shadow-inner active:ring-2 active:ring-white"
+          (click)="onRefresh()"
+        >
+          <p class="font-manuale text-sm text-white">Refresh</p>
+        </button>
+      </div>
       <div class="flex w-full flex-col justify-center gap-5">
         @if (state.status == 'success') {
           @for (message of state.messages; track message.id) {
@@ -38,13 +58,6 @@ type State = {
           }
         } @else {}
       </div>
-
-      <button
-        class="absolute right-0 top-0 rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400"
-        (click)="onRefresh()"
-      >
-        <p class="font-manuale text-sm text-primary">Refresh</p>
-      </button>
 
       <div
         class="pointer-events-none absolute z-10 flex items-center justify-center opacity-100"
@@ -85,9 +98,7 @@ export class ShowMessageComponent implements OnInit, OnDestroy {
 
   subscription: Subscription | undefined;
 
-  constructor() {
-    this.state.loading = true;
-  }
+  constructor() {}
 
   ngOnInit() {
     this.subscription = this.weddingService.getMessage(this.state.page, this.kPageSize).subscribe({
@@ -113,6 +124,12 @@ export class ShowMessageComponent implements OnInit, OnDestroy {
 
   getTimeString(created_at: number) {
     return new Date(created_at).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
+  }
+
+  changePage(page: number) {
+    this.logger.info(`change message page: ${this.state.page} -> ${page}`);
+    this.state.page = page;
+    this.onRefresh();
   }
 
   onRefresh() {

@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { environment } from '../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject, catchError, map, of, startWith, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, catchError, map, of, startWith, switchMap, tap } from 'rxjs';
 import { LoggerService } from './logger.service';
 
 export type Rsvp = {
@@ -38,26 +38,7 @@ export class WeddingService {
   http = inject(HttpClient);
   logger = inject(LoggerService);
 
-  private invitationResponse = new Subject<any>();
-  invitation: Observable<Load<Invitation>> = this.invitationResponse.pipe(
-    tap((res) => {
-      this.logger.debug(`try to set invitation: ${JSON.stringify(res)}`);
-    }),
-    map((res) => {
-      return {
-        value: res.data as Invitation,
-        loading: false,
-      };
-    }),
-    startWith({
-      loading: true,
-    }),
-    catchError((_) => {
-      return of({
-        loading: false,
-      });
-    }),
-  );
+  invitation = new BehaviorSubject<Invitation | undefined>(undefined);
 
   private needReloadMessage = new Subject<Message | undefined>();
 
@@ -65,17 +46,17 @@ export class WeddingService {
 
   getInvitation(id: string | undefined) {
     if (!id) {
-      this.invitationResponse.next(undefined);
+      this.invitation.next(undefined);
       return;
     }
     this.http.get(`${this.baseUrl}/wedding/invitation/${id}`).subscribe({
       next: (res) => {
         this.logger.info(`getInvitation(${id}) response: ${JSON.stringify(res)}`);
-        this.invitationResponse.next(res);
+        this.invitation.next((res as { data: Invitation | undefined }).data);
       },
       error: (err) => {
         this.logger.error(`getInvitation(${id}) error: ${JSON.stringify(err)}`);
-        return of({ data: undefined });
+        this.invitation.next(undefined);
       },
     });
   }
@@ -89,13 +70,11 @@ export class WeddingService {
         next: (res) => {
           this.logger.info(`updateRsvp(${invitation.id}}, ${JSON.stringify(rsvp)}) response: ${JSON.stringify(res)}`);
           const { data } = res as { data: Invitation };
-          this.invitationResponse.next({ data });
+          this.invitation.next(data);
         },
         error: (err) => {
           this.logger.error(`updateRsvp(${invitation.id}}, ${JSON.stringify(rsvp)}) error: ${JSON.stringify(err)}`);
-          this.invitationResponse.next({
-            data: invitation,
-          });
+          this.invitation.next(invitation);
         },
       });
   }

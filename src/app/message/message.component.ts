@@ -57,7 +57,7 @@ type MessageState = {
           </button>
         </form>
         <div
-          class="absolute flex h-full w-full items-center justify-center"
+          class="pointer-events-none absolute flex h-full w-full items-center justify-center"
           [ngClass]="state.status == 'sending' ? '' : 'hidden'"
         >
           <div class="size-8 fill-white">

@@ -188,19 +188,19 @@ export class HomeComponent implements OnInit {
   animateGoFromLeft = ['animate-go-from-left'];
   animateGoFromRight = ['animate-go-from-right'];
 
-  constructor(private router: Router) {
+  constructor(private router: Router) {}
+
+  async ngOnInit() {
+    const housingLocationId = this.route.snapshot.params['id'];
+    this.loading = true;
+    this.weddingService.getInvitation(housingLocationId);
     this.weddingService.invitation.subscribe((data) => {
-      this.invitation = data.value;
-      this.loading = data.loading;
+      this.invitation = data;
+      this.loading = false;
       if (!this.invitation && !this.loading) {
         this.router.navigate(['no-invitation']);
       }
     });
-  }
-
-  async ngOnInit() {
-    const housingLocationId = this.route.snapshot.params['id'];
-    this.weddingService.getInvitation(housingLocationId);
   }
 
   get currentYear(): number {
