@@ -1,8 +1,7 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { environment } from '../environments/environment';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, Subject, catchError, map, of, startWith, tap } from 'rxjs';
-import { error } from 'console';
+import { HttpClient } from '@angular/common/http';
+import { Observable, Subject, catchError, map, of, startWith, switchMap, tap } from 'rxjs';
 import { LoggerService } from './logger.service';
 
 export type Rsvp = {
@@ -24,9 +23,10 @@ export type Load<T> = {
 };
 
 export type Message = {
+  id: number;
   name: string;
   message: string;
-  created_at?: number;
+  created_at: number;
 };
 
 @Injectable({
@@ -58,6 +58,8 @@ export class WeddingService {
       });
     }),
   );
+
+  private needReloadMessage = new Subject<Message | undefined>();
 
   constructor() {}
 
@@ -99,7 +101,12 @@ export class WeddingService {
   }
 
   getMessage(page: number, pageSize: number = 5) {
-    return this.http.get(`${this.baseUrl}/wedding/message?page=${page}&pageSize=${pageSize}`);
+    return this.needReloadMessage.pipe(
+      switchMap((_) => this.http.get(`${this.baseUrl}/wedding/message?page=${page}&pageSize=${pageSize}`)),
+    );
+  }
+  getMessageSize() {
+    return this.http.get(`${this.baseUrl}/wedding/message/size`);
   }
 
   sendMessage(name: string, message: string) {
@@ -113,6 +120,10 @@ export class WeddingService {
         observe: 'body',
       },
     );
+  }
+
+  signalRefreshMessage(message: Message | undefined = undefined) {
+    this.needReloadMessage.next(message);
   }
 
   downloadInvitationPdf(name: string) {

@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Invitation, WeddingService } from '../wedding.service';
 import { MessageComponent } from '../message/message.component';
 import { NgClass } from '@angular/common';
+import { ShowMessageComponent } from '../show-message/show-message.component';
 
 type RsvpState = {
   invitation?: Invitation | undefined;
@@ -23,7 +24,7 @@ type RsvpState = {
           <p class="font-regular w-full text-center align-top font-manuale text-3xl font-semibold text-white">RSVP</p>
           <div class="relative flex w-full flex-col items-center justify-center gap-5">
             <div
-              class="absolute z-10 flex items-center justify-center opacity-100"
+              class="pointer-events-none absolute z-10 flex items-center justify-center opacity-100"
               [ngClass]="state.loading ? '' : 'hidden'"
             >
               <div class="size-8 fill-white">
@@ -65,7 +66,7 @@ type RsvpState = {
             } @else {
               <div
                 class="flex w-full flex-col items-center justify-center gap-5"
-                [ngClass]="state.loading ? ['pointer-events-none', 'opacity-60'] : ''"
+                [ngClass]="state.loading || !state.invitation ? ['pointer-events-none', 'opacity-60'] : ''"
               >
                 <div class="flex w-full flex-col items-center">
                   <p class="text-md font-manuale text-white">Would you be able to attend?</p>
@@ -136,12 +137,16 @@ type RsvpState = {
           <div class="w-full">
             <app-message></app-message>
           </div>
+          <div class="my-3 h-[2px] w-full bg-dark-secondary opacity-30"></div>
+          <div class="w-full">
+            <app-show-message></app-show-message>
+          </div>
         </div>
       </div>
     </div>
   `,
   styleUrl: './rsvp.component.css',
-  imports: [FormsModule, MessageComponent, NgClass],
+  imports: [FormsModule, MessageComponent, NgClass, ShowMessageComponent],
 })
 export class RsvpComponent {
   weddingService = inject(WeddingService);

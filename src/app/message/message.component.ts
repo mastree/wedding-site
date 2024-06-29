@@ -2,7 +2,7 @@ import { NgClass } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LoggerService } from '../logger.service';
-import { WeddingService } from '../wedding.service';
+import { Message, WeddingService } from '../wedding.service';
 
 type MessageState = {
   name: string;
@@ -107,8 +107,10 @@ export class MessageComponent {
       this.weddingService
         .sendMessage(this.state.name, this.state.message)
         .subscribe({
-          next: () => {
+          next: (res) => {
+            const { data } = res as { data: Message };
             this.state.status = 'sent';
+            this.weddingService.signalRefreshMessage(data);
           },
           error: () => {
             this.state.status = 'error';
