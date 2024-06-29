@@ -96,7 +96,8 @@ type RsvpState = {
                     <div class="mt-2 flex w-full flex-row justify-between gap-1">
                       <button
                         (click)="onAddNumAttend(-1)"
-                        class="rounded-lg bg-slate-100 px-5 py-1 font-manuale font-semibold text-primary active:bg-red-100 active:shadow-inner active:shadow-red-200"
+                        [disabled]="state.numAttend <= 0"
+                        class="rounded-lg bg-slate-100 px-5 py-1 font-manuale font-semibold text-primary active:bg-red-100 active:shadow-inner active:shadow-red-200 disabled:pointer-events-none disabled:opacity-60"
                       >
                         -
                       </button>
@@ -105,7 +106,8 @@ type RsvpState = {
                       </div>
                       <button
                         (click)="onAddNumAttend(1)"
-                        class="rounded-lg bg-dark-secondary px-5 py-1 font-manuale font-semibold text-white active:bg-light-primary active:shadow-inner active:shadow-primary"
+                        [disabled]="state.numAttend >= (state.invitation?.invitation_pax || 0)"
+                        class="rounded-lg bg-dark-secondary px-5 py-1 font-manuale font-semibold text-white active:bg-light-primary active:shadow-inner active:shadow-primary disabled:pointer-events-none disabled:opacity-60"
                       >
                         +
                       </button>
@@ -221,6 +223,10 @@ export class RsvpComponent implements OnDestroy {
   }
 
   onSubmitRsvp(submit: boolean = true) {
+    if (this.state.willAttend && this.state.numAttend == 0) {
+      window.alert('Number of attendee must be more than 0!');
+      return;
+    }
     if (submit) {
       this.state.status = 'sending';
       this.state.loading = true;
