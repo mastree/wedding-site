@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { NavigationBarComponent } from '../navigation-bar/navigation-bar.component';
 import { CountdownComponent } from '../countdown/countdown.component';
 import { CardComponent } from '../card/card.component';
@@ -7,6 +7,7 @@ import { Invitation, WeddingService } from '../wedding.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoggerService } from '../logger.service';
 import { NgClass } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -172,13 +173,15 @@ import { NgClass } from '@angular/common';
   styleUrl: './home.component.css',
   imports: [NavigationBarComponent, CountdownComponent, CardComponent, RsvpComponent, NgClass],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   // Model related members
   logger = inject(LoggerService);
   route = inject(ActivatedRoute);
   weddingService = inject(WeddingService);
   invitation?: Invitation | undefined;
   loading = true;
+
+  subscriptions: Subscription[] = [];
 
   // View related members
   @ViewChild('bigDay') bigDayElement: ElementRef | undefined;
@@ -190,17 +193,25 @@ export class HomeComponent implements OnInit {
 
   constructor(private router: Router) {}
 
-  async ngOnInit() {
+  ngOnInit() {
     const housingLocationId = this.route.snapshot.params['id'];
     this.loading = true;
     this.weddingService.getInvitation(housingLocationId);
-    this.weddingService.invitation.subscribe((data) => {
-      this.invitation = data;
-      this.loading = false;
-      if (!this.invitation && !this.loading) {
-        this.router.navigate(['announcement']);
-      }
-    });
+    this.subscriptions.push(
+      this.weddingService.invitation.subscribe((data) => {
+        this.invitation = data;
+        this.loading = false;
+        if (!this.invitation && !this.loading) {
+          this.router.navigate(['announcement']);
+        }
+      }),
+    );
+  }
+
+  ngOnDestroy() {
+    for (const sub of this.subscriptions) {
+      sub.unsubscribe();
+    }
   }
 
   get currentYear(): number {

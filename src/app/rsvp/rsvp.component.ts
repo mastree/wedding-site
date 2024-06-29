@@ -1,9 +1,10 @@
-import { Component, ElementRef, Inject, Renderer2, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, Renderer2, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Invitation, WeddingService } from '../wedding.service';
 import { MessageComponent } from '../message/message.component';
 import { NgClass } from '@angular/common';
 import { ShowMessageComponent } from '../show-message/show-message.component';
+import { Subscription } from 'rxjs';
 
 type RsvpState = {
   invitation?: Invitation | undefined;
@@ -148,7 +149,7 @@ type RsvpState = {
   styleUrl: './rsvp.component.css',
   imports: [FormsModule, MessageComponent, NgClass, ShowMessageComponent],
 })
-export class RsvpComponent {
+export class RsvpComponent implements OnDestroy {
   weddingService = inject(WeddingService);
 
   state: RsvpState = {
@@ -166,12 +167,22 @@ export class RsvpComponent {
   @Inject({})
   private renderer = inject(Renderer2);
 
+  subscriptions: Subscription[] = [];
+
   constructor() {
-    this.weddingService.invitation.subscribe((data) => {
-      this.state.invitation = data;
-      this.isInvited = this.state.invitation != undefined;
-      this.state.loading = false;
-    });
+    this.subscriptions.push(
+      this.weddingService.invitation.subscribe((data) => {
+        this.state.invitation = data;
+        this.isInvited = this.state.invitation != undefined;
+        this.state.loading = false;
+      }),
+    );
+  }
+
+  ngOnDestroy() {
+    for (const sub of this.subscriptions) {
+      sub.unsubscribe();
+    }
   }
 
   private addClasses(element: any, classes: string[]) {

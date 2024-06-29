@@ -109,7 +109,6 @@ export class ShowMessageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscriptions.push(
       this.messageService.needReload.subscribe(() => {
-        this.logger.debug(`kamalshafi get needReload`);
         this.refresh();
       }),
     );
@@ -141,25 +140,20 @@ export class ShowMessageComponent implements OnInit, OnDestroy {
         this.logger.info(`current messageSize: ${this.state.messageSize}, maxPage: ${this.maxPage}`);
       },
     });
-    this.messageService
-      .getMessage(this.state.page, this.kPageSize)
-      .subscribe({
-        next: (res) => {
-          this.logger.debug(`getMessage: ${JSON.stringify(res)}`);
-          const { data, error } = res as { data: Message[]; error: boolean };
-          this.state.messages = data;
-          this.state.status = error ? 'error' : 'success';
-          this.state.loading = false;
-        },
-        error: (err) => {
-          this.logger.error(`Error get message: ${JSON.stringify(err)}`);
-          this.state.status = 'error';
-          this.state.loading = false;
-        },
-      })
-      .add(() => {
-        this.logger.debug('kamalshafi done getMessage');
-      });
+    this.messageService.getMessage(this.state.page, this.kPageSize).subscribe({
+      next: (res) => {
+        this.logger.debug(`getMessage(${this.state.page}, ${this.kPageSize})`);
+        const { data, error } = res as { data: Message[]; error: boolean };
+        this.state.messages = data;
+        this.state.status = error ? 'error' : 'success';
+        this.state.loading = false;
+      },
+      error: (err) => {
+        this.logger.error(`getMessage(${this.state.page}, ${this.kPageSize})`);
+        this.state.status = 'error';
+        this.state.loading = false;
+      },
+    });
   }
 
   onRefresh() {
