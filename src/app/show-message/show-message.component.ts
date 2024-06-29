@@ -1,9 +1,8 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { Message, WeddingService } from '../wedding.service';
 import { LoggerService } from '../logger.service';
-import { create } from 'domain';
 import { NgClass } from '@angular/common';
-import { Subscriber, Subscription } from 'rxjs';
+import { Message, MessageService } from '../message.service';
+import { Subscription } from 'rxjs';
 
 type State = {
   messages: Message[];
@@ -23,28 +22,36 @@ type State = {
       class="relative flex w-full flex-col items-center justify-center gap-8"
       [ngClass]="state.loading ? 'opacity-60' : ''"
     >
-      <div class="flex flex-row gap-2">
+      <div class="flex w-full flex-row justify-start gap-2">
         <button
-          class="rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400"
+          class="rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400 disabled:pointer-events-none disabled:opacity-60"
+          [disabled]="state.page <= minPage"
           (click)="changePage(state.page - 1)"
         >
           <p class="font-manuale text-sm font-semibold text-primary">< prev</p>
         </button>
         <button
-          class="rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400"
+          class="rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400 disabled:pointer-events-none disabled:opacity-60"
+          [disabled]="state.page >= maxPage"
           (click)="changePage(state.page + 1)"
         >
           <p class="font-manuale text-sm font-semibold text-primary">next ></p>
         </button>
 
         <button
-          class="absolute right-0 top-0 rounded-md bg-primary px-5 py-2 font-semibold drop-shadow-md active:bg-light-primary active:shadow-inner active:ring-2 active:ring-white"
+          class="absolute right-0 top-0 rounded-md bg-primary p-3 font-semibold drop-shadow-md active:bg-light-primary active:shadow-inner active:ring-2 active:ring-white"
           (click)="onRefresh()"
         >
-          <p class="font-manuale text-sm text-white">Refresh</p>
+          <div class="size-4 fill-white">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path
+                d="M13.5 2c-5.621 0-10.211 4.443-10.475 10h-3.025l5 6.625 5-6.625h-2.975c.257-3.351 3.06-6 6.475-6 3.584 0 6.5 2.916 6.5 6.5s-2.916 6.5-6.5 6.5c-1.863 0-3.542-.793-4.728-2.053l-2.427 3.216c1.877 1.754 4.389 2.837 7.155 2.837 5.79 0 10.5-4.71 10.5-10.5s-4.71-10.5-10.5-10.5z"
+              />
+            </svg>
+          </div>
         </button>
       </div>
-      <div class="flex w-full flex-col justify-center gap-5">
+      <div class="relative flex min-h-48 w-full flex-col justify-center gap-5">
         @if (state.status == 'success') {
           @for (message of state.messages; track message.id) {
             <div class="flex flex-col rounded-b-lg rounded-r-lg bg-white p-2 text-primary drop-shadow-md">
@@ -56,27 +63,26 @@ type State = {
               <p class="min-h-16 font-lato">{{ message.message }}</p>
             </div>
           }
-        } @else {}
-      </div>
-
-      <div
-        class="pointer-events-none absolute z-10 flex items-center justify-center opacity-100"
-        [ngClass]="state.loading ? '' : 'hidden'"
-      >
-        <div class="size-8 fill-white">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path
-              d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z"
-            >
-              <animateTransform
-                attributeName="transform"
-                dur="0.5s"
-                repeatCount="indefinite"
-                type="rotate"
-                values="0 12 12;360 12 12"
-              />
-            </path>
-          </svg>
+        }
+        <div
+          class="pointer-events-none absolute flex h-full w-full items-center justify-center"
+          [ngClass]="state.loading ? '' : 'hidden'"
+        >
+          <div class="size-8 fill-white">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path
+                d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z"
+              >
+                <animateTransform
+                  attributeName="transform"
+                  dur="0.5s"
+                  repeatCount="indefinite"
+                  type="rotate"
+                  values="0 12 12;360 12 12"
+                />
+              </path>
+            </svg>
+          </div>
         </div>
       </div>
     </div>
@@ -87,39 +93,32 @@ export class ShowMessageComponent implements OnInit, OnDestroy {
   private kPageSize = 8;
 
   logger = inject(LoggerService);
-  weddingService = inject(WeddingService);
+  messageService = inject(MessageService);
+  subscriptions: Subscription[] = [];
 
   state: State = {
     messages: [],
+    messageSize: 1,
     page: 0,
     pageSize: this.kPageSize,
     loading: false,
   };
 
-  subscription: Subscription | undefined;
-
   constructor() {}
 
   ngOnInit() {
-    this.subscription = this.weddingService.getMessage(this.state.page, this.kPageSize).subscribe({
-      next: (res) => {
-        console.log(`getMessage: ${JSON.stringify(res)}`);
-        const { data, error } = res as { data: Message[]; error: boolean };
-        this.state.messages = data;
-        this.state.status = error ? 'error' : 'success';
-        this.state.loading = false;
-      },
-      error: (err) => {
-        this.logger.error(`Error get message: ${JSON.stringify(err)}`);
-        this.state.status = 'error';
-        this.state.loading = false;
-      },
-    });
-    this.onRefresh();
+    this.subscriptions.push(
+      this.messageService.needReload.subscribe(() => {
+        this.logger.debug(`kamalshafi get needReload`);
+        this.refresh();
+      }),
+    );
   }
 
   ngOnDestroy() {
-    this.subscription?.unsubscribe();
+    for (const sub of this.subscriptions) {
+      sub.unsubscribe();
+    }
   }
 
   getTimeString(created_at: number) {
@@ -132,9 +131,47 @@ export class ShowMessageComponent implements OnInit, OnDestroy {
     this.onRefresh();
   }
 
-  onRefresh() {
+  refresh() {
     this.state.loading = true;
     this.state.status = undefined;
-    this.weddingService.signalRefreshMessage();
+    this.messageService.getMessageSize().subscribe({
+      next: (res) => {
+        const { data } = res as { data: number };
+        this.state.messageSize = data;
+        this.logger.info(`current messageSize: ${this.state.messageSize}, maxPage: ${this.maxPage}`);
+      },
+    });
+    this.messageService
+      .getMessage(this.state.page, this.kPageSize)
+      .subscribe({
+        next: (res) => {
+          this.logger.debug(`getMessage: ${JSON.stringify(res)}`);
+          const { data, error } = res as { data: Message[]; error: boolean };
+          this.state.messages = data;
+          this.state.status = error ? 'error' : 'success';
+          this.state.loading = false;
+        },
+        error: (err) => {
+          this.logger.error(`Error get message: ${JSON.stringify(err)}`);
+          this.state.status = 'error';
+          this.state.loading = false;
+        },
+      })
+      .add(() => {
+        this.logger.debug('kamalshafi done getMessage');
+      });
+  }
+
+  onRefresh() {
+    this.messageService.notifyNeedReload();
+  }
+
+  get minPage() {
+    return 0;
+  }
+
+  get maxPage() {
+    if (!this.state.messageSize) return 0;
+    return Math.floor((this.state.messageSize - 1) / this.kPageSize);
   }
 }

@@ -8,13 +8,13 @@ export const routes: Routes = [
     title: 'Faiza & Kamal Wedding💍Invitation',
   },
   {
-    path: 'no-invitation',
+    path: 'announcement',
     component: HomeComponent,
     title: 'Faiza & Kamal Wedding💍Invitation',
   },
   {
     path: '**',
-    redirectTo: 'no-invitation',
+    redirectTo: 'announcement',
     pathMatch: 'full',
   },
 ];

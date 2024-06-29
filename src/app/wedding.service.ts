@@ -1,7 +1,7 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { environment } from '../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subject, catchError, map, of, startWith, switchMap, tap } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { LoggerService } from './logger.service';
 
 export type Rsvp = {
@@ -40,8 +40,6 @@ export class WeddingService {
 
   invitation = new BehaviorSubject<Invitation | undefined>(undefined);
 
-  private needReloadMessage = new Subject<Message | undefined>();
-
   constructor() {}
 
   getInvitation(id: string | undefined) {
@@ -77,32 +75,6 @@ export class WeddingService {
           this.invitation.next(invitation);
         },
       });
-  }
-
-  getMessage(page: number, pageSize: number = 5) {
-    return this.needReloadMessage.pipe(
-      switchMap((_) => this.http.get(`${this.baseUrl}/wedding/message?page=${page}&pageSize=${pageSize}`)),
-    );
-  }
-  getMessageSize() {
-    return this.http.get(`${this.baseUrl}/wedding/message/size`);
-  }
-
-  sendMessage(name: string, message: string) {
-    return this.http.post(
-      `${this.baseUrl}/wedding/message`,
-      {
-        name,
-        message,
-      },
-      {
-        observe: 'body',
-      },
-    );
-  }
-
-  signalRefreshMessage(message: Message | undefined = undefined) {
-    this.needReloadMessage.next(message);
   }
 
   downloadInvitationPdf(name: string) {

@@ -2,7 +2,7 @@ import { NgClass } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LoggerService } from '../logger.service';
-import { Message, WeddingService } from '../wedding.service';
+import { Message, MessageService } from '../message.service';
 
 type MessageState = {
   name: string;
@@ -45,6 +45,7 @@ type MessageState = {
               rows="2"
               onInput="this.parentNode.dataset.clonedVal = this.value"
               placeholder="Message..."
+              maxlength="1000"
               [(ngModel)]="state.message"
               required
             ></textarea>
@@ -91,7 +92,7 @@ type MessageState = {
 })
 export class MessageComponent {
   logger = inject(LoggerService);
-  weddingService = inject(WeddingService);
+  messageService = inject(MessageService);
 
   state: MessageState = {
     name: '',
@@ -104,13 +105,12 @@ export class MessageComponent {
       window.alert("message can't be empty.");
     } else {
       this.state.status = 'sending';
-      this.weddingService
+      this.messageService
         .sendMessage(this.state.name, this.state.message)
         .subscribe({
           next: (res) => {
             const { data } = res as { data: Message };
             this.state.status = 'sent';
-            this.weddingService.signalRefreshMessage(data);
           },
           error: () => {
             this.state.status = 'error';
@@ -119,6 +119,7 @@ export class MessageComponent {
         .add(() => {
           this.state.name = '';
           this.state.message = '';
+          this.messageService.notifyNeedReload();
         });
     }
   }

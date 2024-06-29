@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { NavigationBarComponent } from '../navigation-bar/navigation-bar.component';
 import { CountdownComponent } from '../countdown/countdown.component';
 import { CardComponent } from '../card/card.component';
@@ -198,7 +198,7 @@ export class HomeComponent implements OnInit {
       this.invitation = data;
       this.loading = false;
       if (!this.invitation && !this.loading) {
-        this.router.navigate(['no-invitation']);
+        this.router.navigate(['announcement']);
       }
     });
   }
