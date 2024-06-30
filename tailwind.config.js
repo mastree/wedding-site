@@ -56,12 +56,21 @@ module.exports = {
             visibility: "hidden",
           },
         },
+        "small-pulse": {
+          "0%, 100%": {
+            opacity: 0.8,
+          },
+          "100%": {
+            opacity: 1,
+          },
+        },
       },
       animation: {
         "bounce-small": "bounce-small 1s infinite",
         "go-from-left": "go-from-left 0.6s",
         "go-from-right": "go-from-right 0.6s",
         "notify-scale-in": "notify-scale-in 2s",
+        "small-pulse": "small-pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
       colors: {
         primary: "#0D271A",

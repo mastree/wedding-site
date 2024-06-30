@@ -18,75 +18,86 @@ type State = {
   standalone: true,
   imports: [NgClass],
   template: `
-    <div class="relative flex w-full flex-col items-center justify-center">
-      <div
-        class="pointer-events-none absolute top-0 z-10 flex h-full max-h-[100vh] w-full items-center justify-center"
-        [ngClass]="state.loading ? '' : 'hidden'"
-      >
-        <div class="size-8 fill-white">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path
-              d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z"
-            >
-              <animateTransform
-                attributeName="transform"
-                dur="0.5s"
-                repeatCount="indefinite"
-                type="rotate"
-                values="0 12 12;360 12 12"
-              />
-            </path>
-          </svg>
-        </div>
+    <div class="relative flex w-full flex-col items-center justify-center gap-12">
+      <div class="flex flex-col rounded-b-lg rounded-r-lg bg-[#ffece8] p-2 text-primary shadow-lg shadow-pink-400/50">
+        <p class="font-manuale font-semibold">From: Faiza & Kamal</p>
+        <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
+        <p class="min-h-16 font-lato">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat.
+        </p>
       </div>
-      <div
-        class="relative flex w-full flex-col items-center justify-center gap-8"
-        [ngClass]="state.loading ? ['pointer-events-none', 'opacity-60'] : ''"
-      >
-        <div class="flex w-full flex-row justify-start gap-2">
-          <button
-            class="rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400 disabled:pointer-events-none disabled:opacity-60"
-            [disabled]="state.page <= minPage"
-            (click)="changePage(state.page - 1)"
-          >
-            <p class="font-manuale text-sm font-semibold text-primary">< prev</p>
-          </button>
-          <button
-            class="rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400 disabled:pointer-events-none disabled:opacity-60"
-            [disabled]="state.page >= maxPage"
-            (click)="changePage(state.page + 1)"
-          >
-            <p class="font-manuale text-sm font-semibold text-primary">next ></p>
-          </button>
-
-          <button
-            class="absolute right-0 top-0 rounded-md bg-primary p-3 font-semibold drop-shadow-md active:bg-light-primary active:shadow-inner active:ring-2 active:ring-white"
-            (click)="onRefresh()"
-          >
-            <div class="size-4 fill-white">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path
-                  d="M13.5 2c-5.621 0-10.211 4.443-10.475 10h-3.025l5 6.625 5-6.625h-2.975c.257-3.351 3.06-6 6.475-6 3.584 0 6.5 2.916 6.5 6.5s-2.916 6.5-6.5 6.5c-1.863 0-3.542-.793-4.728-2.053l-2.427 3.216c1.877 1.754 4.389 2.837 7.155 2.837 5.79 0 10.5-4.71 10.5-10.5s-4.71-10.5-10.5-10.5z"
+      <div class="relative flex w-full flex-col items-center justify-center">
+        <div
+          class="pointer-events-none absolute top-0 z-10 flex h-full max-h-[100vh] w-full items-center justify-center"
+          [ngClass]="state.loading ? '' : 'hidden'"
+        >
+          <div class="size-8 fill-white">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path
+                d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z"
+              >
+                <animateTransform
+                  attributeName="transform"
+                  dur="0.5s"
+                  repeatCount="indefinite"
+                  type="rotate"
+                  values="0 12 12;360 12 12"
                 />
-              </svg>
-            </div>
-          </button>
+              </path>
+            </svg>
+          </div>
         </div>
-        <div class="relative flex min-h-48 w-full flex-col justify-center gap-5">
-          @if (state.status == 'success') {
-            @for (message of state.messages; track message.id) {
-              <div class="flex flex-col rounded-b-lg rounded-r-lg bg-white p-2 text-primary drop-shadow-md">
-                <div class="flex flex-row justify-between">
-                  <p class="font-manuale font-semibold">From: {{ message.name }}</p>
-                  <p class="font-manuale font-light">
-                    {{ getTimeString(message.created_at) }} <span class="text-xs">(GMT+7)</span>
-                  </p>
-                </div>
-                <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
-                <p class="min-h-16 font-lato">{{ message.message }}</p>
+        <div
+          class="relative flex w-full flex-col items-center justify-center gap-8"
+          [ngClass]="state.loading ? ['pointer-events-none', 'opacity-60'] : ''"
+        >
+          <div class="flex w-full flex-row justify-start gap-2">
+            <button
+              class="rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400 disabled:pointer-events-none disabled:opacity-60"
+              [disabled]="state.page <= minPage"
+              (click)="changePage(state.page - 1)"
+            >
+              <p class="font-manuale text-sm font-semibold text-primary">< prev</p>
+            </button>
+            <button
+              class="rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400 disabled:pointer-events-none disabled:opacity-60"
+              [disabled]="state.page >= maxPage"
+              (click)="changePage(state.page + 1)"
+            >
+              <p class="font-manuale text-sm font-semibold text-primary">next ></p>
+            </button>
+
+            <button
+              class="absolute right-0 top-0 rounded-md bg-primary p-3 font-semibold drop-shadow-md active:bg-light-primary active:shadow-inner active:ring-2 active:ring-white"
+              (click)="onRefresh()"
+            >
+              <div class="size-4 fill-white">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path
+                    d="M13.5 2c-5.621 0-10.211 4.443-10.475 10h-3.025l5 6.625 5-6.625h-2.975c.257-3.351 3.06-6 6.475-6 3.584 0 6.5 2.916 6.5 6.5s-2.916 6.5-6.5 6.5c-1.863 0-3.542-.793-4.728-2.053l-2.427 3.216c1.877 1.754 4.389 2.837 7.155 2.837 5.79 0 10.5-4.71 10.5-10.5s-4.71-10.5-10.5-10.5z"
+                  />
+                </svg>
               </div>
+            </button>
+          </div>
+          <div class="relative flex min-h-48 w-full flex-col justify-center gap-5">
+            @if (state.status == 'success') {
+              @for (message of state.messages; track message.id) {
+                <div class="flex flex-col rounded-b-lg rounded-r-lg bg-white p-2 text-primary drop-shadow-md">
+                  <div class="flex flex-row justify-between">
+                    <p class="font-manuale font-semibold">From: {{ message.name }}</p>
+                    <p class="font-manuale font-light">
+                      {{ getTimeString(message.created_at) }} <span class="text-xs">(GMT+7)</span>
+                    </p>
+                  </div>
+                  <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
+                  <p class="min-h-16 font-lato">{{ message.message }}</p>
+                </div>
+              }
             }
-          }
+          </div>
         </div>
       </div>
     </div>
