@@ -119,7 +119,6 @@ export class MessageComponent {
         .add(() => {
           this.state.name = '';
           this.state.message = '';
-          this.messageService.notifyNeedReload();
         });
     }
   }

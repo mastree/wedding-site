@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LogLevel } from './log-level.enum';
+import { environment } from '../environments/environment';
 
 type LogLevelColorMap = {
   [key in LogLevel]: string;
@@ -9,7 +10,10 @@ type LogLevelColorMap = {
   providedIn: 'root',
 })
 export class LoggerService {
-  constructor() {}
+  envLogLevel = 0;
+  constructor() {
+    this.envLogLevel = environment.LOG_LEVEL || 0;
+  }
 
   debug(...msg: string[]) {
     this.print(LogLevel.DEBUG, ...msg);
@@ -27,7 +31,8 @@ export class LoggerService {
     this.print(LogLevel.FATAL, ...msg);
   }
 
-  private print(level: LogLevel, ...msg: string[]) {
+  private print(level: LogLevel, ...msg: any[]) {
+    if (level < this.envLogLevel) return;
     console.log(`${new Date().toISOString()} - [${LogLevel[level][0]}]: ${msg.join(' ')}`);
   }
 }
