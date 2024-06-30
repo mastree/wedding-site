@@ -5,6 +5,7 @@ import { MessageComponent } from '../message/message.component';
 import { NgClass } from '@angular/common';
 import { ShowMessageComponent } from '../show-message/show-message.component';
 import { Subscription } from 'rxjs';
+import { LoggerService } from '../logger.service';
 
 type RsvpState = {
   invitation?: Invitation | undefined;
@@ -44,7 +45,7 @@ type RsvpState = {
                 </svg>
               </div>
             </div>
-            @if (state.invitation?.rsvp != undefined) {
+            @if (alreadyFilled) {
               <div class="flex w-full flex-col items-center">
                 <div class="flex flex-row items-center gap-4">
                   <p class="text-md font-manuale text-white">You have filled the RSVP</p>
@@ -152,6 +153,7 @@ type RsvpState = {
   imports: [FormsModule, MessageComponent, NgClass, ShowMessageComponent],
 })
 export class RsvpComponent implements OnDestroy {
+  logger = inject(LoggerService);
   weddingService = inject(WeddingService);
 
   state: RsvpState = {
@@ -177,6 +179,9 @@ export class RsvpComponent implements OnDestroy {
         this.state.invitation = data;
         this.isInvited = this.state.invitation != undefined;
         this.state.loading = false;
+        this.logger.debug(
+          `[RSVP page] invitation = ${JSON.stringify(this.state.invitation)}, alreadyFilled = ${this.alreadyFilled}`,
+        );
       }),
     );
   }
@@ -241,5 +246,10 @@ export class RsvpComponent implements OnDestroy {
       this.removeClasses(this.buttonNoAttend?.nativeElement, ['shadow-red-200', 'ring-2', 'bg-red-100']);
       this.removeClasses(this.buttonYesAttend?.nativeElement, ['shadow-primary', 'ring-2', 'bg-light-primary']);
     }
+  }
+
+  get alreadyFilled() {
+    if (!this.state.invitation || !this.state.invitation.rsvp) return false;
+    return this.state.invitation.rsvp.will_attend === true || this.state.invitation.rsvp.will_attend === false;
   }
 }

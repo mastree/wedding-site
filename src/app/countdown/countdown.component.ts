@@ -9,7 +9,7 @@ import { isPlatformBrowser } from '@angular/common';
     <div class="flex w-[100vw] grow flex-col items-center justify-evenly">
       <p class="font-manuale text-[1rem] font-bold md:text-[1.5rem]">countdown</p>
       <div class="flex w-full justify-center overflow-hidden px-5">
-        <div class="animate-small-pulse flex flex-row gap-4 overflow-x-scroll">
+        <div class="flex flex-row gap-4 overflow-x-scroll">
           <app-counter [tick]="days" title="DAYS"></app-counter>
           <app-counter [tick]="hours" title="HOURS"></app-counter>
           <app-counter [tick]="minutes" title="MINUTES"></app-counter>

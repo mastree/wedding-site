@@ -24,32 +24,24 @@ import { Subscription } from 'rxjs';
         </video>
       </div>
       <div class="relative mx-auto h-full max-w-screen-lg">
-        <div class="flex h-full w-full flex-col items-center justify-center gap-6 pt-5">
-          @if (!this.invitation) {
-            <div class="flex w-full flex-col items-center justify-center pb-7 text-primary">
-              <p class="justify-center font-manuale text-[1.6875rem] font-bold">WELCOME</p>
-              <p class="justify-center font-manuale text-[1.6875rem] font-bold">TO THE</p>
+        <div class="flex h-full w-full flex-col items-center justify-center gap-5 pt-5">
+          <div class="flex w-full flex-col items-center justify-center text-primary">
+            <p class="justify-center font-manuale text-[1.6875rem] font-bold md:text-[1.9rem]">
+              {{ getFirstSectionText[0] }}
+            </p>
+            <p class="justify-center font-manuale text-[1.6875rem] font-bold md:text-[1.9rem]">
+              {{ getFirstSectionText[1] }}
+            </p>
+          </div>
+          <div class="flex w-full flex-col items-center justify-center" #bigDay>
+            <div
+              class="animate-scale-in animate-fast mx-8 flex h-[5rem] w-[18rem] max-w-[90vw] items-center justify-center rounded-md bg-primary shadow-lg md:h-[6.5rem]"
+            >
+              <p class="font-manuale text-[1.5rem] font-semibold text-white md:text-[2rem]">
+                {{ getFirstSectionText[2] }}
+              </p>
             </div>
-            <div class="flex w-full flex-col items-center justify-center" #bigDay>
-              <div
-                class="animate-scale-in animate-fast flex h-[5rem] w-[18rem] items-center justify-center rounded-md bg-primary shadow-lg md:h-[6.5rem]"
-              >
-                <p class="font-manuale text-[1.5rem] font-semibold text-white md:text-[2rem]">Announcement!</p>
-              </div>
-            </div>
-          } @else {
-            <div class="flex w-full flex-col items-center justify-center pb-7 text-primary">
-              <p class="justify-center font-manuale text-[1.6875rem] font-bold">YOU'RE</p>
-              <p class="justify-center font-manuale text-[1.6875rem] font-bold">INVITED</p>
-            </div>
-            <div class="flex w-full flex-col items-center justify-center" #bigDay>
-              <div
-                class="animate-scale-in animate-fast flex h-[5rem] w-[18rem] items-center justify-center rounded-md bg-primary shadow-lg md:h-[6.5rem]"
-              >
-                <p class="font-manuale text-[1.5rem] font-semibold text-white md:text-[2rem]">TO THE BIG DAY!</p>
-              </div>
-            </div>
-          }
+          </div>
           <app-countdown [eventDate]="eventDate"></app-countdown>
         </div>
       </div>
@@ -65,15 +57,15 @@ import { Subscription } from 'rxjs';
     <section class="relative h-[34vh] bg-secondary">
       <div class="relative mx-auto h-full max-w-screen-lg">
         <div class="absolute top-0 flex w-full translate-y-[-100%] flex-col items-center justify-end">
-          <p class="font-manuale text-[2rem] font-semibold text-primary">LEFT</p>
+          <p class="font-manuale text-[1.6rem] font-semibold text-primary">LEFT</p>
         </div>
         <div class="absolute top-0 flex w-full flex-col items-center justify-end">
-          <p class="font-manuale text-[2rem] font-semibold text-primary">UNTIL</p>
+          <p class="font-manuale text-[1.6rem] font-semibold text-primary">UNTIL</p>
         </div>
         <div class="flex h-full w-full flex-col items-center justify-center gap-5 text-center">
           <div>
-            <p class="justify-center font-marcellus-sc text-[2rem] text-white">Kamal & Faiza's</p>
-            <p class="justify-center font-marcellus-sc text-[2rem] text-white">Wedding</p>
+            <p class="justify-center font-marcellus-sc text-[2rem] text-white md:text-[2.4rem]">Kamal & Faiza's</p>
+            <p class="justify-center font-marcellus-sc text-[2rem] text-white md:text-[2.4rem]">Wedding</p>
           </div>
           <div
             (click)="onDownloadAsPdf()"
@@ -81,7 +73,7 @@ import { Subscription } from 'rxjs';
             [ngClass]="invitation ? '' : ['hidden']"
           >
             <img src="download.svg" />
-            <p class="line-2 text-[0.75rem] active:text-sky-700">Download invitation as PDF</p>
+            <p class="line-2 text-sm active:text-sky-700 md:text-[1rem]">Download invitation as PDF</p>
           </div>
         </div>
         <div class="absolute bottom-0 mb-1 flex w-full items-center justify-center gap-0">
@@ -174,6 +166,11 @@ import { Subscription } from 'rxjs';
   imports: [NavigationBarComponent, CountdownComponent, CardComponent, RsvpComponent, NgClass],
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  private kFirstSectionText = {
+    0: ['WELCOME', 'TO THE', 'Announcement!'],
+    1: ["YOU'RE", 'INVITED', 'TO THE BIG DAY!'],
+  };
+
   // Model related members
   logger = inject(LoggerService);
   route = inject(ActivatedRoute);
@@ -261,5 +258,12 @@ export class HomeComponent implements OnInit, OnDestroy {
         window.alert('Failed to download.');
       },
     });
+  }
+
+  get getFirstSectionText() {
+    if (this.invitation) {
+      return this.kFirstSectionText[1];
+    }
+    return this.kFirstSectionText[0];
   }
 }
