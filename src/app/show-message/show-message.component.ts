@@ -20,7 +20,7 @@ type State = {
   template: `
     <div class="relative flex w-full flex-col items-center justify-center">
       <div
-        class="pointer-events-none absolute z-10 flex h-full w-full items-center justify-center"
+        class="pointer-events-none absolute top-0 z-10 flex h-full max-h-[100vh] w-full items-center justify-center"
         [ngClass]="state.loading ? '' : 'hidden'"
       >
         <div class="size-8 fill-white">
