@@ -14,7 +14,7 @@ import {
 import { LoggerService } from '../logger.service';
 import { NgClass } from '@angular/common';
 import { Message, MessageService } from '../message.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, fromEvent } from 'rxjs';
 
 type State = {
   messages: Message[];
@@ -32,7 +32,7 @@ type State = {
   template: `
     <div class="hidden scale-0 scale-100 opacity-0 opacity-100" #dummyClass></div>
     <div class="relative flex w-full flex-col items-center justify-center gap-12">
-      <div class="relative w-full overflow-clip" #container>
+      <div class="relative flex w-full items-center justify-center overflow-clip" #container>
         <div [class]="contentBaseClasses" #content>
           <p class="font-manuale font-semibold">From: Faiza & Kamal</p>
           <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
@@ -46,15 +46,6 @@ type State = {
           </div>
         </div>
         <div [class]="contentBaseClasses" #content>
-          <p class="font-manuale font-semibold">QS. Az-Zariyat Ayat 49</p>
-          <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
-          <div class="w-full p-1 md:p-2">
-            <p class="min-h-16 font-lato">
-              "Dan segala sesuatu Kami ciptakan berpasang-pasangan supaya kamu mengingat kebesaran Allah."
-            </p>
-          </div>
-        </div>
-        <div [class]="contentBaseClasses" #content>
           <p class="font-manuale font-semibold">QS. An-Nisa' Ayat 1</p>
           <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
           <div class="w-full p-1 md:p-2">
@@ -63,6 +54,15 @@ type State = {
               menciptakan jodohnya, dan mengembang-biakan dari keduanya banyak laki-laki dan perempuan; dan bertakwalah
               kepada Allah SWT yang dengan nama-Nya kamu saling bertanya, terutama mengenai hubungan tali kekerabatan.
               Sesungguhnya Allah SWT adalah pengawas atas kamu."
+            </p>
+          </div>
+        </div>
+        <div [class]="contentBaseClasses" #content>
+          <p class="font-manuale font-semibold">QS. Az-Zariyat Ayat 49</p>
+          <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
+          <div class="w-full p-1 md:p-2">
+            <p class="min-h-16 font-lato">
+              "Dan segala sesuatu Kami ciptakan berpasang-pasangan supaya kamu mengingat kebesaran Allah."
             </p>
           </div>
         </div>
@@ -167,8 +167,10 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
   private currentId = 0;
   private containerHeight = 0;
   contentBaseClasses =
-    'pointer-events-none absolute top-0 flex w-full flex-col rounded-b-lg rounded-r-lg bg-[#ffece8] ' +
+    'pointer-events-none absolute top-0 flex w-full flex-col rounded-b-lg rounded-r-lg bg-amber-100 ' +
     'p-2 text-primary opacity-0 shadow-lg shadow-pink-400/50';
+
+  resizeObservable$: Observable<Event> | undefined;
 
   constructor() {}
 
@@ -222,10 +224,13 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
     const children = container.nativeElement.children;
     this.logger.debug(`[kamalshafi] container child size: ${children.length}`);
     this.logger.debug(`[kamalshafi] contents size: ${contents.length}`);
-    for (const content of contents) {
-      const boundingBox = content.nativeElement.getBoundingClientRect();
-      this.containerHeight = Math.max(this.containerHeight, boundingBox.height);
-      this.addClasses(content.nativeElement, [`scale-50`, `transition-all`, `duration-1000`]);
+    for (let i = 0; i < contents.length; i++) {
+      const content = contents.get(i);
+      const boundingBox = content?.nativeElement;
+      if (boundingBox.offsetHeight > this.containerHeight) {
+        this.containerHeight = boundingBox.offsetHeight;
+      }
+      this.addClasses(content?.nativeElement, [`scale-50`, `transition-all`, `duration-1000`]);
     }
     this.setHeight(container.nativeElement, this.containerHeight);
     this.logger.debug(`[kamalshafi] containerHeight: ${this.containerHeight}`);
@@ -243,7 +248,21 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.currentId = nextId;
     };
     intervalFunc(true);
-    this.renderInterval = setInterval(intervalFunc, 6000);
+    this.renderInterval = setInterval(intervalFunc, 8000);
+    this.resizeObservable$ = fromEvent(window, 'resize');
+    this.subscriptions.push(
+      this.resizeObservable$.subscribe((e) => {
+        this.containerHeight = 0;
+        for (let i = 0; i < contents.length; i++) {
+          const content = contents.get(i);
+          const boundingBox = content?.nativeElement;
+          if (boundingBox.offsetHeight > this.containerHeight) {
+            this.containerHeight = boundingBox.offsetHeight;
+          }
+        }
+        this.setHeight(container.nativeElement, this.containerHeight);
+      }),
+    );
   }
 
   getTimeString(created_at: number) {
