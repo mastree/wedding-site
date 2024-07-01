@@ -98,7 +98,7 @@ type RsvpState = {
                       <button
                         (click)="onAddNumAttend(-1)"
                         [disabled]="state.numAttend <= 0"
-                        class="rounded-lg bg-slate-100 px-5 py-1 font-manuale font-semibold text-primary active:bg-red-100 active:shadow-inner active:shadow-red-200 disabled:pointer-events-none disabled:opacity-60"
+                        class="rounded-lg bg-slate-100 px-5 py-1 font-manuale text-xl font-bold text-primary ring-white active:bg-red-100 active:shadow-inner active:shadow-red-200 active:ring-2 disabled:pointer-events-none disabled:opacity-60"
                       >
                         -
                       </button>
@@ -108,7 +108,7 @@ type RsvpState = {
                       <button
                         (click)="onAddNumAttend(1)"
                         [disabled]="state.numAttend >= (state.invitation?.invitation_pax || 0)"
-                        class="rounded-lg bg-dark-secondary px-5 py-1 font-manuale font-semibold text-white active:bg-light-primary active:shadow-inner active:shadow-primary disabled:pointer-events-none disabled:opacity-60"
+                        class="rounded-lg bg-dark-secondary px-5 py-1 font-manuale text-xl font-bold text-white ring-white active:bg-light-primary active:shadow-inner active:shadow-primary active:ring-2 disabled:pointer-events-none disabled:opacity-60"
                       >
                         +
                       </button>
