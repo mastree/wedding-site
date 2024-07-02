@@ -215,6 +215,19 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
     element.style.height = `height:${height}px`;
   }
 
+  private updateHeight() {
+    const { container, contents } = this;
+    let containerHeight = 0;
+    for (let i = 0; i < contents.length; i++) {
+      const content = contents.get(i);
+      const height = content?.nativeElement.offsetHeight;
+      if (height > containerHeight) {
+        containerHeight = height;
+      }
+    }
+    this.setHeight(container.nativeElement, containerHeight);
+  }
+
   private async wait(ms: number) {
     return new Promise<void>((resolve) => setTimeout(() => resolve(), ms));
   }
@@ -224,16 +237,11 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
     const children = container.nativeElement.children;
     this.logger.debug(`[kamalshafi] container child size: ${children.length}`);
     this.logger.debug(`[kamalshafi] contents size: ${contents.length}`);
+    this.updateHeight();
     for (let i = 0; i < contents.length; i++) {
       const content = contents.get(i);
-      const boundingBox = content?.nativeElement;
-      if (boundingBox.offsetHeight > this.containerHeight) {
-        this.containerHeight = boundingBox.offsetHeight;
-      }
       this.addClasses(content?.nativeElement, [`scale-50`, `transition-all`, `duration-1000`]);
     }
-    this.setHeight(container.nativeElement, this.containerHeight);
-    this.logger.debug(`[kamalshafi] containerHeight: ${this.containerHeight}`);
     const intervalFunc = async (firstCall = false) => {
       const prevId = (this.currentId - 1 + contents.length) % contents.length;
       const nextId = (this.currentId + 1) % contents.length;
@@ -250,19 +258,7 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
     intervalFunc(true);
     this.renderInterval = setInterval(intervalFunc, 8000);
     this.resizeObservable$ = fromEvent(window, 'resize');
-    this.subscriptions.push(
-      this.resizeObservable$.subscribe((e) => {
-        this.containerHeight = 0;
-        for (let i = 0; i < contents.length; i++) {
-          const content = contents.get(i);
-          const boundingBox = content?.nativeElement;
-          if (boundingBox.offsetHeight > this.containerHeight) {
-            this.containerHeight = boundingBox.offsetHeight;
-          }
-        }
-        this.setHeight(container.nativeElement, this.containerHeight);
-      }),
-    );
+    this.subscriptions.push(this.resizeObservable$.subscribe((e) => this.updateHeight()));
   }
 
   getTimeString(created_at: number) {
