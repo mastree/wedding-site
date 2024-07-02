@@ -30,10 +30,20 @@ type State = {
   standalone: true,
   imports: [NgClass],
   template: `
-    <div class="hidden scale-0 scale-100 opacity-0 opacity-100" #dummyClass></div>
+    <div
+      class="pointer-events-none pointer-events-auto hidden scale-0 scale-100 opacity-0 opacity-100"
+      #dummyClass
+    ></div>
     <div class="relative flex w-full flex-col items-center justify-center gap-12">
-      <div class="relative flex w-full items-center justify-center overflow-clip" #container>
-        <div [class]="contentBaseClasses" #content>
+      <div class="relative flex w-full select-none items-center justify-center overflow-clip" #container>
+        <div
+          [class]="contentBaseClasses"
+          (pointerdown)="pauseContentChange()"
+          (pointerup)="resumeContentChange()"
+          (mouseleave)="resumeContentChange()"
+          (touchend)="resumeContentChange()"
+          #content
+        >
           <p class="font-manuale font-semibold">From: Faiza & Kamal</p>
           <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
           <div class="w-full p-1 md:p-2">
@@ -45,7 +55,14 @@ type State = {
             </p>
           </div>
         </div>
-        <div [class]="contentBaseClasses" #content>
+        <div
+          [class]="contentBaseClasses"
+          (pointerdown)="pauseContentChange()"
+          (pointerup)="resumeContentChange()"
+          (mouseleave)="resumeContentChange()"
+          (touchend)="resumeContentChange()"
+          #content
+        >
           <p class="font-manuale font-semibold">QS. An-Nisa' Ayat 1</p>
           <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
           <div class="w-full p-1 md:p-2">
@@ -57,7 +74,14 @@ type State = {
             </p>
           </div>
         </div>
-        <div [class]="contentBaseClasses" #content>
+        <div
+          [class]="contentBaseClasses"
+          (pointerdown)="pauseContentChange()"
+          (pointerup)="resumeContentChange()"
+          (mouseleave)="resumeContentChange()"
+          (touchend)="resumeContentChange()"
+          #content
+        >
           <p class="font-manuale font-semibold">QS. Az-Zariyat Ayat 49</p>
           <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
           <div class="w-full p-1 md:p-2">
@@ -166,6 +190,7 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
   private renderInterval: NodeJS.Timeout | undefined;
   private currentId = 0;
   private lastContentChangeTime = 0;
+  private pauseStart = 0;
   contentBaseClasses =
     'pointer-events-none absolute top-0 flex w-full flex-col rounded-b-lg rounded-r-lg bg-amber-100 ' +
     'p-2 text-primary opacity-0 shadow-lg shadow-pink-400/50';
@@ -248,21 +273,19 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
       if (!firstCall) {
         this.logger.debug(`[kamalshafi] prevId ${prevId}, currentId ${this.currentId}, nextId ${nextId}`);
         this.removeClasses(contents.get(prevId)?.nativeElement, [`scale-100`]);
-        this.addClasses(contents.get(prevId)?.nativeElement, [`opacity-0`, `scale-50`, `pointer-events-none`]);
+        this.addClasses(contents.get(prevId)?.nativeElement, [`opacity-0`, `scale-50`]);
         await this.wait(1000);
+        this.addClasses(contents.get(prevId)?.nativeElement, [`pointer-events-none`]);
       }
       this.removeClasses(contents.get(this.currentId)?.nativeElement, [`opacity-0`, `scale-50`, `pointer-events-none`]);
       this.addClasses(contents.get(this.currentId)?.nativeElement, [`scale-100`]);
       this.currentId = nextId;
     };
-    const intervalMillis = 8000;
+    const intervalMillis = 5000;
     intervalFunc(true);
     this.renderInterval = setInterval(() => {
       const currentMillis = new Date().valueOf();
-      // this.logger.debug(
-      //   `[kamalshafi] lastContentChangeTime ${this.lastContentChangeTime}, currentMillis ${currentMillis}, intervalMillis ${intervalMillis}`,
-      // );
-      if (currentMillis - this.lastContentChangeTime >= intervalMillis) {
+      if (this.pauseStart == 0 && currentMillis - this.lastContentChangeTime >= intervalMillis) {
         this.lastContentChangeTime = currentMillis;
         intervalFunc();
       }
@@ -282,6 +305,20 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onRefresh() {
     this.messageService.reload();
+  }
+
+  pauseContentChange() {
+    this.logger.debug(`[kamalshafi] pause content change`);
+    this.pauseStart = new Date().valueOf();
+  }
+
+  resumeContentChange() {
+    this.logger.debug(`[kamalshafi] resume content change`);
+    if (this.pauseStart) {
+      const currentMillis = new Date().valueOf();
+      this.lastContentChangeTime += currentMillis - this.pauseStart;
+      this.pauseStart = 0;
+    }
   }
 
   get minPage() {
