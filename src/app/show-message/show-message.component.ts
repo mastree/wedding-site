@@ -165,7 +165,7 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
   private renderer = inject(Renderer2);
   private renderInterval: NodeJS.Timeout | undefined;
   private currentId = 0;
-  private containerHeight = 0;
+  private lastContentChangeTime = 0;
   contentBaseClasses =
     'pointer-events-none absolute top-0 flex w-full flex-col rounded-b-lg rounded-r-lg bg-amber-100 ' +
     'p-2 text-primary opacity-0 shadow-lg shadow-pink-400/50';
@@ -248,15 +248,25 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
       if (!firstCall) {
         this.logger.debug(`[kamalshafi] prevId ${prevId}, currentId ${this.currentId}, nextId ${nextId}`);
         this.removeClasses(contents.get(prevId)?.nativeElement, [`scale-100`]);
-        this.addClasses(contents.get(prevId)?.nativeElement, [`opacity-0`, `scale-50`]);
+        this.addClasses(contents.get(prevId)?.nativeElement, [`opacity-0`, `scale-50`, `pointer-events-none`]);
         await this.wait(1000);
       }
-      this.removeClasses(contents.get(this.currentId)?.nativeElement, [`opacity-0`, `scale-50`]);
+      this.removeClasses(contents.get(this.currentId)?.nativeElement, [`opacity-0`, `scale-50`, `pointer-events-none`]);
       this.addClasses(contents.get(this.currentId)?.nativeElement, [`scale-100`]);
       this.currentId = nextId;
     };
+    const intervalMillis = 8000;
     intervalFunc(true);
-    this.renderInterval = setInterval(intervalFunc, 8000);
+    this.renderInterval = setInterval(() => {
+      const currentMillis = new Date().valueOf();
+      // this.logger.debug(
+      //   `[kamalshafi] lastContentChangeTime ${this.lastContentChangeTime}, currentMillis ${currentMillis}, intervalMillis ${intervalMillis}`,
+      // );
+      if (currentMillis - this.lastContentChangeTime >= intervalMillis) {
+        this.lastContentChangeTime = currentMillis;
+        intervalFunc();
+      }
+    }, 100);
     this.resizeObservable$ = fromEvent(window, 'resize');
     this.subscriptions.push(this.resizeObservable$.subscribe((e) => this.updateHeight()));
   }
