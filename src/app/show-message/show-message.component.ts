@@ -222,14 +222,12 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private addClasses(element: any, classes: string[]) {
-    this.logger.debug(`[kamalshafi] addClasses: ${JSON.stringify(element)} ${classes}`);
     classes.forEach((cls) => {
       this.renderer.addClass(element, cls);
     });
   }
 
   private removeClasses(element: any, classes: string[]) {
-    this.logger.debug(`[kamalshafi] removeClasses: ${JSON.stringify(element)} ${classes}`);
     classes.forEach((cls) => {
       this.renderer.removeClass(element, cls);
     });
