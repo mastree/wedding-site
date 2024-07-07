@@ -26,6 +26,16 @@ module.exports = {
             opacity: 1,
           },
         },
+        "go-to-left": {
+          from: {
+            transform: "translateX(0%)",
+            opacity: 1,
+          },
+          to: {
+            transform: "translateX(-100%)",
+            opacity: 0,
+          },
+        },
         "go-from-right": {
           from: {
             transform: "translateX(50%)",
@@ -68,6 +78,7 @@ module.exports = {
       animation: {
         "bounce-small": "bounce-small 1s infinite",
         "go-from-left": "go-from-left 0.6s",
+        "go-to-left": "go-to-left 1s",
         "go-from-right": "go-from-right 0.6s",
         "notify-scale-in": "notify-scale-in 2s",
         "small-pulse": "small-pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite",
@@ -81,6 +92,10 @@ module.exports = {
         "bg-skin": "#C3B8AF",
         shadow: "#E8E8E8",
         "bg-grey": "#D9D9D9",
+      },
+      transitionDuration: {
+        1500: "1500ms",
+        2000: "2000ms",
       },
     },
     fontFamily: {

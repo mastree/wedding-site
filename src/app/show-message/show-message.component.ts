@@ -1,8 +1,20 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Inject,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  Renderer2,
+  ViewChild,
+  ViewChildren,
+  inject,
+} from '@angular/core';
 import { LoggerService } from '../logger.service';
 import { NgClass } from '@angular/common';
 import { Message, MessageService } from '../message.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, fromEvent } from 'rxjs';
 
 type State = {
   messages: Message[];
@@ -18,15 +30,66 @@ type State = {
   standalone: true,
   imports: [NgClass],
   template: `
+    <div
+      class="pointer-events-none pointer-events-auto hidden scale-0 scale-100 opacity-0 opacity-100"
+      #dummyClass
+    ></div>
     <div class="relative flex w-full flex-col items-center justify-center gap-12">
-      <div class="flex flex-col rounded-b-lg rounded-r-lg bg-[#ffece8] p-2 text-primary shadow-lg shadow-pink-400/50">
-        <p class="font-manuale font-semibold">From: Faiza & Kamal</p>
-        <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
-        <p class="min-h-16 font-lato">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat.
-        </p>
+      <div class="relative flex w-full select-none items-center justify-center overflow-clip" #container>
+        <div
+          [class]="contentBaseClasses"
+          (pointerdown)="pauseContentChange()"
+          (pointerup)="resumeContentChange()"
+          (mouseleave)="resumeContentChange()"
+          (touchend)="resumeContentChange()"
+          #content
+        >
+          <p class="font-manuale font-semibold">From: Faiza & Kamal</p>
+          <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
+          <div class="w-full p-1 md:p-2">
+            <p class="mb-2 font-lato">Assalamu'alaikum Wr Wb</p>
+            <p class="min-h-16 font-lato">
+              Terima kasih atas waktu yang telah disisihkan oleh Bapak/Ibu. Kami berharap acara pernikahan kami dapat
+              berjalan lancar serta membawa keberkahan dan kebahagian bagi kita semua. Untuk itu kami meminta doa restu
+              dari Bapak/Ibu, agar acara dan kehidupan pernikahan kami dapat berjalan dengan baik dan lancar 😊
+            </p>
+          </div>
+        </div>
+        <div
+          [class]="contentBaseClasses"
+          (pointerdown)="pauseContentChange()"
+          (pointerup)="resumeContentChange()"
+          (mouseleave)="resumeContentChange()"
+          (touchend)="resumeContentChange()"
+          #content
+        >
+          <p class="font-manuale font-semibold">QS. An-Nisa' Ayat 1</p>
+          <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
+          <div class="w-full p-1 md:p-2">
+            <p class="min-h-16 font-lato">
+              "Hai manusia, bertakwalah kepada Tuhan-mu yang menciptakan kamu dari satu jiwa, dan darinya Dia
+              menciptakan jodohnya, dan mengembang-biakan dari keduanya banyak laki-laki dan perempuan; dan bertakwalah
+              kepada Allah SWT yang dengan nama-Nya kamu saling bertanya, terutama mengenai hubungan tali kekerabatan.
+              Sesungguhnya Allah SWT adalah pengawas atas kamu."
+            </p>
+          </div>
+        </div>
+        <div
+          [class]="contentBaseClasses"
+          (pointerdown)="pauseContentChange()"
+          (pointerup)="resumeContentChange()"
+          (mouseleave)="resumeContentChange()"
+          (touchend)="resumeContentChange()"
+          #content
+        >
+          <p class="font-manuale font-semibold">QS. Az-Zariyat Ayat 49</p>
+          <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
+          <div class="w-full p-1 md:p-2">
+            <p class="min-h-16 font-lato">
+              "Dan segala sesuatu Kami ciptakan berpasang-pasangan supaya kamu mengingat kebesaran Allah."
+            </p>
+          </div>
+        </div>
       </div>
       <div class="relative flex w-full flex-col items-center justify-center">
         <div
@@ -104,7 +167,7 @@ type State = {
   `,
   styleUrl: './show-message.component.css',
 })
-export class ShowMessageComponent implements OnInit, OnDestroy {
+export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
   private kPageSize = 5;
 
   logger = inject(LoggerService);
@@ -118,6 +181,21 @@ export class ShowMessageComponent implements OnInit, OnDestroy {
     pageSize: this.kPageSize,
     loading: false,
   };
+
+  // View related members
+  @ViewChild('container') container!: ElementRef;
+  @ViewChildren('content') contents!: QueryList<ElementRef>;
+  @Inject({})
+  private renderer = inject(Renderer2);
+  private renderInterval: NodeJS.Timeout | undefined;
+  private currentId = 0;
+  private lastContentChangeTime = 0;
+  private pauseStart = 0;
+  contentBaseClasses =
+    'pointer-events-none absolute top-0 flex w-full flex-col rounded-b-lg rounded-r-lg bg-amber-100 ' +
+    'p-2 text-primary opacity-0 shadow-lg shadow-pink-400/50';
+
+  resizeObservable$: Observable<Event> | undefined;
 
   constructor() {}
 
@@ -140,6 +218,80 @@ export class ShowMessageComponent implements OnInit, OnDestroy {
     for (const sub of this.subscriptions) {
       sub.unsubscribe();
     }
+    clearInterval(this.renderInterval);
+  }
+
+  private addClasses(element: any, classes: string[]) {
+    this.logger.debug(`[kamalshafi] addClasses: ${JSON.stringify(element)} ${classes}`);
+    classes.forEach((cls) => {
+      this.renderer.addClass(element, cls);
+    });
+  }
+
+  private removeClasses(element: any, classes: string[]) {
+    this.logger.debug(`[kamalshafi] removeClasses: ${JSON.stringify(element)} ${classes}`);
+    classes.forEach((cls) => {
+      this.renderer.removeClass(element, cls);
+    });
+  }
+
+  private setHeight(element: any, height: number) {
+    element.setAttribute('style', `height:${height}px`);
+    element.style.height = `height:${height}px`;
+  }
+
+  private updateHeight() {
+    const { container, contents } = this;
+    let containerHeight = 0;
+    for (let i = 0; i < contents.length; i++) {
+      const content = contents.get(i);
+      const height = content?.nativeElement.offsetHeight;
+      if (height > containerHeight) {
+        containerHeight = height;
+      }
+    }
+    this.setHeight(container.nativeElement, containerHeight);
+  }
+
+  private async wait(ms: number) {
+    return new Promise<void>((resolve) => setTimeout(() => resolve(), ms));
+  }
+
+  ngAfterViewInit() {
+    const { container, contents } = this;
+    const children = container.nativeElement.children;
+    this.logger.debug(`[kamalshafi] container child size: ${children.length}`);
+    this.logger.debug(`[kamalshafi] contents size: ${contents.length}`);
+    this.updateHeight();
+    for (let i = 0; i < contents.length; i++) {
+      const content = contents.get(i);
+      this.addClasses(content?.nativeElement, [`scale-50`, `transition-all`, `duration-1000`]);
+    }
+    const intervalFunc = async (firstCall = false) => {
+      const prevId = (this.currentId - 1 + contents.length) % contents.length;
+      const nextId = (this.currentId + 1) % contents.length;
+      if (!firstCall) {
+        this.logger.debug(`[kamalshafi] prevId ${prevId}, currentId ${this.currentId}, nextId ${nextId}`);
+        this.removeClasses(contents.get(prevId)?.nativeElement, [`scale-100`]);
+        this.addClasses(contents.get(prevId)?.nativeElement, [`opacity-0`, `scale-50`]);
+        await this.wait(1000);
+        this.addClasses(contents.get(prevId)?.nativeElement, [`pointer-events-none`]);
+      }
+      this.removeClasses(contents.get(this.currentId)?.nativeElement, [`opacity-0`, `scale-50`, `pointer-events-none`]);
+      this.addClasses(contents.get(this.currentId)?.nativeElement, [`scale-100`]);
+      this.currentId = nextId;
+    };
+    const intervalMillis = 5000;
+    intervalFunc(true);
+    this.renderInterval = setInterval(() => {
+      const currentMillis = new Date().valueOf();
+      if (this.pauseStart == 0 && currentMillis - this.lastContentChangeTime >= intervalMillis) {
+        this.lastContentChangeTime = currentMillis;
+        intervalFunc();
+      }
+    }, 100);
+    this.resizeObservable$ = fromEvent(window, 'resize');
+    this.subscriptions.push(this.resizeObservable$.subscribe((e) => this.updateHeight()));
   }
 
   getTimeString(created_at: number) {
@@ -153,6 +305,20 @@ export class ShowMessageComponent implements OnInit, OnDestroy {
 
   onRefresh() {
     this.messageService.reload();
+  }
+
+  pauseContentChange() {
+    this.logger.debug(`[kamalshafi] pause content change`);
+    this.pauseStart = new Date().valueOf();
+  }
+
+  resumeContentChange() {
+    this.logger.debug(`[kamalshafi] resume content change`);
+    if (this.pauseStart) {
+      const currentMillis = new Date().valueOf();
+      this.lastContentChangeTime += currentMillis - this.pauseStart;
+      this.pauseStart = 0;
+    }
   }
 
   get minPage() {
