@@ -5,14 +5,16 @@ import {
   Inject,
   OnDestroy,
   OnInit,
+  PLATFORM_ID,
   QueryList,
   Renderer2,
   ViewChild,
   ViewChildren,
   inject,
+  signal,
 } from '@angular/core';
 import { LoggerService } from '../logger.service';
-import { NgClass } from '@angular/common';
+import { NgClass, isPlatformBrowser } from '@angular/common';
 import { Message, MessageService } from '../message.service';
 import { Observable, Subscription, fromEvent } from 'rxjs';
 
@@ -182,6 +184,8 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
     loading: false,
   };
 
+  isBrowser = signal(false);
+
   // View related members
   @ViewChild('container') container!: ElementRef;
   @ViewChildren('content') contents!: QueryList<ElementRef>;
@@ -197,7 +201,9 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   resizeObservable$: Observable<Event> | undefined;
 
-  constructor() {}
+  constructor(@Inject(PLATFORM_ID) platformId: object) {
+    this.isBrowser.set(isPlatformBrowser(platformId)); // save isPlatformBrowser in signal
+  }
 
   ngOnInit() {
     this.subscriptions.push(
@@ -280,14 +286,16 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.currentId = nextId;
     };
     const intervalMillis = 5000;
-    intervalFunc(true);
-    this.renderInterval = setInterval(() => {
-      const currentMillis = new Date().valueOf();
-      if (this.pauseStart == 0 && currentMillis - this.lastContentChangeTime >= intervalMillis) {
-        this.lastContentChangeTime = currentMillis;
-        intervalFunc();
-      }
-    }, 100);
+    if (this.isBrowser()) {
+      intervalFunc(true);
+      this.renderInterval = setInterval(() => {
+        const currentMillis = new Date().valueOf();
+        if (this.pauseStart == 0 && currentMillis - this.lastContentChangeTime >= intervalMillis) {
+          this.lastContentChangeTime = currentMillis;
+          intervalFunc();
+        }
+      }, 100);
+    }
     this.resizeObservable$ = fromEvent(window, 'resize');
     this.subscriptions.push(this.resizeObservable$.subscribe((e) => this.updateHeight()));
   }
