@@ -286,8 +286,8 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.currentId = nextId;
     };
     const intervalMillis = 5000;
+    intervalFunc(true);
     if (this.isBrowser()) {
-      intervalFunc(true);
       this.renderInterval = setInterval(() => {
         const currentMillis = new Date().valueOf();
         if (this.pauseStart == 0 && currentMillis - this.lastContentChangeTime >= intervalMillis) {
@@ -295,9 +295,9 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
           intervalFunc();
         }
       }, 100);
+      this.resizeObservable$ = fromEvent(window, 'resize');
+      this.subscriptions.push(this.resizeObservable$.subscribe((e) => this.updateHeight()));
     }
-    this.resizeObservable$ = fromEvent(window, 'resize');
-    this.subscriptions.push(this.resizeObservable$.subscribe((e) => this.updateHeight()));
   }
 
   getTimeString(created_at: number) {

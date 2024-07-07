@@ -1,3 +1,7 @@
+import { isPlatformBrowser } from '@angular/common';
+import { Inject } from '@angular/core';
+import { PLATFORM_ID } from '@angular/core';
+import { signal } from '@angular/core';
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 
 @Component({
@@ -30,27 +34,35 @@ export class CardComponent {
 
   @ViewChild('container') container: ElementRef | undefined;
 
+  isBrowser = signal(false);
+
+  constructor(@Inject(PLATFORM_ID) platformId: object) {
+    this.isBrowser.set(isPlatformBrowser(platformId)); // save isPlatformBrowser in signal
+  }
+
   ngAfterViewInit() {
-    if (this.classOnView.length > 0) {
-      const threshold = [0, 0.1];
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            // WAR to handle weird intersection logic when animation active.
-            // - Observe the container for its child animation activation.
-            const child = entry.target.firstElementChild;
-            if (entry.intersectionRatio <= 0) {
-              child?.classList.add('opacity-0');
-              child?.classList.remove(...this.classOnView);
-            } else {
-              child?.classList.remove('opacity-0');
-              child?.classList.add(...this.classOnView);
-            }
-          });
-        },
-        { threshold },
-      );
-      observer.observe(this.container?.nativeElement);
+    if (this.isBrowser()) {
+      if (this.classOnView.length > 0) {
+        const threshold = [0, 0.1];
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              // WAR to handle weird intersection logic when animation active.
+              // - Observe the container for its child animation activation.
+              const child = entry.target.firstElementChild;
+              if (entry.intersectionRatio <= 0) {
+                child?.classList.add('opacity-0');
+                child?.classList.remove(...this.classOnView);
+              } else {
+                child?.classList.remove('opacity-0');
+                child?.classList.add(...this.classOnView);
+              }
+            });
+          },
+          { threshold },
+        );
+        observer.observe(this.container?.nativeElement);
+      }
     }
   }
 }

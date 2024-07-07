@@ -8,6 +8,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LoggerService } from '../logger.service';
 import { NgClass } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { PLATFORM_ID } from '@angular/core';
+import { Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { signal } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -187,8 +191,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   animateGoFromLeft = ['animate-go-from-left'];
   animateGoFromRight = ['animate-go-from-right'];
+  isBrowser = signal(false);
 
-  constructor(private router: Router) {}
+  constructor(
+    @Inject(PLATFORM_ID) platformId: object,
+    private router: Router,
+  ) {
+    this.isBrowser.set(isPlatformBrowser(platformId)); // save isPlatformBrowser in signal
+  }
 
   ngOnInit() {
     const housingLocationId = this.route.snapshot.params['id'];
@@ -197,10 +207,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.weddingService.invitation.subscribe((data) => {
         this.invitation = data;
-        this.loading = false;
-        if (!this.invitation && !this.loading) {
-          this.router.navigate(['announcement']);
+        if (this.isBrowser()) {
+          if (!this.invitation && !this.loading) {
+            this.router.navigate(['announcement']);
+          }
         }
+        this.loading = false;
       }),
     );
   }
@@ -216,25 +228,27 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    const threshold = [0, 0.1];
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          // WAR to handle weird intersection logic when animation active.
-          // - Observe the container for its child animation activation.
-          const child = entry.target.firstElementChild;
-          if (entry.intersectionRatio <= 0) {
-            child?.classList.add('opacity-0');
-            child?.classList.remove('animate');
-          } else {
-            child?.classList.remove('opacity-0');
-            child?.classList.add('animate');
-          }
-        });
-      },
-      { threshold },
-    );
-    observer.observe(this.bigDayElement!.nativeElement);
+    if (this.isBrowser()) {
+      const threshold = [0, 0.1];
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            // WAR to handle weird intersection logic when animation active.
+            // - Observe the container for its child animation activation.
+            const child = entry.target.firstElementChild;
+            if (entry.intersectionRatio <= 0) {
+              child?.classList.add('opacity-0');
+              child?.classList.remove('animate');
+            } else {
+              child?.classList.remove('opacity-0');
+              child?.classList.add('animate');
+            }
+          });
+        },
+        { threshold },
+      );
+      observer.observe(this.bigDayElement!.nativeElement);
+    }
   }
 
   onDownloadAsPdf() {
@@ -255,7 +269,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.logger.error(`Failed to download invitation ${JSON.stringify(this.invitation)}`);
-        window.alert('Failed to download.');
+        if (this.isBrowser()) {
+          window.alert('Failed to download.');
+        }
       },
     });
   }
