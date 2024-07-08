@@ -22,7 +22,14 @@ import { signal } from '@angular/core';
         <app-navigation-bar></app-navigation-bar>
       </div>
       <div class="absolute left-0 top-0 -z-10 h-full w-full overflow-y-hidden object-cover">
-        <video class="absolute h-full w-full object-cover object-left-top" autoplay muted loop id="myVideo">
+        <video
+          class="pointer-events-none absolute h-full w-full object-cover object-left-top"
+          onloadedmetadata="this.muted=true"
+          playsinline
+          autoplay
+          muted
+          loop
+        >
           <source src="invitation-bg-video.mp4" type="video/mp4" />
           Your browser does not support HTML5 video.
         </video>
@@ -109,7 +116,14 @@ import { signal } from '@angular/core';
 
     <section class="relative flex flex-col gap-8 bg-white bg-opacity-30 pb-20 pt-16">
       <div class="absolute right-0 top-0 -z-20 h-full w-full overflow-y-hidden object-cover">
-        <video class="absolute h-full w-full object-cover object-right-top" autoplay muted loop id="myVideo">
+        <video
+          class="pointer-events-none absolute h-full w-full object-cover object-right-top"
+          onloadedmetadata="this.muted=true"
+          playsinline
+          autoplay
+          muted
+          loop
+        >
           <source src="invitation-bg-video.mp4" type="video/mp4" />
           Your browser does not support HTML5 video.
         </video>
@@ -229,6 +243,16 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngAfterViewInit() {
     if (this.isBrowser()) {
+      window.addEventListener('load', async () => {
+        const videos = document.querySelectorAll('video[muted][autoplay]') as NodeListOf<HTMLVideoElement>;
+        videos.forEach(async (video) => {
+          try {
+            await video.play();
+          } catch (err) {
+            video.controls = true;
+          }
+        });
+      });
       const threshold = [0, 0.1];
       const observer = new IntersectionObserver(
         (entries) => {
