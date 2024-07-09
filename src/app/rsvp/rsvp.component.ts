@@ -176,9 +176,9 @@ export class RsvpComponent implements OnDestroy {
   constructor() {
     this.subscriptions.push(
       this.weddingService.invitation.subscribe((data) => {
-        this.state.invitation = data;
-        this.isInvited = this.state.invitation != undefined;
-        this.state.loading = false;
+        this.state.invitation = data.invitation;
+        this.state.loading = data.status == 'loading';
+        this.isInvited = this.state.invitation != undefined && !this.state.loading;
         this.logger.debug(
           `[RSVP page] invitation = ${JSON.stringify(this.state.invitation)}, alreadyFilled = ${this.alreadyFilled}`,
         );

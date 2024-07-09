@@ -17,6 +17,11 @@ export type Invitation = {
   rsvp?: Rsvp;
 };
 
+export type InvitationData = {
+  invitation?: Invitation;
+  status?: undefined | 'loading' | 'success' | 'error';
+};
+
 export type Load<T> = {
   value?: T | undefined;
   loading: boolean;
@@ -38,23 +43,27 @@ export class WeddingService {
   http = inject(HttpClient);
   logger = inject(LoggerService);
 
-  invitation = new BehaviorSubject<Invitation | undefined>(undefined);
+  invitation = new BehaviorSubject<InvitationData>({});
 
   constructor() {}
 
   getInvitation(id: string | undefined) {
     if (!id) {
-      this.invitation.next(undefined);
+      this.invitation.next({ status: 'error' });
       return;
     }
+    this.invitation.next({ status: 'loading' });
     this.http.get(`${this.baseUrl}/wedding/invitation/${id}`).subscribe({
       next: (res) => {
         this.logger.info(`getInvitation(${id}) response: ${JSON.stringify(res)}`);
-        this.invitation.next((res as { data: Invitation | undefined }).data);
+        this.invitation.next({
+          invitation: (res as { data: Invitation | undefined }).data,
+          status: 'success',
+        });
       },
       error: (err) => {
         this.logger.error(`getInvitation(${id}) error: ${JSON.stringify(err)}`);
-        this.invitation.next(undefined);
+        this.invitation.next({ status: 'error' });
       },
     });
   }
@@ -68,11 +77,17 @@ export class WeddingService {
         next: (res) => {
           this.logger.info(`updateRsvp(${invitation.id}}, ${JSON.stringify(rsvp)}) response: ${JSON.stringify(res)}`);
           const { data } = res as { data: Invitation };
-          this.invitation.next(data);
+          this.invitation.next({
+            invitation: data,
+            status: 'success',
+          });
         },
         error: (err) => {
           this.logger.error(`updateRsvp(${invitation.id}}, ${JSON.stringify(rsvp)}) error: ${JSON.stringify(err)}`);
-          this.invitation.next(invitation);
+          this.invitation.next({
+            invitation: invitation,
+            status: 'error',
+          });
         },
       });
   }
