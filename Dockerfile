@@ -14,27 +14,10 @@ RUN npm install -g @angular/cli
 COPY . .
 
 RUN ng build --configuration production
-# ENTRYPOINT ["node", "dist/wedding-site/server/server.mjs"]
-
-
-# FROM node:${NODE_VERSION}-alpine AS production
-
-# WORKDIR /usr/src/app
-# COPY package*.json ./
-
-# RUN npm ci
-
-# COPY --from=build /app/dist ./dist
-# # Run the application as a non-root user.
-# USER node
-# ENTRYPOINT ["node", "dist/wedding-site/server/server.mjs"]
 
 
 FROM nginx:latest
 
-# COPY index.html /usr/share/nginx/html/index.html
-# COPY assets /data/assets
 COPY --from=build /app/dist/wedding-site/browser /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/nginx.conf
 ADD conf.d /etc/nginx/conf.d
-
