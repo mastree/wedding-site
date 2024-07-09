@@ -164,10 +164,10 @@ import { signal } from '@angular/core';
           <div class="flex w-full flex-grow flex-col items-center justify-start gap-8">
             <app-card [classOnView]="animateGoFromLeft" icon="calendar.svg" title="Schedule">
               <p class="font-manuale text-[1rem] md:text-[1.25rem]">
-                <span class="font-semibold">Date:</span> Saturday, 16 Nov 2024
+                <span class="font-semibold">Date:</span> Sunday, 15 Dec 2024
               </p>
               <p class="font-manuale text-[1rem] md:text-[1.25rem]">
-                <span class="font-semibold">Time:</span> 15.00 &mdash; 19.00 WIB
+                <span class="font-semibold">Time:</span> 10.00 &mdash; 14.00 WIB
               </p>
             </app-card>
             <app-card [classOnView]="animateGoFromRight" icon="location-pin.svg" title="Location">
@@ -230,7 +230,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   // View related members
   @ViewChild('bigDay') bigDayElement: ElementRef | undefined;
 
-  eventDate: Date = new Date('2024-11-16T15:00:00.000+07:00');
+  eventDate: Date = new Date('2024-12-15T10:00:00.000+07:00');
 
   animateGoFromLeft = ['animate-go-from-left'];
   animateGoFromRight = ['animate-go-from-right'];
