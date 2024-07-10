@@ -93,7 +93,7 @@ import { signal } from '@angular/core';
         </div>
       </header>
 
-      <section class="relative h-[34vh] bg-secondary">
+      <section class="relative h-[34vh] min-h-[12.5rem] bg-secondary md:min-h-[20rem]">
         <div class="relative mx-auto h-full max-w-screen-lg">
           <div class="absolute top-0 flex w-full translate-y-[-100%] flex-col items-center justify-end">
             <p class="font-manuale text-[1.6rem] font-semibold text-primary">LEFT</p>
@@ -161,7 +161,7 @@ import { signal } from '@angular/core';
             <p class="text-center font-manuale text-xl font-semibold md:text-2xl">SCHEDULE & LOCATION</p>
             <p class="text-md text-center font-manuale font-light">Jadwal & Tempat</p>
           </div>
-          <div class="flex w-full flex-grow flex-col items-center justify-start gap-8">
+          <div class="flex w-full flex-grow flex-col items-center justify-start gap-8 overflow-clip">
             <app-card [classOnView]="animateGoFromLeft" icon="calendar.svg" title="Schedule">
               <p class="font-manuale text-[1rem] md:text-[1.25rem]">
                 <span class="font-semibold">Date:</span> Sunday, 15 Dec 2024
