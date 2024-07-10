@@ -19,5 +19,5 @@ RUN ng build --configuration production
 FROM nginx:latest
 
 COPY --from=build /app/dist/wedding-site/browser /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/nginx.conf
-ADD conf.d /etc/nginx/conf.d
+# COPY nginx.conf /etc/nginx/nginx.conf
+# ADD conf.d /etc/nginx/conf.d
