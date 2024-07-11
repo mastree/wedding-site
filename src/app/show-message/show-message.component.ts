@@ -286,6 +286,7 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.currentId = nextId;
     };
     const intervalMillis = 5000;
+    this.lastContentChangeTime = new Date().valueOf();
     intervalFunc(true);
     if (this.isBrowser()) {
       this.renderInterval = setInterval(() => {
