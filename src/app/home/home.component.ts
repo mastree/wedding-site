@@ -52,6 +52,7 @@ import { signal } from '@angular/core';
         <div class="absolute left-0 top-0 -z-10 h-full w-full overflow-y-hidden object-cover">
           <video
             class="pointer-events-none absolute h-full w-full object-cover object-left-top"
+            poster="invitation-bg-video.png"
             onloadedmetadata="this.muted=true"
             playsinline
             autoplay
@@ -59,7 +60,8 @@ import { signal } from '@angular/core';
             loop
           >
             <source src="invitation-bg-video.mp4" type="video/mp4" />
-            Your browser does not support HTML5 video.
+            <source src="invitation-bg-video.mp4" type="video/webm" />
+            <img src="invitation-bg-video.png" title="Your browser does not support the <video> tag" />
           </video>
         </div>
         <div class="relative mx-auto h-full max-w-screen-lg">
@@ -146,6 +148,7 @@ import { signal } from '@angular/core';
         <div class="absolute right-0 top-0 -z-20 h-full w-full overflow-y-hidden object-cover">
           <video
             class="pointer-events-none absolute h-full w-full object-cover object-right-top"
+            poster="invitation-bg-video.png"
             onloadedmetadata="this.muted=true"
             playsinline
             autoplay
@@ -153,7 +156,8 @@ import { signal } from '@angular/core';
             loop
           >
             <source src="invitation-bg-video.mp4" type="video/mp4" />
-            Your browser does not support HTML5 video.
+            <source src="invitation-bg-video.mp4" type="video/webm" />
+            <img src="invitation-bg-video.png" title="Your browser does not support the <video> tag" />
           </video>
         </div>
         <div class="relative mx-auto h-full w-full max-w-screen-lg">
