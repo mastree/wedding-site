@@ -45,7 +45,7 @@ import { signal } from '@angular/core';
         </div>
       </div>
     } @else {
-      <header class="relative top-0 h-[66vh] min-h-[25rem] w-full bg-white bg-opacity-30 md:min-h-[31.5rem]">
+      <header class="relative top-0 h-[66dvh] h-[66vh] min-h-[25rem] w-full bg-white bg-opacity-30 md:min-h-[31.5rem]">
         <div class="absolute bottom-0 top-0 z-10 h-full w-full">
           <app-navigation-bar></app-navigation-bar>
         </div>
@@ -95,7 +95,7 @@ import { signal } from '@angular/core';
         </div>
       </header>
 
-      <section class="relative h-[34vh] min-h-[12.5rem] bg-secondary md:min-h-[20rem]">
+      <section class="relative h-[34dvh] h-[34vh] min-h-[12.5rem] bg-secondary md:min-h-[20rem]">
         <div class="relative mx-auto h-full max-w-screen-lg">
           <div class="absolute top-0 flex w-full translate-y-[-100%] flex-col items-center justify-end">
             <p class="font-manuale text-[1.6rem] font-semibold text-primary">LEFT</p>
