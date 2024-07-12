@@ -5,6 +5,9 @@ module.exports = {
   content: ["./src/**/*.{html,ts}"],
   theme: {
     extend: {
+      height: {
+        screen: ["100vh", "100svh"],
+      },
       keyframes: {
         "bounce-small": {
           "0%, 100%": {
