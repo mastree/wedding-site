@@ -12,41 +12,17 @@ import { PLATFORM_ID } from '@angular/core';
 import { Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { signal } from '@angular/core';
+import { HomeLoadingComponent } from '../home-loading/home-loading.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   template: `
     @if (loading) {
-      <div class="relative top-0 h-screen w-full bg-white bg-opacity-30">
-        <div class="absolute bottom-0 top-0 z-10 h-full w-full">
-          <app-navigation-bar></app-navigation-bar>
-        </div>
-        <div class="flex size-8 h-full w-full items-center justify-center">
-          <div class="flex flex-col items-center justify-center">
-            <div class="mb-5 size-8 fill-slate-500">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path
-                  d="M10.72,19.9a8,8,0,0,1-6.5-9.79A7.77,7.77,0,0,1,10.4,4.16a8,8,0,0,1,9.49,6.52A1.54,1.54,0,0,0,21.38,12h.13a1.37,1.37,0,0,0,1.38-1.54,11,11,0,1,0-12.7,12.39A1.54,1.54,0,0,0,12,21.34h0A1.47,1.47,0,0,0,10.72,19.9Z"
-                >
-                  <animateTransform
-                    attributeName="transform"
-                    dur="0.5s"
-                    repeatCount="indefinite"
-                    type="rotate"
-                    values="0 12 12;360 12 12"
-                  />
-                </path>
-              </svg>
-            </div>
-            <p class="text=md font-manuale text-primary">Fetching invitation...</p>
-            <p class="text=md font-manuale text-primary">Please wait</p>
-          </div>
-        </div>
-      </div>
+      <app-home-loading></app-home-loading>
     } @else {
       <div class="relative flex h-screen min-h-[37.5rem] w-full flex-col gap-0 lg:min-h-[45rem]">
-        <header class="relative top-0 h-[66%] min-h-[25rem] w-full bg-white bg-opacity-30 lg:min-h-[30rem]">
+        <header class="relative top-0 h-[66%] w-full bg-white bg-opacity-30">
           <div class="absolute bottom-0 top-0 z-10 h-full w-full">
             <app-navigation-bar></app-navigation-bar>
           </div>
@@ -96,7 +72,7 @@ import { signal } from '@angular/core';
           </div>
         </header>
 
-        <section class="relative h-[34%] min-h-[12.5rem] bg-secondary lg:min-h-[15rem]">
+        <section class="relative h-[34%] bg-secondary">
           <div class="relative mx-auto h-full max-w-screen-lg">
             <div class="absolute top-0 flex w-full translate-y-[-100%] flex-col items-center justify-end">
               <p class="font-manuale text-[1.6rem] font-semibold text-primary">LEFT</p>
@@ -217,7 +193,7 @@ import { signal } from '@angular/core';
     }
   `,
   styleUrl: './home.component.css',
-  imports: [NavigationBarComponent, CountdownComponent, CardComponent, RsvpComponent, NgClass],
+  imports: [NavigationBarComponent, CountdownComponent, CardComponent, RsvpComponent, NgClass, HomeLoadingComponent],
 })
 export class HomeComponent implements OnInit, OnDestroy {
   private kFirstSectionText = {

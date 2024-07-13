@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Inject,
@@ -44,6 +45,7 @@ type State = {
           (pointerup)="resumeContentChange()"
           (mouseleave)="resumeContentChange()"
           (touchend)="resumeContentChange()"
+          id="primary"
           #content
         >
           <p class="font-manuale font-semibold">From: Faiza & Kamal</p>
@@ -93,6 +95,16 @@ type State = {
           </div>
         </div>
       </div>
+
+      <div class="flex flex-row gap-2">
+        @for (content of contents!; track content; let id = $index) {
+          <div
+            class="z-20 size-2 rounded-full shadow-md"
+            [ngClass]="id === currentId ? 'bg-white' : 'bg-gray-400'"
+          ></div>
+        }
+      </div>
+
       <div class="relative flex w-full flex-col items-center justify-center">
         <div
           class="pointer-events-none absolute top-0 z-10 flex h-full max-h-[100vh] w-full items-center justify-center"
@@ -192,16 +204,19 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
   @Inject({})
   private renderer = inject(Renderer2);
   private renderInterval: NodeJS.Timeout | undefined;
-  private currentId = 0;
   private lastContentChangeTime = 0;
   private pauseStart = 0;
+  currentId = 0;
   contentBaseClasses =
     'pointer-events-none absolute top-0 flex w-full flex-col rounded-b-lg rounded-r-lg bg-amber-100 ' +
     'p-2 text-primary opacity-0 shadow-lg shadow-pink-400/50';
 
   resizeObservable$: Observable<Event> | undefined;
 
-  constructor(@Inject(PLATFORM_ID) platformId: object) {
+  constructor(
+    @Inject(PLATFORM_ID) platformId: object,
+    private changeDetectorRef: ChangeDetectorRef,
+  ) {
     this.isBrowser.set(isPlatformBrowser(platformId)); // save isPlatformBrowser in signal
   }
 
@@ -254,7 +269,8 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
         containerHeight = height;
       }
     }
-    this.setHeight(container.nativeElement, containerHeight);
+    // Add 5px for the shadow
+    this.setHeight(container.nativeElement, containerHeight + 5);
   }
 
   private async wait(ms: number) {
@@ -262,6 +278,24 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    if (this.isBrowser()) {
+      // Correct the content order for the first time immediately
+      this.contents.reset(
+        this.contents
+          .toArray()
+          .sort((a, b) => Number(b.nativeElement.id === 'primary') - Number(a.nativeElement.id === 'primary')),
+      );
+      this.subscriptions.push(
+        this.contents.changes.subscribe((current: QueryList<ElementRef>) => {
+          this.contents.reset(
+            current
+              .toArray()
+              .sort((a, b) => Number(b.nativeElement.id === 'primary') - Number(a.nativeElement.id === 'primary')),
+          );
+        }),
+      );
+    }
+
     const { container, contents } = this;
     const children = container.nativeElement.children;
     this.logger.debug(`[kamalshafi] container child size: ${children.length}`);
@@ -284,6 +318,7 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.removeClasses(contents.get(this.currentId)?.nativeElement, [`opacity-0`, `scale-50`, `pointer-events-none`]);
       this.addClasses(contents.get(this.currentId)?.nativeElement, [`scale-100`]);
       this.currentId = nextId;
+      this.changeDetectorRef.detectChanges();
     };
     const intervalMillis = 5000;
     this.lastContentChangeTime = new Date().valueOf();
