@@ -24,11 +24,6 @@ import { MainInvitationComponent } from '../main-invitation/main-invitation.comp
   imports: [HomeLoadingComponent, MainInvitationComponent],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  private kFirstSectionText = {
-    0: ['WELCOME', 'TO THE', 'Announcement!'],
-    1: ["YOU'RE", 'INVITED', 'TO THE BIG DAY!'],
-  };
-
   // Model related members
   logger = inject(LoggerService);
   route = inject(ActivatedRoute);

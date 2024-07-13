@@ -1,3 +1,7 @@
+:root {
+  display: contents;
+}
+
 @keyframes scaleIn {
   from {
     transform: scale(0);
