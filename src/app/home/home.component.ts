@@ -111,11 +111,11 @@ import { signal } from '@angular/core';
               </div>
               <div
                 (click)="onDownloadAsPdf()"
-                class="active-go-up flex gap-2 font-lato font-light text-white"
+                class="active-go-up relative flex select-none gap-2 rounded-lg p-1 font-lato font-light text-white ring-white hover:cursor-pointer hover:ring-2 active:text-slate-300"
                 [ngClass]="invitation ? '' : ['hidden']"
               >
                 <img src="download.svg" />
-                <p class="line-2 text-sm active:text-sky-700 lg:text-[1rem]">Download invitation as PDF</p>
+                <p class="line-2 text-sm lg:text-[1rem]">Download invitation as PDF</p>
               </div>
             </div>
             <div class="absolute bottom-0 mb-1 flex w-full items-center justify-center gap-0">
@@ -209,7 +209,8 @@ import { signal } from '@angular/core';
       <footer class="w-full bg-dark-secondary p-3">
         <p class="text-center font-manuale text-[0.7rem] text-white">
           <span class="font-semibold">Copyright</span> ©{{ currentYear }}
-          <a href="https://kamalshafi.me"><span class="font-semibold underline active:text-sky-700">kamalshafi</span></a
+          <a href="https://kamalshafi.me" target="_blank"
+            ><span class="font-semibold underline active:text-sky-700">kamalshafi</span></a
           >, All Rights Reserved
         </p>
       </footer>
