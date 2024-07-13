@@ -5,11 +5,11 @@ import { NavigationBarComponent } from '../navigation-bar/navigation-bar.compone
   selector: 'app-home-loading',
   standalone: true,
   template: `
-    <div class="relative top-0 h-screen w-full bg-white bg-opacity-30">
+    <div class="relative top-0 flex h-screen w-full flex-col bg-white bg-opacity-30">
       <div class="absolute bottom-0 top-0 z-10 h-full w-full">
         <app-navigation-bar></app-navigation-bar>
       </div>
-      <div class="flex size-8 h-full w-full items-center justify-center">
+      <div class="flex size-8 w-full flex-grow items-center justify-center">
         <div class="flex flex-col items-center justify-center">
           <div class="mb-5 size-8 fill-slate-500">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -30,9 +30,22 @@ import { NavigationBarComponent } from '../navigation-bar/navigation-bar.compone
           <p class="text=md font-manuale text-primary">Please wait</p>
         </div>
       </div>
+
+      <footer class="bottom-0 w-full bg-dark-secondary p-3">
+        <p class="text-center font-manuale text-[0.7rem] text-white">
+          <span class="font-semibold">Copyright</span> ©{{ currentYear }}
+          <a href="https://kamalshafi.me" target="_blank"
+            ><span class="font-semibold underline active:text-sky-700">kamalshafi</span></a
+          >, All Rights Reserved
+        </p>
+      </footer>
     </div>
   `,
   styleUrl: './home-loading.component.css',
   imports: [NavigationBarComponent],
 })
-export class HomeLoadingComponent {}
+export class HomeLoadingComponent {
+  get currentYear(): number {
+    return new Date().getFullYear();
+  }
+}
