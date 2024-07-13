@@ -18,7 +18,7 @@ import { signal } from '@angular/core';
   standalone: true,
   template: `
     @if (loading) {
-      <div class="relative top-0 h-screen w-full bg-white bg-opacity-30 md:min-h-[31.5rem]">
+      <div class="relative top-0 h-screen w-full bg-white bg-opacity-30">
         <div class="absolute bottom-0 top-0 z-10 h-full w-full">
           <app-navigation-bar></app-navigation-bar>
         </div>
@@ -45,8 +45,8 @@ import { signal } from '@angular/core';
         </div>
       </div>
     } @else {
-      <div class="relative h-screen w-full">
-        <header class="relative top-0 h-[66%] min-h-[25rem] w-full bg-white bg-opacity-30 md:min-h-[31.5rem]">
+      <div class="relative flex h-screen min-h-[37.5rem] w-full flex-col gap-0 lg:min-h-[45rem]">
+        <header class="relative top-0 h-[66%] min-h-[25rem] w-full bg-white bg-opacity-30 lg:min-h-[30rem]">
           <div class="absolute bottom-0 top-0 z-10 h-full w-full">
             <app-navigation-bar></app-navigation-bar>
           </div>
@@ -68,18 +68,18 @@ import { signal } from '@angular/core';
           <div class="relative mx-auto h-full max-w-screen-lg">
             <div class="flex h-full w-full flex-col items-center justify-center gap-5 pt-5">
               <div class="flex w-full flex-col items-center justify-center text-primary">
-                <p class="justify-center font-manuale text-[1.6875rem] font-bold md:text-[1.9rem]">
+                <p class="justify-center font-manuale text-[1.6875rem] font-bold lg:text-[1.9rem]">
                   {{ getFirstSectionText[0] }}
                 </p>
-                <p class="justify-center font-manuale text-[1.6875rem] font-bold md:text-[1.9rem]">
+                <p class="justify-center font-manuale text-[1.6875rem] font-bold lg:text-[1.9rem]">
                   {{ getFirstSectionText[1] }}
                 </p>
               </div>
               <div class="flex w-full flex-col items-center justify-center" #bigDay>
                 <div
-                  class="animate-scale-in animate-fast mx-8 flex h-[5rem] w-[18rem] max-w-[90vw] items-center justify-center rounded-md bg-primary shadow-lg md:h-[6.5rem]"
+                  class="animate-scale-in animate-fast mx-8 flex h-[5rem] w-[18rem] max-w-[90vw] items-center justify-center rounded-md bg-primary shadow-lg lg:h-[6.5rem]"
                 >
-                  <p class="font-manuale text-[1.5rem] font-semibold text-white md:text-[2rem]">
+                  <p class="font-manuale text-[1.5rem] font-semibold text-white lg:text-[2rem]">
                     {{ getFirstSectionText[2] }}
                   </p>
                 </div>
@@ -96,7 +96,7 @@ import { signal } from '@angular/core';
           </div>
         </header>
 
-        <section class="relative h-[34%] min-h-[12.5rem] bg-secondary md:min-h-[20rem]">
+        <section class="relative h-[34%] min-h-[12.5rem] bg-secondary lg:min-h-[15rem]">
           <div class="relative mx-auto h-full max-w-screen-lg">
             <div class="absolute top-0 flex w-full translate-y-[-100%] flex-col items-center justify-end">
               <p class="font-manuale text-[1.6rem] font-semibold text-primary">LEFT</p>
@@ -106,8 +106,8 @@ import { signal } from '@angular/core';
             </div>
             <div class="flex h-full w-full flex-col items-center justify-center gap-5 text-center">
               <div>
-                <p class="justify-center font-marcellus-sc text-[2rem] text-white md:text-[2.4rem]">Kamal & Faiza's</p>
-                <p class="justify-center font-marcellus-sc text-[2rem] text-white md:text-[2.4rem]">Wedding</p>
+                <p class="justify-center font-marcellus-sc text-[2rem] text-white lg:text-[2.4rem]">Kamal & Faiza's</p>
+                <p class="justify-center font-marcellus-sc text-[2rem] text-white lg:text-[2.4rem]">Wedding</p>
               </div>
               <div
                 (click)="onDownloadAsPdf()"
@@ -115,7 +115,7 @@ import { signal } from '@angular/core';
                 [ngClass]="invitation ? '' : ['hidden']"
               >
                 <img src="download.svg" />
-                <p class="line-2 text-sm active:text-sky-700 md:text-[1rem]">Download invitation as PDF</p>
+                <p class="line-2 text-sm active:text-sky-700 lg:text-[1rem]">Download invitation as PDF</p>
               </div>
             </div>
             <div class="absolute bottom-0 mb-1 flex w-full items-center justify-center gap-0">
@@ -164,21 +164,21 @@ import { signal } from '@angular/core';
         </div>
         <div class="relative mx-auto h-full w-full max-w-screen-lg">
           <div class="mb-5 flex w-full flex-col justify-center">
-            <p class="text-center font-manuale text-xl font-semibold md:text-2xl">SCHEDULE & LOCATION</p>
+            <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">SCHEDULE & LOCATION</p>
             <p class="text-md text-center font-manuale font-light">Jadwal & Tempat</p>
           </div>
           <div class="flex w-full flex-grow flex-col items-center justify-start gap-8 overflow-clip">
             <app-card [classOnView]="animateGoFromLeft" icon="calendar.svg" title="Schedule">
-              <p class="font-manuale text-[1rem] md:text-[1.25rem]">
+              <p class="font-manuale text-[1rem] lg:text-[1.25rem]">
                 <span class="font-semibold">Date:</span> Sunday, 15 Dec 2024
               </p>
-              <p class="font-manuale text-[1rem] md:text-[1.25rem]">
+              <p class="font-manuale text-[1rem] lg:text-[1.25rem]">
                 <span class="font-semibold">Time:</span> 10.00 &mdash; 14.00 WIB
               </p>
             </app-card>
             <app-card [classOnView]="animateGoFromRight" icon="location-pin.svg" title="Location">
-              <p class="font-manuale text-[1rem] font-semibold md:text-[1.25rem]">Maxi's Resto</p>
-              <p class="font-manuale text-[1rem] md:text-[1.25rem]">Jl. Gunung Agung No.8, Ciumbuleuit, Kota Bandung</p>
+              <p class="font-manuale text-[1rem] font-semibold lg:text-[1.25rem]">Maxi's Resto</p>
+              <p class="font-manuale text-[1rem] lg:text-[1.25rem]">Jl. Gunung Agung No.8, Ciumbuleuit, Kota Bandung</p>
               <a
                 class="mt-2 flex flex-row items-center gap-1 fill-sky-400 text-sky-400 active:fill-sky-700 active:text-sky-700"
                 href="https://maps.app.goo.gl/9kLNCJA7acvwyxJB8"

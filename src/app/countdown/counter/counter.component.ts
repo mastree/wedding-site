@@ -18,7 +18,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
             </div>
             <div class="relative">
               <svg
-                class="m-0 h-[3rem] w-[1.875rem] md:h-[5rem] md:w-[3.125rem]"
+                class="m-0 h-[3rem] w-[1.875rem] md:h-[4rem] md:w-[2.5rem] lg:h-[5rem] lg:w-[3.125rem]"
                 viewBox="0 0 50 80"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"

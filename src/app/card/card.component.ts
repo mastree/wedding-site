@@ -12,7 +12,7 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
     <div class="flex min-h-40 w-[90%] items-center rounded-lg bg-slate-50 px-3 pb-7 pt-3 shadow-lg" #container>
       <div class="flex h-full w-full flex-col items-center justify-center gap-2">
         <div class="flex grow items-center justify-center">
-          <p class="font-manuale text-xl font-semibold md:text-2xl">{{ title }}</p>
+          <p class="font-manuale text-xl font-semibold lg:text-2xl">{{ title }}</p>
         </div>
         <div class="flex h-full w-full flex-row items-center">
           <div class="flex h-full min-w-[25%] max-w-[35%] flex-col items-center justify-center">
