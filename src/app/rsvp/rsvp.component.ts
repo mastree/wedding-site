@@ -228,11 +228,11 @@ export class RsvpComponent implements OnDestroy {
   }
 
   onSubmitRsvp(submit: boolean = true) {
-    if (this.state.willAttend && this.state.numAttend == 0) {
-      window.alert('Number of attendee must be more than 0!');
-      return;
-    }
     if (submit) {
+      if (this.state.willAttend && this.state.numAttend == 0) {
+        window.alert('Number of attendee must be more than 0!');
+        return;
+      }
       this.state.status = 'sending';
       this.state.loading = true;
       this.weddingService.updateRsvp(this.state.invitation!, {
