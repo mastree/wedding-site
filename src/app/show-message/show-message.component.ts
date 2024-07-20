@@ -132,14 +132,14 @@ type State = {
         >
           <div class="flex w-full flex-row justify-start gap-2">
             <button
-              class="rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400 disabled:pointer-events-none disabled:opacity-60"
+              class="rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md hover:ring-2 active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400 disabled:pointer-events-none disabled:opacity-60"
               [disabled]="state.page <= minPage"
               (click)="changePage(state.page - 1)"
             >
               <p class="font-manuale text-sm font-semibold text-primary">< prev</p>
             </button>
             <button
-              class="rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400 disabled:pointer-events-none disabled:opacity-60"
+              class="rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md hover:ring-2 active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400 disabled:pointer-events-none disabled:opacity-60"
               [disabled]="state.page >= maxPage"
               (click)="changePage(state.page + 1)"
             >
@@ -147,7 +147,7 @@ type State = {
             </button>
 
             <button
-              class="absolute right-0 top-0 rounded-md bg-primary p-3 font-semibold drop-shadow-md active:bg-light-primary active:shadow-inner active:ring-2 active:ring-white"
+              class="absolute right-0 top-0 rounded-md bg-primary p-3 font-semibold drop-shadow-md hover:ring-2 active:bg-light-primary active:shadow-inner active:ring-2 active:ring-white"
               (click)="onRefresh()"
             >
               <div class="size-4 fill-white">

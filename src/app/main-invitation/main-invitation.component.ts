@@ -156,7 +156,7 @@ import { HomeLoadingComponent } from '../home-loading/home-loading.component';
               href="https://maps.app.goo.gl/9kLNCJA7acvwyxJB8"
               target="_blank"
             >
-              <p class="font-manuale text-[1rem] active:underline">Open in GMaps</p>
+              <p class="font-manuale text-[1rem] hover:underline active:font-bold">Open in GMaps</p>
               <span class="size-3">
                 <svg viewBox="0 0 33 33" xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -181,8 +181,11 @@ import { HomeLoadingComponent } from '../home-loading/home-loading.component';
     <footer class="w-full bg-dark-secondary p-3">
       <p class="text-center font-manuale text-[0.7rem] text-white">
         <span class="font-semibold">Copyright</span> ©{{ currentYear }}
-        <a href="https://kamalshafi.me" target="_blank"
-          ><span class="font-semibold underline active:text-sky-700">kamalshafi</span></a
+        <a
+          class="font-semibold hover:underline active:font-bold active:text-sky-700"
+          href="https://kamalshafi.me"
+          target="_blank"
+          ><span>kamalshafi</span></a
         >, All Rights Reserved
       </p>
     </footer>

@@ -34,8 +34,11 @@ import { NavigationBarComponent } from '../navigation-bar/navigation-bar.compone
       <footer class="bottom-0 w-full bg-dark-secondary p-3">
         <p class="text-center font-manuale text-[0.7rem] text-white">
           <span class="font-semibold">Copyright</span> ©{{ currentYear }}
-          <a href="https://kamalshafi.me" target="_blank"
-            ><span class="font-semibold underline active:text-sky-700">kamalshafi</span></a
+          <a
+            class="font-semibold hover:underline active:font-bold active:text-sky-700"
+            href="https://kamalshafi.me"
+            target="_blank"
+            ><span>kamalshafi</span></a
           >, All Rights Reserved
         </p>
       </footer>

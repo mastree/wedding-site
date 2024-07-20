@@ -51,7 +51,7 @@ type RsvpState = {
                   <p class="text-md font-manuale text-white">You have filled the RSVP</p>
                   <button
                     (click)="onUpdateRsvp()"
-                    class="rounded-lg bg-dark-secondary p-2 font-manuale font-semibold text-white ring-white active:bg-light-primary active:shadow-inner active:shadow-primary active:ring-2 md:p-3"
+                    class="rounded-lg bg-dark-secondary p-2 font-manuale font-semibold text-white ring-white hover:ring-2 active:bg-light-primary active:shadow-inner active:shadow-primary active:ring-2 md:p-3"
                   >
                     update
                   </button>
@@ -75,7 +75,7 @@ type RsvpState = {
                   <div class="mt-2 flex w-full flex-col gap-2">
                     <button
                       (click)="onWillAttend(true)"
-                      class="rounded-lg bg-dark-secondary p-2 font-manuale font-semibold text-white ring-white focus:bg-light-primary focus:shadow-primary focus:ring-2 active:shadow-inner md:p-3"
+                      class="rounded-lg bg-dark-secondary p-2 font-manuale font-semibold text-white ring-white hover:ring-2 focus:bg-light-primary focus:shadow-primary focus:ring-2 active:shadow-inner md:p-3"
                       [disabled]="!isInvited"
                       #buttonYesAttend
                     >
@@ -83,7 +83,7 @@ type RsvpState = {
                     </button>
                     <button
                       (click)="onWillAttend(false)"
-                      class="rounded-lg bg-slate-100 p-2 font-manuale font-semibold text-primary ring-white focus:bg-red-100 focus:shadow-red-200 focus:ring-2 active:shadow-inner md:p-3"
+                      class="rounded-lg bg-slate-100 p-2 font-manuale font-semibold text-primary ring-white hover:ring-2 focus:bg-red-100 focus:shadow-red-200 focus:ring-2 active:shadow-inner md:p-3"
                       [disabled]="!isInvited"
                       #buttonNoAttend
                     >
@@ -98,7 +98,7 @@ type RsvpState = {
                       <button
                         (click)="onAddNumAttend(-1)"
                         [disabled]="state.numAttend <= 0"
-                        class="rounded-lg bg-slate-100 px-5 py-1 font-manuale text-xl font-bold text-primary ring-white active:bg-red-100 active:shadow-inner active:shadow-red-200 active:ring-2 disabled:pointer-events-none disabled:opacity-60"
+                        class="rounded-lg bg-slate-100 px-5 py-1 font-manuale text-xl font-bold text-primary ring-white hover:ring-2 active:bg-red-100 active:shadow-inner active:shadow-red-200 active:ring-2 disabled:pointer-events-none disabled:opacity-60"
                       >
                         -
                       </button>
@@ -108,7 +108,7 @@ type RsvpState = {
                       <button
                         (click)="onAddNumAttend(1)"
                         [disabled]="state.numAttend >= (state.invitation?.invitation_pax || 0)"
-                        class="rounded-lg bg-dark-secondary px-5 py-1 font-manuale text-xl font-bold text-white ring-white active:bg-light-primary active:shadow-inner active:shadow-primary active:ring-2 disabled:pointer-events-none disabled:opacity-60"
+                        class="rounded-lg bg-dark-secondary px-5 py-1 font-manuale text-xl font-bold text-white ring-white hover:ring-2 active:bg-light-primary active:shadow-inner active:shadow-primary active:ring-2 disabled:pointer-events-none disabled:opacity-60"
                       >
                         +
                       </button>
@@ -121,13 +121,13 @@ type RsvpState = {
                     <div class="flex flex-row items-center gap-2">
                       <button
                         (click)="onSubmitRsvp(true)"
-                        class="rounded-lg bg-dark-secondary p-2 font-manuale font-semibold text-white ring-white active:bg-light-primary active:shadow-inner active:shadow-primary active:ring-2 md:p-3"
+                        class="rounded-lg bg-dark-secondary p-2 font-manuale font-semibold text-white ring-white hover:ring-2 active:bg-light-primary active:shadow-inner active:shadow-primary active:ring-2 md:p-3"
                       >
                         Confirm
                       </button>
                       <button
                         (click)="onSubmitRsvp(false)"
-                        class="rounded-lg bg-slate-100 p-2 font-manuale font-semibold text-primary ring-white active:bg-red-100 active:shadow-inner active:shadow-red-200 active:ring-2 md:p-3"
+                        class="rounded-lg bg-slate-100 p-2 font-manuale font-semibold text-primary ring-white hover:ring-2 active:bg-red-100 active:shadow-inner active:shadow-red-200 active:ring-2 md:p-3"
                       >
                         Cancel
                       </button>
