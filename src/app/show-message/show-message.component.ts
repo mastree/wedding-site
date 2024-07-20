@@ -8,7 +8,6 @@ import {
   OnInit,
   PLATFORM_ID,
   QueryList,
-  Renderer2,
   ViewChild,
   ViewChildren,
   inject,
@@ -201,15 +200,13 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
   // View related members
   @ViewChild('container') container!: ElementRef;
   @ViewChildren('content') contents!: QueryList<ElementRef>;
-  @Inject({})
-  private renderer = inject(Renderer2);
   private renderInterval: NodeJS.Timeout | undefined;
   private lastContentChangeTime = 0;
   private pauseStart = 0;
   currentId = 0;
   contentBaseClasses =
     'pointer-events-none absolute top-0 flex w-full flex-col rounded-b-lg rounded-r-lg bg-amber-100 ' +
-    'p-2 text-primary opacity-0 shadow-lg shadow-pink-400/50';
+    'p-2 text-primary opacity-0 shadow-lg shadow-pink-400/50 scale-50 transition-all duration-1000';
 
   resizeObservable$: Observable<Event> | undefined;
 
@@ -243,14 +240,16 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private addClasses(element: any, classes: string[]) {
+    this.logger.debug(`addClasses(${element}, ${classes})`);
     classes.forEach((cls) => {
-      this.renderer.addClass(element, cls);
+      element.classList.toggle(cls, true);
     });
   }
 
   private removeClasses(element: any, classes: string[]) {
+    this.logger.debug(`removeClasses(${element}, ${classes})`);
     classes.forEach((cls) => {
-      this.renderer.removeClass(element, cls);
+      element.classList.toggle(cls, false);
     });
   }
 
@@ -295,28 +294,22 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
         }),
       );
     }
-
-    const { container, contents } = this;
-    const children = container.nativeElement.children;
-    this.logger.debug(`[kamalshafi] container child size: ${children.length}`);
-    this.logger.debug(`[kamalshafi] contents size: ${contents.length}`);
     this.updateHeight();
-    for (let i = 0; i < contents.length; i++) {
-      const content = contents.get(i);
-      this.addClasses(content?.nativeElement, [`scale-50`, `transition-all`, `duration-1000`]);
-    }
     const intervalFunc = async (firstCall = false) => {
+      const { contents } = this;
       const prevId = (this.currentId - 1 + contents.length) % contents.length;
       const nextId = (this.currentId + 1) % contents.length;
+      const prevElement = contents.get(prevId)?.nativeElement;
+      const currentElement = contents.get(this.currentId)?.nativeElement;
       if (!firstCall) {
         this.logger.debug(`[kamalshafi] prevId ${prevId}, currentId ${this.currentId}, nextId ${nextId}`);
-        this.removeClasses(contents.get(prevId)?.nativeElement, [`scale-100`]);
-        this.addClasses(contents.get(prevId)?.nativeElement, [`opacity-0`, `scale-50`]);
+        this.removeClasses(prevElement, [`scale-100`]);
+        this.addClasses(prevElement, [`opacity-0`, `scale-50`]);
         await this.wait(1000);
-        this.addClasses(contents.get(prevId)?.nativeElement, [`pointer-events-none`]);
+        this.addClasses(prevElement, [`pointer-events-none`]);
       }
-      this.removeClasses(contents.get(this.currentId)?.nativeElement, [`opacity-0`, `scale-50`, `pointer-events-none`]);
-      this.addClasses(contents.get(this.currentId)?.nativeElement, [`scale-100`]);
+      this.removeClasses(currentElement, [`opacity-0`, `scale-50`, `pointer-events-none`]);
+      this.addClasses(currentElement, [`scale-100`]);
       this.currentId = nextId;
       this.changeDetectorRef.detectChanges();
     };
