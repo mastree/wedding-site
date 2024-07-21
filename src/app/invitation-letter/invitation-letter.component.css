@@ -1,0 +1,23 @@
+:root {
+  display: contents;
+}
+
+.flap {
+  transform-origin: top;
+}
+
+.close.flap {
+  transform: rotatex(0deg);
+  transition:
+    transform 0.6s ease,
+    z-index 1s;
+  z-index: 5;
+}
+
+.open.flap {
+  transform: rotatex(180deg);
+  transition:
+    transform 0.4s ease,
+    z-index 0.6s;
+  z-index: 1;
+}

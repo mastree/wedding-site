@@ -95,6 +95,11 @@ module.exports = {
         "bg-skin": "#C3B8AF",
         shadow: "#E8E8E8",
         "bg-grey": "#D9D9D9",
+        "letter-body": "#9ACAC4",
+        "letter-flap": "#68A094",
+        "letter-bottom": "#89BEB7",
+        "letter-inner": "#EBEDED",
+        "bg-letter": "#EBEDED",
       },
       transitionDuration: {
         1500: "1500ms",

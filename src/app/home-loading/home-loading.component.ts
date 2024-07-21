@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavigationBarComponent } from '../navigation-bar/navigation-bar.component';
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-home-loading',
@@ -31,21 +32,11 @@ import { NavigationBarComponent } from '../navigation-bar/navigation-bar.compone
         </div>
       </div>
 
-      <footer class="bottom-0 w-full bg-dark-secondary p-3">
-        <p class="text-center font-manuale text-[0.7rem] text-white">
-          <span class="font-semibold">Copyright</span> ©{{ currentYear }}
-          <a
-            class="font-semibold hover:underline active:font-bold active:text-sky-700"
-            href="https://kamalshafi.me"
-            target="_blank"
-            ><span>kamalshafi</span></a
-          >, All Rights Reserved
-        </p>
-      </footer>
+      <app-footer></app-footer>
     </div>
   `,
   styleUrl: './home-loading.component.css',
-  imports: [NavigationBarComponent],
+  imports: [NavigationBarComponent, FooterComponent],
 })
 export class HomeLoadingComponent {
   get currentYear(): number {

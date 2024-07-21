@@ -12,6 +12,7 @@ import { Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { signal } from '@angular/core';
 import { HomeLoadingComponent } from '../home-loading/home-loading.component';
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-main-invitation',
@@ -178,20 +179,18 @@ import { HomeLoadingComponent } from '../home-loading/home-loading.component';
       </div>
     </section>
 
-    <footer class="w-full bg-dark-secondary p-3">
-      <p class="text-center font-manuale text-[0.7rem] text-white">
-        <span class="font-semibold">Copyright</span> ©{{ currentYear }}
-        <a
-          class="font-semibold hover:underline active:font-bold active:text-sky-700"
-          href="https://kamalshafi.me"
-          target="_blank"
-          ><span>kamalshafi</span></a
-        >, All Rights Reserved
-      </p>
-    </footer>
+    <app-footer></app-footer>
   `,
-  imports: [NavigationBarComponent, CountdownComponent, CardComponent, RsvpComponent, NgClass, HomeLoadingComponent],
   styleUrl: './main-invitation.component.css',
+  imports: [
+    NavigationBarComponent,
+    CountdownComponent,
+    CardComponent,
+    RsvpComponent,
+    NgClass,
+    HomeLoadingComponent,
+    FooterComponent,
+  ],
 })
 export class MainInvitationComponent implements OnInit, OnDestroy {
   private kFirstSectionText = {
