@@ -9,7 +9,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { signal } from '@angular/core';
 import { HomeLoadingComponent } from '../home-loading/home-loading.component';
 import { MainInvitationComponent } from '../main-invitation/main-invitation.component';
-import { InvitationLetterComponent } from '../invitation-letter/invitation-letter.component';
+import { InvitationEnvelopeComponent } from '../invitation-envelope/invitation-envelope.component';
 
 @Component({
   selector: 'app-home',
@@ -18,11 +18,11 @@ import { InvitationLetterComponent } from '../invitation-letter/invitation-lette
     @if (loading) {
       <app-home-loading></app-home-loading>
     } @else {
-      <app-invitation-letter></app-invitation-letter>
+      <app-invitation-envelope></app-invitation-envelope>
     }
   `,
   styleUrl: './home.component.css',
-  imports: [HomeLoadingComponent, MainInvitationComponent, InvitationLetterComponent],
+  imports: [HomeLoadingComponent, MainInvitationComponent, InvitationEnvelopeComponent],
 })
 export class HomeComponent implements OnInit, OnDestroy {
   // Model related members

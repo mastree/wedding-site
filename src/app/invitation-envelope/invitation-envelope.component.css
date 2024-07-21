@@ -1,0 +1,52 @@
+:root {
+  display: contents;
+}
+
+.flap {
+  transform-origin: top;
+  z-index: 12;
+}
+
+.close .flap {
+  transform: rotatex(0deg);
+  transition:
+    transform 0.4s 0.6s ease,
+    z-index 0.4s 0.6s;
+  z-index: 30;
+}
+
+.open .flap {
+  transform: rotatex(180deg);
+  transition:
+    transform 0.4s ease,
+    z-index 0.4s;
+  z-index: 0;
+}
+
+.paper {
+  transform-origin: 0%;
+}
+
+.close .paper {
+  transform: translateY(0%);
+  transition: transform 0.4s ease;
+}
+
+.open .paper {
+  transform: translateY(-80%);
+  transition: transform 0.4s 0.4s ease;
+}
+
+.envelope {
+  transform-origin: 0%;
+}
+
+.close .envelope {
+  transform: translateY(0%);
+  transition: transform 0.4s ease;
+}
+
+.open .envelope {
+  transform: translateY(30%);
+  transition: transform 0.4s 0.4s ease;
+}
