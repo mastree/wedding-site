@@ -17,8 +17,10 @@ import { InvitationEnvelopeComponent } from '../invitation-envelope/invitation-e
   template: `
     @if (loading) {
       <app-home-loading></app-home-loading>
+    } @else if (!envelopeOpened) {
+      <app-invitation-envelope (envelopeEvent)="onEnvelopeEvent($event)"></app-invitation-envelope>
     } @else {
-      <app-invitation-envelope></app-invitation-envelope>
+      <app-main-invitation></app-main-invitation>
     }
   `,
   styleUrl: './home.component.css',
@@ -31,6 +33,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   weddingService = inject(WeddingService);
   invitation?: Invitation | undefined;
   loading = true;
+
+  envelopeOpened = false;
 
   subscriptions: Subscription[] = [];
   isBrowser = signal(false);
@@ -63,5 +67,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     for (const sub of this.subscriptions) {
       sub.unsubscribe();
     }
+  }
+
+  onEnvelopeEvent(doOpen: boolean) {
+    this.logger.info(`envelope open: ${doOpen}`);
+    this.envelopeOpened = doOpen;
   }
 }

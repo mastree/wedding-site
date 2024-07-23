@@ -1,4 +1,14 @@
-import { Component, ElementRef, Inject, PLATFORM_ID, ViewChild, inject, signal } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Inject,
+  Output,
+  PLATFORM_ID,
+  ViewChild,
+  inject,
+  signal,
+} from '@angular/core';
 import { NavigationBarComponent } from '../navigation-bar/navigation-bar.component';
 import { FooterComponent } from '../footer/footer.component';
 import { LoggerService } from '../logger.service';
@@ -8,7 +18,7 @@ import { isPlatformBrowser } from '@angular/common';
   selector: 'app-invitation-envelope',
   standalone: true,
   template: `
-    <div class="bg-bg-envelope relative top-0 flex h-screen w-full flex-col">
+    <div class="bg-bg-envelope relative top-0 flex h-screen w-full flex-col" #root>
       <div class="absolute top-0 w-full">
         <app-navigation-bar></app-navigation-bar>
       </div>
@@ -73,7 +83,10 @@ import { isPlatformBrowser } from '@angular/common';
 export class InvitationEnvelopeComponent {
   logger = inject(LoggerService);
 
+  @Output() envelopeEvent = new EventEmitter<boolean>();
+
   @ViewChild('envelope') envelopeElement!: ElementRef;
+  @ViewChild('root') rootElement!: ElementRef;
   isBrowser = signal(false);
 
   constructor(@Inject(PLATFORM_ID) platformId: object) {
@@ -85,9 +98,17 @@ export class InvitationEnvelopeComponent {
     if (doOpen) {
       this.envelopeElement.nativeElement.classList.toggle('close', false);
       this.envelopeElement.nativeElement.classList.toggle('open', true);
+      this.rootElement.nativeElement.classList.toggle('animate-fade-out', true);
+      setTimeout(() => {
+        this.envelopeEvent.emit(true);
+      }, 1600);
     } else {
       this.envelopeElement.nativeElement.classList.toggle('open', false);
       this.envelopeElement.nativeElement.classList.toggle('close', true);
+      this.rootElement.nativeElement.classList.toggle('animate-fade-out', false);
+      setTimeout(() => {
+        this.envelopeEvent.emit(false);
+      }, 400);
     }
   }
 
