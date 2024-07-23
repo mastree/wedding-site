@@ -2,9 +2,33 @@
   display: contents;
 }
 
+.paper {
+  transform-origin: 0%;
+}
+
+.close .paper {
+  transform: translateY(0%);
+  transition: transform 0.4s ease;
+  z-index: 1;
+}
+
+.open .paper {
+  transform: translateY(-80%);
+  transition: transform 0.4s 0.4s ease;
+  z-index: 1;
+}
+
 .flap {
   transform-origin: top;
   z-index: 12;
+}
+
+.open {
+  --envelop-translate: 5rem;
+}
+
+.flap {
+  z-index: 30;
 }
 
 .close .flap {
@@ -23,30 +47,30 @@
   z-index: 0;
 }
 
-.paper {
+.envelope-flap {
   transform-origin: 0%;
 }
 
-.close .paper {
+.close .envelope-flap {
   transform: translateY(0%);
   transition: transform 0.4s ease;
 }
 
-.open .paper {
-  transform: translateY(-80%);
+.open .envelope-flap {
+  transform: translateY(calc(var(--envelop-translate) * -1));
   transition: transform 0.4s 0.4s ease;
 }
 
-.envelope {
+.envelope-body {
   transform-origin: 0%;
 }
 
-.close .envelope {
+.close .envelope-body {
   transform: translateY(0%);
   transition: transform 0.4s ease;
 }
 
-.open .envelope {
-  transform: translateY(30%);
+.open .envelope-body {
+  transform: translateY(var(--envelop-translate));
   transition: transform 0.4s 0.4s ease;
 }

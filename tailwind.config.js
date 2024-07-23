@@ -98,7 +98,7 @@ module.exports = {
         "envelope-body": "#9ACAC4",
         "envelope-flap": "#68A094",
         "envelope-bottom": "#89BEB7",
-        "envelope-inner": "#EBEDED",
+        "envelope-inner": "#97B8B3",
         "envelope-paper": "#FEEEEF",
         "bg-envelope": "#EBEDED",
       },
