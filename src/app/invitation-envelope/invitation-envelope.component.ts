@@ -13,19 +13,29 @@ import { NavigationBarComponent } from '../navigation-bar/navigation-bar.compone
 import { FooterComponent } from '../footer/footer.component';
 import { LoggerService } from '../logger.service';
 import { isPlatformBrowser } from '@angular/common';
+import { Invitation, WeddingService } from '../wedding.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-invitation-envelope',
   standalone: true,
   template: `
-    <div class="bg-bg-envelope relative top-0 flex h-screen w-full flex-col" #root>
+    <div class="relative top-0 flex h-screen w-full flex-col bg-bg-envelope" #root>
       <div class="absolute top-0 w-full">
         <app-navigation-bar></app-navigation-bar>
       </div>
-      <div class="flex h-full w-full flex-col items-center justify-center gap-5" #envelope>
+      <div class="flex h-full w-full flex-col items-center justify-start gap-5" #envelope>
+        <div class="relative h-[20%] max-h-32"></div>
+        <div class="relative mx-5 mb-10 flex max-w-md flex-col gap-5 font-manuale text-lg text-primary">
+          <p>
+            Hi <span class="font-semibold">{{ invitation?.name }}</span
+            >,
+          </p>
+          <p>you received an invitation to Faiza & Kamal's wedding. Please find the details inside:</p>
+        </div>
         <div class="relative">
           <div
-            class="bg-envelope-paper paper absolute bottom-0 left-0 right-0 top-0 m-auto h-[11rem] w-[15rem] shadow-md"
+            class="paper absolute bottom-0 left-0 right-0 top-0 m-auto h-[11rem] w-[15rem] bg-envelope-paper shadow-md"
           >
             <div
               class="relative flex size-full flex-col items-center justify-center gap-1 font-manuale text-[1.4rem] font-semibold text-primary"
@@ -41,34 +51,27 @@ import { isPlatformBrowser } from '@angular/common';
 
           <div class="flap absolute top-0">
             <div
-              class="border-t-envelope-flap envelope-flap size-0 border-x-[9rem] border-t-[7.5rem] border-x-transparent drop-shadow-md"
+              class="envelope-flap size-0 border-x-[9rem] border-t-[7.5rem] border-x-transparent border-t-envelope-flap drop-shadow-md"
             ></div>
           </div>
           <div class="h-[12rem] w-[18rem]">
-            <div class="envelope-body fill-envelope-body absolute z-20 h-full w-full drop-shadow-md">
+            <div class="envelope-body absolute z-20 h-full w-full fill-envelope-body drop-shadow-md">
               <svg viewBox="0 0 288 192" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M269.489 0L144 99L18.511 0H0V192H288V0H269.489Z" />
               </svg>
             </div>
             <div
-              class="envelope-body border-b-envelope-bottom absolute bottom-0 z-20 size-0 border-x-[9rem] border-b-[6rem] border-x-transparent bg-transparent"
+              class="envelope-body absolute bottom-0 z-20 size-0 border-x-[9rem] border-b-[6rem] border-x-transparent border-b-envelope-bottom bg-transparent"
             ></div>
-            <div class="envelope-body bg-envelope-inner absolute top-0 z-0 h-full w-full"></div>
+            <div class="envelope-body absolute top-0 z-0 h-full w-full bg-envelope-inner"></div>
           </div>
         </div>
-        <div class="flex flex-row items-center justify-center gap-4">
+        <div class="mt-5 flex flex-row items-center justify-center gap-4">
           <button
             (click)="onOpenEnvelope(true)"
             class="z-30 rounded-lg bg-dark-secondary p-2 font-manuale font-semibold text-white ring-sky-400 hover:ring-2 active:bg-light-primary active:shadow-inner active:shadow-primary active:ring-2 md:p-3"
           >
-            OPEN
-          </button>
-
-          <button
-            (click)="onOpenEnvelope(false)"
-            class="z-30 rounded-lg bg-slate-100 p-2 font-manuale font-semibold text-primary ring-sky-400 hover:ring-2 active:bg-red-100 active:shadow-inner active:shadow-red-200 active:ring-2 md:p-3"
-          >
-            CLOSE
+            OPEN INVITATION
           </button>
         </div>
       </div>
@@ -82,6 +85,12 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class InvitationEnvelopeComponent {
   logger = inject(LoggerService);
+  weddingService = inject(WeddingService);
+
+  invitation?: Invitation | undefined;
+  loading = true;
+
+  subscriptions: Subscription[] = [];
 
   @Output() envelopeEvent = new EventEmitter<boolean>();
 
@@ -91,6 +100,22 @@ export class InvitationEnvelopeComponent {
 
   constructor(@Inject(PLATFORM_ID) platformId: object) {
     this.isBrowser.set(isPlatformBrowser(platformId)); // save isPlatformBrowser in signal
+  }
+
+  ngOnInit() {
+    this.subscriptions.push(
+      this.weddingService.invitation.subscribe((data) => {
+        const nextLoading = data.status == 'loading';
+        this.invitation = data.invitation;
+        this.loading = nextLoading;
+      }),
+    );
+  }
+
+  ngOnDestroy() {
+    for (const sub of this.subscriptions) {
+      sub.unsubscribe();
+    }
   }
 
   onOpenEnvelope(doOpen: boolean) {
