@@ -21,74 +21,74 @@ import { TypewriterService } from '../typewriter.service';
   selector: 'app-invitation-envelope',
   standalone: true,
   template: `
-    <div class="relative top-0 flex h-screen w-full flex-col items-center bg-bg-envelope" #root>
+    <div class="relative h-full w-full bg-bg-envelope">
       <div class="absolute top-0 w-full">
         <app-navigation-bar></app-navigation-bar>
       </div>
-      <div
-        class="flex w-full max-w-screen-lg flex-col items-center justify-start gap-5 sm:h-full sm:flex-row sm:justify-center"
-      >
-        <div class="relative h-[20vh] max-h-32 w-full bg-none sm:hidden"></div>
-        <div class="relative mx-10 mb-10 flex max-w-md flex-col gap-5 font-manuale text-lg text-primary">
-          <p>
-            {{ textHeaderGreetings$ | async }}<span class="font-semibold">{{ textHeaderName$ | async }}</span
-            >,
-          </p>
-          <div class="relative flex flex-col">
-            <p class="absolute">{{ textContent$ | async }}</p>
-            <p class="pointer-events-none opacity-0">{{ kTextContent }}</p>
-          </div>
-        </div>
+      <div class="relative top-0 flex h-screen w-full flex-col items-center" #root>
         <div
-          class="flex h-full w-full flex-col items-center justify-start gap-5 opacity-0 sm:mr-5 sm:w-fit sm:justify-center"
-          #envelope
+          class="flex w-full max-w-screen-lg flex-col items-center justify-start gap-5 sm:h-full sm:flex-row sm:justify-center"
         >
-          <div class="relative">
-            <div
-              class="paper absolute bottom-0 left-0 right-0 top-0 m-auto h-[11rem] w-[15rem] bg-envelope-paper shadow-md"
-            >
-              <div
-                class="relative flex size-full flex-col items-center justify-center gap-1 font-manuale text-[1.4rem] font-semibold text-primary"
-              >
-                <p>WEDDING</p>
-                <p>INVITATION</p>
-                <img
-                  class="absolute bottom-0 left-0 -z-10 h-[70%] translate-x-[-10%] translate-y-[10%]"
-                  src="letter-background.png"
-                />
-              </div>
-            </div>
-
-            <div class="flap absolute top-0">
-              <div
-                class="envelope-flap size-0 border-x-[9rem] border-t-[7.5rem] border-x-transparent border-t-envelope-flap drop-shadow-md"
-              ></div>
-            </div>
-            <div class="h-[12rem] w-[18rem]">
-              <div class="envelope-body absolute z-20 h-full w-full fill-envelope-body drop-shadow-md">
-                <svg viewBox="0 0 288 192" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M269.489 0L144 99L18.511 0H0V192H288V0H269.489Z" />
-                </svg>
-              </div>
-              <div
-                class="envelope-body absolute bottom-0 z-20 size-0 border-x-[9rem] border-b-[6rem] border-x-transparent border-b-envelope-bottom bg-transparent"
-              ></div>
-              <div class="envelope-body absolute top-0 z-0 h-full w-full bg-envelope-inner"></div>
+          <div class="relative h-[20vh] max-h-32 w-full bg-none sm:hidden"></div>
+          <div class="relative mx-10 mb-10 flex max-w-md flex-col gap-5 font-manuale text-lg text-primary">
+            <p>
+              {{ textHeaderGreetings$ | async }}<span class="font-semibold">{{ textHeaderName$ | async }}</span
+              >,
+            </p>
+            <div class="relative flex flex-col">
+              <p class="absolute">{{ textContent$ | async }}</p>
+              <p class="pointer-events-none opacity-0">{{ kTextContent }}</p>
             </div>
           </div>
-          <div class="mt-5 flex flex-row items-center justify-center gap-4">
-            <button
-              (click)="onOpenEnvelope(true)"
-              class="z-30 rounded-lg bg-primary p-2 font-manuale font-semibold text-white ring-sky-400 hover:ring-2 active:bg-light-primary active:shadow-inner active:shadow-primary active:ring-2 sm:p-3"
-            >
-              OPEN INVITATION
-            </button>
+          <div
+            class="flex h-full w-full flex-col items-center justify-start gap-5 opacity-0 sm:mr-5 sm:w-fit sm:justify-center"
+            #envelope
+          >
+            <div class="relative">
+              <div
+                class="paper absolute bottom-0 left-0 right-0 top-0 m-auto h-[11rem] w-[15rem] bg-envelope-paper shadow-md"
+              >
+                <div
+                  class="relative flex size-full flex-col items-center justify-center gap-1 font-manuale text-[1.4rem] font-semibold text-primary"
+                >
+                  <p>WEDDING</p>
+                  <p>INVITATION</p>
+                  <img
+                    class="absolute bottom-0 left-0 -z-10 h-[70%] translate-x-[-10%] translate-y-[10%]"
+                    src="letter-background.png"
+                  />
+                </div>
+              </div>
+
+              <div class="flap absolute top-0">
+                <div
+                  class="envelope-flap size-0 border-x-[9rem] border-t-[7.5rem] border-x-transparent border-t-envelope-flap drop-shadow-md"
+                ></div>
+              </div>
+              <div class="h-[12rem] w-[18rem]">
+                <div class="envelope-body absolute z-20 h-full w-full fill-envelope-body drop-shadow-md">
+                  <svg viewBox="0 0 288 192" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M269.489 0L144 99L18.511 0H0V192H288V0H269.489Z" />
+                  </svg>
+                </div>
+                <div
+                  class="envelope-body absolute bottom-0 z-20 size-0 border-x-[9rem] border-b-[6rem] border-x-transparent border-b-envelope-bottom bg-transparent"
+                ></div>
+                <div class="envelope-body absolute top-0 z-0 h-full w-full bg-envelope-inner"></div>
+              </div>
+            </div>
+            <div class="mt-5 flex flex-row items-center justify-center gap-4">
+              <button
+                (click)="onOpenEnvelope(true)"
+                class="z-30 rounded-lg bg-primary p-2 font-manuale font-semibold text-white ring-sky-400 hover:ring-2 active:bg-light-primary active:shadow-inner active:shadow-primary active:ring-2 sm:p-3"
+              >
+                OPEN INVITATION
+              </button>
+            </div>
           </div>
         </div>
       </div>
-      <div class="absolute bottom-0 z-50 w-full">
-        <app-footer></app-footer>
-      </div>
+      <app-footer></app-footer>
     </div>
   `,
   styleUrl: './invitation-envelope.component.css',

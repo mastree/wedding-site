@@ -32,7 +32,7 @@ import { FooterComponent } from '../footer/footer.component';
         </div>
       </div>
 
-      <app-footer></app-footer>
+      <app-footer class="z-50"></app-footer>
     </div>
   `,
   styleUrl: './home-loading.component.css',
