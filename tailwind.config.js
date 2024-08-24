@@ -87,7 +87,8 @@ module.exports = {
         "small-pulse": "small-pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
       colors: {
-        primary: "#0D271A",
+        // primary: "#0D271A",
+        primary: "#1B3940",
         "light-primary": "#2D473A",
         secondary: "#AC8E5D",
         "dark-secondary": "#342C20",

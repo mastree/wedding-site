@@ -136,7 +136,7 @@ import { FooterComponent } from '../footer/footer.component';
             <img src="invitation-bg-video.png" title="Your browser does not support the <video> tag" />
           </video>
         </div>
-        <div class="relative mx-auto h-full w-full max-w-screen-lg">
+        <div class="relative mx-auto h-full w-full max-w-screen-lg text-primary">
           <div class="mb-5 flex w-full flex-col justify-center">
             <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">SCHEDULE & LOCATION</p>
             <p class="text-md text-center font-manuale font-light">Jadwal & Tempat</p>
@@ -147,7 +147,7 @@ import { FooterComponent } from '../footer/footer.component';
                 <span class="font-semibold">Date:</span> Sunday, 15 Dec 2024
               </p>
               <p class="font-manuale text-[1rem] lg:text-[1.25rem]">
-                <span class="font-semibold">Time:</span> 10.00 &mdash; 14.00 WIB
+                <span class="font-semibold">Time:</span> 14.30 &mdash; 18.00 WIB
               </p>
             </app-card>
             <app-card [classOnView]="animateGoFromRight" icon="location-pin.svg" title="Location">
@@ -211,7 +211,7 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
   // View related members
   @ViewChild('bigDay') bigDayElement: ElementRef | undefined;
 
-  eventDate: Date = new Date('2024-12-15T10:00:00.000+07:00');
+  eventDate: Date = new Date('2024-12-15T14:30:00.000+07:00');
 
   animateGoFromLeft = ['animate-go-from-left'];
   animateGoFromRight = ['animate-go-from-right'];

@@ -17,7 +17,7 @@ import { InvitationEnvelopeComponent } from '../invitation-envelope/invitation-e
   template: `
     @if (loading) {
       <app-home-loading></app-home-loading>
-    } @else if (!envelopeOpened) {
+    } @else if (!envelopeOpened && invitation) {
       <app-invitation-envelope (envelopeEvent)="onEnvelopeEvent($event)"></app-invitation-envelope>
     } @else {
       <app-main-invitation></app-main-invitation>
