@@ -87,7 +87,8 @@ module.exports = {
         "small-pulse": "small-pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
       colors: {
-        primary: "#0D271A",
+        // primary: "#0D271A",
+        primary: "#1B3940",
         "light-primary": "#2D473A",
         secondary: "#AC8E5D",
         "dark-secondary": "#342C20",
@@ -95,6 +96,12 @@ module.exports = {
         "bg-skin": "#C3B8AF",
         shadow: "#E8E8E8",
         "bg-grey": "#D9D9D9",
+        "envelope-body": "#9ACAC4",
+        "envelope-flap": "#68A094",
+        "envelope-bottom": "#89BEB7",
+        "envelope-inner": "#97B8B3",
+        "envelope-paper": "#FEEEEF",
+        "bg-envelope": "#EBEDED",
       },
       transitionDuration: {
         1500: "1500ms",

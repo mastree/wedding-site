@@ -9,6 +9,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { signal } from '@angular/core';
 import { HomeLoadingComponent } from '../home-loading/home-loading.component';
 import { MainInvitationComponent } from '../main-invitation/main-invitation.component';
+import { InvitationEnvelopeComponent } from '../invitation-envelope/invitation-envelope.component';
 
 @Component({
   selector: 'app-home',
@@ -16,12 +17,14 @@ import { MainInvitationComponent } from '../main-invitation/main-invitation.comp
   template: `
     @if (loading) {
       <app-home-loading></app-home-loading>
+    } @else if (!envelopeOpened && invitation) {
+      <app-invitation-envelope (envelopeEvent)="onEnvelopeEvent($event)"></app-invitation-envelope>
     } @else {
       <app-main-invitation></app-main-invitation>
     }
   `,
   styleUrl: './home.component.css',
-  imports: [HomeLoadingComponent, MainInvitationComponent],
+  imports: [HomeLoadingComponent, MainInvitationComponent, InvitationEnvelopeComponent],
 })
 export class HomeComponent implements OnInit, OnDestroy {
   // Model related members
@@ -30,6 +33,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   weddingService = inject(WeddingService);
   invitation?: Invitation | undefined;
   loading = true;
+
+  envelopeOpened = false;
 
   subscriptions: Subscription[] = [];
   isBrowser = signal(false);
@@ -62,5 +67,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     for (const sub of this.subscriptions) {
       sub.unsubscribe();
     }
+  }
+
+  onEnvelopeEvent(doOpen: boolean) {
+    this.logger.info(`envelope open: ${doOpen}`);
+    this.envelopeOpened = doOpen;
   }
 }

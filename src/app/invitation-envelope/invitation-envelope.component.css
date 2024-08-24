@@ -1,0 +1,179 @@
+:root {
+  display: contents;
+}
+
+/* During first open */
+@keyframes scaleIn {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-scale-in {
+  animation-name: scaleIn;
+  animation-fill-mode: both;
+  animation-timing-function: ease;
+  animation-duration: 1s;
+}
+/* ====================*/
+
+@keyframes fadeOutAnimation {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-fade-out {
+  animation: fadeOutAnimation ease-in-out 0.6s;
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
+  animation-delay: 1.7s;
+}
+
+@keyframes letterUnfold {
+  0%,
+  25% {
+    transform: translateY(0%);
+  }
+  40% {
+    transform: translateY(-65%);
+  }
+  50% {
+    transform: translateY(-77%);
+  }
+  54% {
+    transform: translateY(-80%);
+  }
+  55%,
+  65% {
+    z-index: 31;
+  }
+  100% {
+    transform: scale(1.4) translateY(0%);
+    z-index: 31;
+    box-shadow:
+      /* inner white */ 0 0 30px 15px #fff;
+  }
+}
+
+@keyframes letterFold {
+  0% {
+    transform: translateY(-80%);
+  }
+  8% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+.paper {
+  animation-fill-mode: both;
+  animation-timing-function: linear;
+  animation-duration: 1.7s;
+  z-index: 1;
+}
+
+.close .paper {
+  animation-name: letterFold;
+  animation-direction: normal;
+}
+
+.open .paper {
+  animation-name: letterUnfold;
+  animation-direction: normal;
+}
+
+/* .paper {
+  transform-origin: 0%;
+}
+
+.close .paper {
+  transform: translateY(0%);
+  transition: transform 0.4s ease;
+  z-index: 1;
+}
+
+.open .paper {
+  transform: translateY(-80%);
+  transition: transform 0.4s 0.4s ease;
+  z-index: 1;
+} */
+
+.flap {
+  transform-origin: top;
+  z-index: 12;
+}
+
+.open {
+  --envelope-translate: 5rem;
+}
+
+.flap {
+  z-index: 30;
+}
+
+.close .flap {
+  transform: rotatex(0deg);
+  transition:
+    transform 0.4s 0.6s ease,
+    z-index 0.4s 0.6s;
+  z-index: 30;
+}
+
+.open .flap {
+  transform: rotatex(180deg);
+  transition:
+    transform 0.4s ease,
+    z-index 0.4s;
+  z-index: 0;
+}
+
+.envelope-flap {
+  transform-origin: 0%;
+}
+
+.close .envelope-flap {
+  transform: translateY(0%);
+  transition: transform 0.4s ease;
+}
+
+.open .envelope-flap {
+  transform: translateY(calc(var(--envelope-translate) * -1));
+  transition: transform 0.4s 0.4s ease;
+}
+
+.envelope-body {
+  transform-origin: 0%;
+}
+
+.close .envelope-body {
+  transform: translateY(0%);
+  transition: transform 0.4s ease;
+}
+
+.open .envelope-body {
+  transform: translateY(var(--envelope-translate));
+  transition: transform 0.4s 0.4s ease;
+}
