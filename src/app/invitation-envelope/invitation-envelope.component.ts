@@ -96,7 +96,7 @@ import { TypewriterService } from '../typewriter.service';
 })
 export class InvitationEnvelopeComponent {
   kTextHeader = 'Hi ';
-  kTextContent = "you received an invitation to Faiza & Kamal's wedding ceremony. Please find the details inside:";
+  kTextContent = "You received an invitation to Faiza & Kamal's wedding ceremony. Please find the details inside:";
 
   logger = inject(LoggerService);
   weddingService = inject(WeddingService);
