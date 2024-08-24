@@ -3,11 +3,14 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LoggerService } from '../logger.service';
 import { Message, MessageService } from '../message.service';
+import { Invitation, WeddingService } from '../wedding.service';
+import { Subscription } from 'rxjs';
 
 type MessageState = {
   name: string;
   message: string;
   status?: undefined | 'sending' | 'sent' | 'error';
+  anonymousMode: boolean;
 };
 
 @Component({
@@ -23,34 +26,49 @@ type MessageState = {
           (submit)="onSubmitMessage($event)"
           [ngClass]="state.status == 'sending' ? ['pointer-events-none', 'opacity-60'] : ''"
         >
-          <label for="name">
-            <input
-              id="name"
-              class="w-full appearance-none rounded border border-transparent bg-slate-100 px-3.5 py-2.5 font-manuale text-slate-600 outline-none selection:bg-indigo-600 selection:text-white hover:border-slate-200 focus:border-indigo-400 focus:bg-white focus:ring-2 focus:ring-indigo-100"
-              type="text"
-              placeholder="From"
-              maxlength="40"
-              [(ngModel)]="state.name"
-              [ngModelOptions]="{ standalone: true }"
-              (ngModelChange)="state.name = $event"
-            />
-          </label>
-          <div
-            class="grid overflow-hidden after:invisible after:whitespace-pre-wrap after:border after:px-3.5 after:py-2.5 after:text-inherit after:content-[attr(data-cloned-val)_'_'] after:[grid-area:1/1/2/2] [&>textarea]:resize-none [&>textarea]:overflow-hidden [&>textarea]:text-inherit [&>textarea]:[grid-area:1/1/2/2]"
-          >
-            <textarea
-              class="w-full appearance-none text-wrap break-all rounded border border-transparent bg-slate-100 px-3.5 py-2.5 font-manuale text-slate-600 outline-none selection:bg-indigo-600 selection:text-white hover:border-slate-200 focus:border-indigo-400 focus:bg-white focus:ring-2 focus:ring-indigo-100"
-              name="message"
-              id="message"
-              rows="2"
-              onInput="this.parentNode.dataset.clonedVal = this.value"
-              placeholder="Message..."
-              maxlength="1000"
-              [(ngModel)]="state.message"
-              required
-            ></textarea>
+          <div class="flex flex-col">
+            <label for="name">
+              <input
+                id="name"
+                class="w-full appearance-none rounded border border-transparent bg-slate-100 px-3.5 py-2.5 font-manuale text-slate-600 outline-none selection:bg-indigo-600 selection:text-white hover:border-slate-200 focus:border-indigo-400 focus:bg-white focus:ring-2 focus:ring-indigo-100 disabled:opacity-70"
+                type="text"
+                placeholder="From"
+                maxlength="40"
+                [(ngModel)]="state.name"
+                [ngModelOptions]="{ standalone: true }"
+                (ngModelChange)="state.name = $event"
+                [disabled]="!state.anonymousMode"
+              />
+            </label>
+            <label
+              for="anonymousCheck"
+              class="ml-1 flex flex-row items-center gap-1"
+              [ngClass]="invitation ? '' : 'hidden'"
+            >
+              <input id="anonymousCheck" name="anonymousCheck" [(ngModel)]="state.anonymousMode" type="checkbox" />
+              <p class="font-manuale text-sm text-white">sent under a different name</p>
+            </label>
           </div>
-          <p class="mb-2 ml-1 font-manuale text-sm text-white">{{ state.message.length }}/1000 characters</p>
+          <div class="flex flex-col">
+            <div
+              class="grid overflow-hidden after:invisible after:whitespace-pre-wrap after:border after:px-3.5 after:py-2.5 after:text-inherit after:content-[attr(data-cloned-val)_'_'] after:[grid-area:1/1/2/2] [&>textarea]:resize-none [&>textarea]:overflow-hidden [&>textarea]:text-inherit [&>textarea]:[grid-area:1/1/2/2]"
+            >
+              <textarea
+                class="w-full appearance-none text-wrap break-all rounded border border-transparent bg-slate-100 px-3.5 py-2.5 font-manuale text-slate-600 outline-none selection:bg-indigo-600 selection:text-white hover:border-slate-200 focus:border-indigo-400 focus:bg-white focus:ring-2 focus:ring-indigo-100"
+                name="message"
+                id="message"
+                rows="2"
+                onInput="this.parentNode.dataset.clonedVal = this.value"
+                placeholder="Message..."
+                [maxlength]="kCharactersLimit"
+                [(ngModel)]="state.message"
+                required
+              ></textarea>
+            </div>
+            <p class="ml-1 font-manuale text-sm text-white">
+              {{ state.message.length }}/{{ kCharactersLimit }} characters
+            </p>
+          </div>
           <button
             class="rounded-lg bg-dark-secondary p-2 font-manuale font-semibold text-white ring-white hover:ring-2 active:bg-light-primary active:shadow-inner active:shadow-primary active:ring-2 md:p-3"
             type="submit"
@@ -92,13 +110,42 @@ type MessageState = {
   styleUrl: './message.component.css',
 })
 export class MessageComponent {
+  kCharactersLimit = 400;
+
   logger = inject(LoggerService);
   messageService = inject(MessageService);
+  weddingService = inject(WeddingService);
+
+  invitation?: Invitation | undefined;
+  loading = true;
+
+  subscriptions: Subscription[] = [];
 
   state: MessageState = {
     name: '',
     message: '',
+    anonymousMode: true,
   };
+
+  ngOnInit() {
+    this.subscriptions.push(
+      this.weddingService.invitation.subscribe((data) => {
+        const nextLoading = data.status == 'loading';
+        this.invitation = data.invitation;
+        this.loading = nextLoading;
+        if (this.invitation) {
+          this.state.name = this.invitation.name;
+          this.state.anonymousMode = false;
+        }
+      }),
+    );
+  }
+
+  ngOnDestroy() {
+    for (const sub of this.subscriptions) {
+      sub.unsubscribe();
+    }
+  }
 
   onSubmitMessage(event: SubmitEvent) {
     this.logger.debug('Send message:', this.state.name, this.state.message);
