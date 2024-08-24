@@ -50,6 +50,7 @@ type MessageState = {
               required
             ></textarea>
           </div>
+          <p class="mb-2 ml-1 font-manuale text-sm text-white">{{ state.message.length }}/1000 characters</p>
           <button
             class="rounded-lg bg-dark-secondary p-2 font-manuale font-semibold text-white ring-white hover:ring-2 active:bg-light-primary active:shadow-inner active:shadow-primary active:ring-2 md:p-3"
             type="submit"
