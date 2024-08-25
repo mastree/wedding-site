@@ -25,10 +25,8 @@ import { TypewriterService } from '../typewriter.service';
       <div class="absolute top-0 w-full">
         <app-navigation-bar></app-navigation-bar>
       </div>
-      <div class="relative top-0 flex min-h-screen w-full flex-col items-center justify-center sm:justify-start" #root>
-        <div
-          class="flex w-full max-w-screen-lg flex-col items-center justify-start gap-5 pt-[10vh] sm:h-full sm:flex-row sm:justify-center"
-        >
+      <div class="relative top-0 flex min-h-screen w-full flex-col items-center justify-center" #root>
+        <div class="my-[max(10vh,4rem)] flex w-full max-w-screen-lg flex-col items-center justify-start gap-5">
           <div class="relative mx-10 flex max-w-md flex-col gap-5 font-manuale text-lg text-primary">
             <p>
               {{ textHeaderGreetings$ | async }}<span class="font-semibold">{{ textHeaderName$ | async }}</span
@@ -39,10 +37,7 @@ import { TypewriterService } from '../typewriter.service';
               <p class="pointer-events-none opacity-0">{{ kTextContent }}</p>
             </div>
           </div>
-          <div
-            class="my-5 flex h-full w-full flex-col items-center justify-start gap-5 opacity-0 sm:mr-5 sm:w-fit sm:justify-center"
-            #envelope
-          >
+          <div class="my-5 flex h-full w-full flex-col items-center justify-start gap-5 opacity-0" #envelope>
             <div class="relative" (click)="onOpenEnvelope(true)">
               <div
                 class="paper absolute bottom-0 left-0 right-0 top-0 m-auto h-[11rem] w-[15rem] bg-envelope-paper shadow-md"
@@ -79,7 +74,7 @@ import { TypewriterService } from '../typewriter.service';
             <div class="mt-5 flex flex-row items-center justify-center gap-4">
               <button
                 (click)="onOpenEnvelope(true)"
-                class="z-30 rounded-lg bg-primary p-2 font-manuale font-semibold text-white ring-sky-400 hover:ring-2 active:bg-light-primary active:shadow-inner active:shadow-primary active:ring-2 sm:p-3"
+                class="rounded-lg bg-primary p-2 font-manuale font-semibold text-white ring-sky-400 hover:ring-2 active:bg-light-primary active:shadow-inner active:shadow-primary active:ring-2"
               >
                 OPEN INVITATION
               </button>
