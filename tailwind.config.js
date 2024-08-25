@@ -93,7 +93,7 @@ module.exports = {
         secondary: "#AC8E5D",
         "dark-secondary": "#342C20",
         "dark-item": "#474747",
-        "bg-skin": "#C3B8AF",
+        "bg-main": "#EBEDED",
         shadow: "#E8E8E8",
         "bg-grey": "#D9D9D9",
         "envelope-body": "#9ACAC4",

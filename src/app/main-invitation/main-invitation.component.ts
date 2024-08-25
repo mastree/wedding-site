@@ -13,6 +13,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { signal } from '@angular/core';
 import { HomeLoadingComponent } from '../home-loading/home-loading.component';
 import { FooterComponent } from '../footer/footer.component';
+import { ClassOnViewComponent } from '../class-on-view/class-on-view.component';
 
 @Component({
   selector: 'app-main-invitation',
@@ -49,15 +50,17 @@ import { FooterComponent } from '../footer/footer.component';
                   {{ getFirstSectionText[1] }}
                 </p>
               </div>
-              <div class="flex w-full flex-col items-center justify-center" #bigDay>
-                <div
-                  class="animate-scale-in animate-fast mx-8 flex h-[5rem] w-[18rem] max-w-[90vw] items-center justify-center rounded-md bg-primary shadow-lg lg:h-[6.5rem]"
-                >
-                  <p class="font-manuale text-[1.5rem] font-semibold text-white lg:text-[2rem]">
-                    {{ getFirstSectionText[2] }}
-                  </p>
+              <app-class-on-view [classOnView]="kBrideOnView">
+                <div class="flex w-full flex-col items-center justify-center">
+                  <div
+                    class="mx-8 flex h-[5rem] w-[18rem] max-w-[90vw] items-center justify-center rounded-md bg-primary shadow-lg lg:h-[6.5rem]"
+                  >
+                    <p class="font-manuale text-[1.5rem] font-semibold text-white lg:text-[2rem]">
+                      {{ getFirstSectionText[2] }}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </app-class-on-view>
               <app-countdown [eventDate]="eventDate"></app-countdown>
             </div>
           </div>
@@ -120,29 +123,51 @@ import { FooterComponent } from '../footer/footer.component';
         </section>
       </div>
 
-      <section class="relative flex flex-col gap-8 bg-white bg-opacity-30 pb-20 pt-16">
-        <div class="absolute right-0 top-0 -z-20 h-full w-full overflow-y-hidden object-cover">
-          <video
-            class="pointer-events-none absolute h-full w-full object-cover object-right-top"
-            poster="invitation-bg-video.png"
-            onloadedmetadata="this.muted=true"
-            playsinline
-            autoplay
-            muted
-            loop
-          >
-            <source src="invitation-bg-video.mp4" type="video/mp4" />
-            <source src="invitation-bg-video.mp4" type="video/webm" />
-            <img src="invitation-bg-video.png" title="Your browser does not support the <video> tag" />
-          </video>
+      <section class="bg-bg-main relative flex flex-col items-center justify-center gap-8 bg-opacity-30 pb-20 pt-16">
+        <div class="relative my-5 flex h-full w-full max-w-screen-lg flex-row items-center justify-center">
+          <div class="flex w-full flex-col items-center justify-center gap-10">
+            <app-class-on-view [classOnView]="kBrideOnView">
+              <div
+                class="mb-5 flex h-[14rem] w-[12rem] flex-col items-center justify-center rounded-lg bg-primary lg:h-[17.5rem] lg:w-[15rem]"
+              ></div>
+            </app-class-on-view>
+            <app-class-on-view [classOnView]="kBrideOnView">
+              <div class="mx-5 flex flex-col items-center justify-center gap-2 text-center">
+                <p class="font-manuale text-xl font-bold text-primary lg:text-2xl">Faiza Nurkholida</p>
+                <p class="text-md font-manuale text-primary lg:text-[1.2rem]">
+                  Putri Bapak (Alm) Muh Khozin dan Ibu Isrofah Wijayanti
+                </p>
+              </div>
+            </app-class-on-view>
+            <app-class-on-view [classOnView]="kBrideOnView">
+              <div
+                class="mx-5 flex size-[3rem] flex-col items-center justify-center rounded-full bg-primary lg:size-[4rem]"
+              >
+                <p
+                  class="-translate-y-[0.2rem] text-center font-manuale text-[2rem] font-bold text-white lg:text-[2.6rem]"
+                >
+                  &
+                </p>
+              </div>
+            </app-class-on-view>
+            <app-class-on-view [classOnView]="kBrideOnView">
+              <div class="mx-5 flex flex-col items-center justify-center gap-2 text-center">
+                <p class="font-manuale text-xl font-bold text-primary lg:text-2xl">Muhammad Kamal Shafi</p>
+                <p class="text-md font-manuale text-primary lg:text-[1.2rem]">
+                  Putra Bapak Shafiyuddin dan Ibu Rahmi Syahrini
+                </p>
+              </div>
+            </app-class-on-view>
+          </div>
         </div>
+        <div class="my-10 h-[0.5px] w-[70vw] max-w-screen-sm rounded-full bg-primary"></div>
         <div class="relative mx-auto h-full w-full max-w-screen-lg text-primary">
           <div class="mb-5 flex w-full flex-col justify-center">
             <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">SCHEDULE & LOCATION</p>
             <p class="text-md text-center font-manuale font-light">Jadwal & Tempat</p>
           </div>
           <div class="flex w-full flex-grow flex-col items-center justify-start gap-8 overflow-clip">
-            <app-card [classOnView]="animateGoFromLeft" icon="calendar.svg" title="Schedule">
+            <app-card [classOnView]="kAnimateGoFromLeft" icon="calendar.svg" title="Schedule">
               <p class="font-manuale text-[1rem] lg:text-[1.25rem]">
                 <span class="font-semibold">Date:</span> Sunday, 15 Dec 2024
               </p>
@@ -150,7 +175,7 @@ import { FooterComponent } from '../footer/footer.component';
                 <span class="font-semibold">Time:</span> 14.30 &mdash; 18.00 WIB
               </p>
             </app-card>
-            <app-card [classOnView]="animateGoFromRight" icon="location-pin.svg" title="Location">
+            <app-card [classOnView]="kAnimateGoFromRight" icon="location-pin.svg" title="Location">
               <p class="font-manuale text-[1rem] font-semibold lg:text-[1.25rem]">Maxi's Resto</p>
               <p class="font-manuale text-[1rem] lg:text-[1.25rem]">Jl. Gunung Agung No.8, Ciumbuleuit, Kota Bandung</p>
               <a
@@ -192,6 +217,7 @@ import { FooterComponent } from '../footer/footer.component';
     NgClass,
     HomeLoadingComponent,
     FooterComponent,
+    ClassOnViewComponent,
   ],
 })
 export class MainInvitationComponent implements OnInit, OnDestroy {
@@ -199,6 +225,10 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
     0: ['WELCOME', 'TO THE', 'Announcement!'],
     1: ["YOU'RE", 'INVITED', 'TO THE BIG DAY!'],
   };
+
+  kBrideOnView = ['animate', 'animate-scale-in', 'animate-fast'];
+  kAnimateGoFromLeft = ['animate-go-from-left'];
+  kAnimateGoFromRight = ['animate-go-from-right'];
 
   // Model related members
   logger = inject(LoggerService);
@@ -213,8 +243,6 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
 
   eventDate: Date = new Date('2024-12-15T14:30:00.000+07:00');
 
-  animateGoFromLeft = ['animate-go-from-left'];
-  animateGoFromRight = ['animate-go-from-right'];
   isBrowser = signal(false);
 
   constructor(@Inject(PLATFORM_ID) platformId: object) {
@@ -265,25 +293,6 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
           }
         });
       });
-      const threshold = [0, 0.1];
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            // WAR to handle weird intersection logic when animation active.
-            // - Observe the container for its child animation activation.
-            const child = entry.target.firstElementChild;
-            if (entry.intersectionRatio <= 0) {
-              child?.classList.add('opacity-0');
-              child?.classList.remove('animate');
-            } else {
-              child?.classList.remove('opacity-0');
-              child?.classList.add('animate');
-            }
-          });
-        },
-        { threshold },
-      );
-      observer.observe(this.bigDayElement!.nativeElement);
     }
   }
 
