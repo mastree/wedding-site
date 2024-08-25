@@ -25,12 +25,11 @@ import { TypewriterService } from '../typewriter.service';
       <div class="absolute top-0 w-full">
         <app-navigation-bar></app-navigation-bar>
       </div>
-      <div class="relative top-0 flex h-screen w-full flex-col items-center" #root>
+      <div class="relative top-0 flex min-h-screen w-full flex-col items-center justify-center sm:justify-start" #root>
         <div
-          class="flex w-full max-w-screen-lg flex-col items-center justify-start gap-5 sm:h-full sm:flex-row sm:justify-center"
+          class="flex w-full max-w-screen-lg flex-col items-center justify-start gap-5 pt-[10vh] sm:h-full sm:flex-row sm:justify-center"
         >
-          <div class="relative h-[20vh] max-h-32 w-full bg-none sm:hidden"></div>
-          <div class="relative mx-10 mb-10 flex max-w-md flex-col gap-5 font-manuale text-lg text-primary">
+          <div class="relative mx-10 flex max-w-md flex-col gap-5 font-manuale text-lg text-primary">
             <p>
               {{ textHeaderGreetings$ | async }}<span class="font-semibold">{{ textHeaderName$ | async }}</span
               >,
@@ -41,10 +40,10 @@ import { TypewriterService } from '../typewriter.service';
             </div>
           </div>
           <div
-            class="flex h-full w-full flex-col items-center justify-start gap-5 opacity-0 sm:mr-5 sm:w-fit sm:justify-center"
+            class="my-5 flex h-full w-full flex-col items-center justify-start gap-5 opacity-0 sm:mr-5 sm:w-fit sm:justify-center"
             #envelope
           >
-            <div class="relative">
+            <div class="relative" (click)="onOpenEnvelope(true)">
               <div
                 class="paper absolute bottom-0 left-0 right-0 top-0 m-auto h-[11rem] w-[15rem] bg-envelope-paper shadow-md"
               >
