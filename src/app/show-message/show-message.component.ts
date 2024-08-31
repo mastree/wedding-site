@@ -295,18 +295,18 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
       );
     }
     this.updateHeight();
-    const intervalFunc = async (firstCall = false) => {
+    const intervalFunc = async () => {
       const { contents } = this;
       const prevId = (this.currentId - 1 + contents.length) % contents.length;
       const nextId = (this.currentId + 1) % contents.length;
-      const prevElement = contents.get(prevId)?.nativeElement;
       const currentElement = contents.get(this.currentId)?.nativeElement;
-      if (!firstCall) {
-        this.logger.debug(`[kamalshafi] prevId ${prevId}, currentId ${this.currentId}, nextId ${nextId}`);
-        this.removeClasses(prevElement, [`scale-100`]);
-        this.addClasses(prevElement, [`opacity-0`, `scale-50`]);
-        await this.wait(1000);
-        this.addClasses(prevElement, [`pointer-events-none`]);
+      for (let i = 0; i < contents.length; i++) {
+        if (i == this.currentId) continue;
+        const selectElement = contents.get(i)?.nativeElement;
+        this.removeClasses(selectElement, [`scale-100`]);
+        this.addClasses(selectElement, [`opacity-0`, `scale-50`]);
+        if (i == prevId) await this.wait(1000);
+        this.addClasses(selectElement, [`pointer-events-none`]);
       }
       this.removeClasses(currentElement, [`opacity-0`, `scale-50`, `pointer-events-none`]);
       this.addClasses(currentElement, [`scale-100`]);
