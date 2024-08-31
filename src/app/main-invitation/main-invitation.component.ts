@@ -123,7 +123,7 @@ import { ClassOnViewComponent } from '../class-on-view/class-on-view.component';
         </section>
       </div>
 
-      <section class="bg-bg-main relative flex flex-col items-center justify-center gap-8 bg-opacity-30 pb-20 pt-16">
+      <section class="bg-bg-main relative flex flex-col items-center justify-center gap-8 bg-opacity-30 pb-12 pt-16">
         <div class="relative my-5 flex h-full w-full max-w-screen-lg flex-row items-center justify-center">
           <div class="flex w-full flex-col items-center justify-center gap-10">
             <app-class-on-view [classOnView]="kBrideOnView">
@@ -160,7 +160,43 @@ import { ClassOnViewComponent } from '../class-on-view/class-on-view.component';
             </app-class-on-view>
           </div>
         </div>
+      </section>
+      <section class="bg-bg-main-shaded relative flex flex-col items-center justify-center gap-8 bg-opacity-30 py-8">
+        <div class="relative my-5 flex h-full w-full max-w-screen-lg flex-col items-center justify-center gap-10">
+          <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">GALLERY</p>
+          <div class="relative flex w-full flex-row justify-center gap-3 overflow-hidden">
+            <div
+              class="absolute left-0 top-[50%] z-10 flex h-[3rem] w-[2rem] translate-y-[-50%] items-center justify-center bg-black opacity-20 hover:opacity-30 active:hover:opacity-50"
+              #galleryPrev
+            >
+              <div
+                class="relative size-0 translate-x-[-12%] border-y-[1rem] border-r-[1rem] border-y-transparent border-r-white"
+              ></div>
+            </div>
+            <div
+              class="absolute right-0 top-[50%] z-10 flex h-[3rem] w-[2rem] translate-y-[-50%] items-center justify-center bg-black opacity-20 hover:opacity-30 active:hover:opacity-50"
+              #GalleryNext
+            >
+              <div
+                class="relative size-0 translate-x-[12%] border-y-[1rem] border-l-[1rem] border-y-transparent border-l-white"
+              ></div>
+            </div>
+            <div class="relative mx-2 flex flex-row overflow-x-scroll scroll-smooth">
+              <div class="relative flex flex-row gap-3" #galleryContentContainer>
+                <div class="h-[24rem] w-[18rem] bg-bg-grey lg:h-[32rem] lg:w-[24rem]"></div>
+                <div class="h-[24rem] w-[18rem] bg-bg-grey lg:h-[32rem] lg:w-[24rem]"></div>
+                <div class="h-[24rem] w-[18rem] bg-bg-grey lg:h-[32rem] lg:w-[24rem]"></div>
+                <div class="h-[24rem] w-[18rem] bg-bg-grey lg:h-[32rem] lg:w-[24rem]"></div>
+                <div class="h-[24rem] w-[18rem] bg-bg-grey lg:h-[32rem] lg:w-[24rem]"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="bg-bg-main relative flex flex-col items-center justify-center bg-opacity-30">
         <div class="my-10 h-[0.5px] w-[70vw] max-w-screen-sm rounded-full bg-primary"></div>
+      </div>
+      <section class="bg-bg-main relative flex flex-col items-center justify-center gap-8 bg-opacity-30 pb-20 pt-16">
         <div class="relative mx-auto h-full w-full max-w-screen-lg text-primary">
           <div class="mb-5 flex w-full flex-col justify-center">
             <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">SCHEDULE & LOCATION</p>
