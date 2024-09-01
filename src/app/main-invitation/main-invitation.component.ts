@@ -171,15 +171,15 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
       </section>
 
       <section class="bg-bg-main relative flex flex-col items-center justify-center pb-20 pt-14">
-        <div class="relative flex w-full max-w-screen-lg flex-col items-center justify-center">
+        <div class="relative flex w-full max-w-screen-lg flex-col items-center justify-center gap-8">
           <app-class-on-view [classOnView]="kBrideOnView">
-            <div class="mb-10 flex w-full flex-col justify-center">
+            <div class="flex w-full flex-col justify-center">
               <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">RESEPSI</p>
               <p class="text-md text-center font-manuale font-light">Schedule & Location</p>
             </div>
           </app-class-on-view>
           <app-class-on-view
-            class="flex w-full max-w-screen-md flex-row px-[min(5rem,10vw)] pb-8"
+            class="flex w-full max-w-screen-md flex-row px-[min(5rem,10vw)]"
             [classOnView]="kBrideOnView"
           >
             <div class="flex w-full max-w-screen-md flex-row gap-8" #schedule>
@@ -219,6 +219,16 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
                   </span>
                 </a>
               </div>
+            </div>
+          </app-class-on-view>
+
+          <app-class-on-view class="mt-5 flex w-full items-center justify-center" [classOnView]="kBrideOnView">
+            <div
+              class="mx-[min(5rem,10vw)] flex w-full max-w-screen-sm flex-row justify-center rounded-xl bg-secondary p-4"
+            >
+              <p class="md:text-md font-marcellus-sc text-sm text-white lg:text-lg">
+                Akad Nikah is scheduled to be held ahead of time on December 8, 2024, at the bride's family's residence.
+              </p>
             </div>
           </app-class-on-view>
         </div>
