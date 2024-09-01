@@ -14,7 +14,7 @@ import { signal } from '@angular/core';
 import { HomeLoadingComponent } from '../home-loading/home-loading.component';
 import { FooterComponent } from '../footer/footer.component';
 import { ClassOnViewComponent } from '../class-on-view/class-on-view.component';
-import { GalleryComponent } from '../gallery/gallery.component';
+import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
 
 @Component({
   selector: 'app-main-invitation',
@@ -165,7 +165,7 @@ import { GalleryComponent } from '../gallery/gallery.component';
       <section class="bg-bg-main-shaded relative flex flex-col items-center justify-center gap-8 bg-opacity-30 py-8">
         <div class="relative my-5 flex h-full w-full max-w-screen-lg flex-col items-center justify-center gap-10">
           <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">GALLERY</p>
-          <app-gallery class="w-full"></app-gallery>
+          <app-gallery class="w-full" (onOpenEvent)="onOpenGalleryModal($event)"></app-gallery>
         </div>
       </section>
       <div class="bg-bg-main relative flex flex-col items-center justify-center bg-opacity-30">
@@ -217,6 +217,23 @@ import { GalleryComponent } from '../gallery/gallery.component';
       </section>
 
       <app-footer></app-footer>
+
+      <div
+        class="fixed left-0 top-0 z-50 flex h-screen w-screen items-center justify-center overflow-auto bg-transparent"
+        [ngClass]="selectedGallery === undefined ? 'hidden' : ''"
+        #galleryModal
+      >
+        <div class="relative z-10 mx-5 aspect-[4/3] max-h-[80vh] w-full max-w-screen-lg opacity-100">
+          <button
+            class="pointer-events-auto absolute right-0 top-0 translate-y-[-110%] bg-black bg-opacity-30 px-2 py-0 font-manuale text-xl text-white hover:bg-opacity-50"
+            (click)="onCloseGalleryModal()"
+          >
+            x
+          </button>
+          <div class="h-full w-full rounded-lg" [ngClass]="selectedGallery?.imageUrl" #modalContent></div>
+        </div>
+        <div class="-z-1 absolute left-0 top-0 h-screen w-screen overflow-auto bg-black opacity-50" #galleryModal></div>
+      </div>
     </div>
   `,
   styleUrl: './main-invitation.component.css',
@@ -247,6 +264,7 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
   weddingService = inject(WeddingService);
   invitation?: Invitation | undefined;
   loading = true;
+  selectedGallery?: GalleryContent | undefined;
 
   subscriptions: Subscription[] = [];
 
@@ -338,5 +356,13 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
       return this.kFirstSectionText[1];
     }
     return this.kFirstSectionText[0];
+  }
+
+  onOpenGalleryModal(content: GalleryContent) {
+    this.selectedGallery = content;
+  }
+
+  onCloseGalleryModal() {
+    this.selectedGallery = undefined;
   }
 }

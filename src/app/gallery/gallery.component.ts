@@ -2,8 +2,10 @@ import { NgClass, isPlatformBrowser } from '@angular/common';
 import {
   Component,
   ElementRef,
+  EventEmitter,
   Inject,
   OnDestroy,
+  Output,
   PLATFORM_ID,
   QueryList,
   ViewChild,
@@ -14,7 +16,7 @@ import {
 import { LoggerService } from '../logger.service';
 import { Subscription } from 'rxjs';
 
-type GalleryContent = {
+export type GalleryContent = {
   title: string;
   imageUrl?: string;
 };
@@ -24,7 +26,7 @@ type GalleryContent = {
   standalone: true,
   imports: [NgClass],
   template: `
-    <div class="relative flex w-full flex-col justify-center gap-10 overflow-hidden">
+    <div class="relative flex w-full flex-col justify-center overflow-hidden">
       <button
         class="absolute left-0 top-[50%] z-10 flex h-[3rem] w-[2rem] translate-y-[-50%] items-center justify-center bg-black opacity-20 hover:opacity-30 active:hover:opacity-50"
         #galleryPrev
@@ -52,20 +54,21 @@ type GalleryContent = {
               class="mx-1 h-[24rem] w-[18rem] lg:h-[32rem] lg:w-[24rem]"
               [ngClass]="content.imageUrl"
               [id]="'content-' + id"
+              (click)="onOpenContent(content)"
               #galleryContent
             ></div>
           }
         </div>
       </div>
-      <div class="flex w-full flex-row justify-center gap-2">
-        <div class="flex flex-row gap-2">
-          @for (content of contents; track content; let id = $index) {
-            <div
-              class="z-20 size-2 rounded-full shadow-md"
-              [ngClass]="id === currentId ? 'bg-gray-500' : 'bg-gray-300'"
-            ></div>
-          }
-        </div>
+    </div>
+    <div class="mt-10 flex w-full flex-row justify-center gap-2">
+      <div class="flex flex-row gap-2">
+        @for (content of contents; track content; let id = $index) {
+          <div
+            class="z-20 size-2 rounded-full shadow-md"
+            [ngClass]="id === currentId ? 'bg-gray-500' : 'bg-gray-300'"
+          ></div>
+        }
       </div>
     </div>
   `,
@@ -98,6 +101,7 @@ export class GalleryComponent implements OnDestroy {
   ];
   currentId: number = 0;
   subscriptions: Subscription[] = [];
+  @Output() onOpenEvent = new EventEmitter<GalleryContent>();
 
   // View related members
   @ViewChild('galleryScroll') galleryScroll!: ElementRef;
@@ -186,5 +190,9 @@ export class GalleryComponent implements OnDestroy {
       }
     }
     return ret;
+  }
+
+  onOpenContent(content: GalleryContent) {
+    this.onOpenEvent.emit(content);
   }
 }
