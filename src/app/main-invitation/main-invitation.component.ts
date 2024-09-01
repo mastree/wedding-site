@@ -124,7 +124,7 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
         </section>
       </div>
 
-      <section class="bg-bg-main relative flex flex-col items-center justify-center gap-8 bg-opacity-30 pb-12 pt-16">
+      <section class="bg-bg-main relative flex flex-col items-center justify-center gap-8 pb-12 pt-16">
         <div class="relative my-5 flex h-full w-full max-w-screen-lg flex-row items-center justify-center">
           <div class="flex w-full flex-col items-center justify-center gap-10">
             <app-class-on-view [classOnView]="kBrideOnView">
@@ -162,51 +162,65 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
           </div>
         </div>
       </section>
-      <section class="bg-bg-main-shaded relative flex flex-col items-center justify-center gap-8 bg-opacity-30 py-8">
+
+      <section class="bg-bg-main-shaded relative flex flex-col items-center justify-center gap-8 py-8">
         <div class="relative my-5 flex h-full w-full max-w-screen-lg flex-col items-center justify-center gap-10">
           <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">GALLERY</p>
           <app-gallery class="w-full" (onOpenEvent)="onOpenGalleryModal($event)"></app-gallery>
         </div>
       </section>
-      <div class="bg-bg-main relative flex flex-col items-center justify-center bg-opacity-30">
-        <div class="my-10 h-[0.5px] w-[70vw] max-w-screen-sm rounded-full bg-primary"></div>
-      </div>
-      <section class="bg-bg-main relative flex flex-col items-center justify-center gap-8 bg-opacity-30 pb-20 pt-16">
-        <div class="relative mx-auto h-full w-full max-w-screen-lg text-primary">
-          <div class="mb-5 flex w-full flex-col justify-center">
-            <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">SCHEDULE & LOCATION</p>
-            <p class="text-md text-center font-manuale font-light">Jadwal & Tempat</p>
-          </div>
-          <div class="flex w-full flex-grow flex-col items-center justify-start gap-8 overflow-clip">
-            <app-card [classOnView]="kAnimateGoFromLeft" icon="calendar.svg" title="Schedule">
-              <p class="font-manuale text-[1rem] lg:text-[1.25rem]">
-                <span class="font-semibold">Date:</span> Sunday, 15 Dec 2024
-              </p>
-              <p class="font-manuale text-[1rem] lg:text-[1.25rem]">
-                <span class="font-semibold">Time:</span> 14.30 &mdash; 18.00 WIB
-              </p>
-            </app-card>
-            <app-card [classOnView]="kAnimateGoFromRight" icon="location-pin.svg" title="Location">
-              <p class="font-manuale text-[1rem] font-semibold lg:text-[1.25rem]">Maxi's Resto</p>
-              <p class="font-manuale text-[1rem] lg:text-[1.25rem]">Jl. Gunung Agung No.8, Ciumbuleuit, Kota Bandung</p>
-              <a
-                class="mt-2 flex flex-row items-center gap-1 fill-sky-400 text-sky-400 active:fill-sky-700 active:text-sky-700"
-                href="https://maps.app.goo.gl/9kLNCJA7acvwyxJB8"
-                target="_blank"
-              >
-                <p class="font-manuale text-[1rem] hover:underline active:font-bold">Open in GMaps</p>
-                <span class="size-3">
-                  <svg viewBox="0 0 33 33" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M32 0H23C22.4477 0 22 0.447716 22 1C22 1.55228 22.4477 2 23 2H29.5858L15.2929 16.2929L16.7071 17.7071L31 3.41421V10C31 10.5523 31.4477 11 32 11C32.5523 11 33 10.5523 33 10V1C33 0.447716 32.5523 0 32 0ZM7 3H16V1H7C3.13401 1 0 4.13401 0 8V26C0 29.866 3.13401 33 7 33H25C28.866 33 32 29.866 32 26V17H30V26C30 28.7614 27.7614 31 25 31H7C4.23858 31 2 28.7614 2 26V8C2 5.23858 4.23858 3 7 3Z"
-                    />
-                  </svg>
-                </span>
-              </a>
-            </app-card>
-          </div>
+
+      <section class="bg-bg-main relative flex flex-col items-center justify-center pb-20 pt-14">
+        <div class="relative flex w-full max-w-screen-lg flex-col items-center justify-center">
+          <app-class-on-view [classOnView]="kBrideOnView">
+            <div class="mb-10 flex w-full flex-col justify-center">
+              <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">RESEPSI</p>
+              <p class="text-md text-center font-manuale font-light">Schedule & Location</p>
+            </div>
+          </app-class-on-view>
+          <app-class-on-view
+            class="flex w-full max-w-screen-md flex-row px-[min(5rem,10vw)] pb-8"
+            [classOnView]="kBrideOnView"
+          >
+            <div class="flex w-full max-w-screen-md flex-row gap-8" #schedule>
+              <img class="max-h-32 max-w-[4.5rem]" src="calendar.svg" />
+              <div class="flex flex-col items-start">
+                <p class="text-center font-manuale text-sm font-light lg:text-lg">Sunday,</p>
+                <p class="text-center font-manuale text-2xl font-light lg:text-4xl">15</p>
+                <p class="text-center font-manuale text-sm font-light lg:text-lg">Desember 2024</p>
+                <p class="text-center font-manuale text-sm font-light lg:text-lg">14:30 — 18:00 WIB</p>
+              </div>
+            </div>
+          </app-class-on-view>
+          <app-class-on-view [classOnView]="kBrideOnView">
+            <div class="flex w-full max-w-screen-md flex-row gap-8 px-[min(6rem,10vw+1rem)]" #location>
+              <div class="flex flex-col items-start border-t-[0.5px] border-t-gray-500 pt-8">
+                <div class="flex flex-row items-center justify-start gap-2">
+                  <img class="max-h-[1rem] max-w-[1rem]" src="location-pin.svg" />
+                  <p class="text-center font-manuale text-2xl font-light lg:text-4xl">Maxi's Resto</p>
+                </div>
+                <p class="text-left font-manuale text-sm font-light lg:text-lg">
+                  Jl. Gunung Agung No.8, Ciumbuleuit, Kec. Cidadap, Kota Bandung, Jawa Barat 40143, Indonesia
+                </p>
+                <a
+                  class="mt-2 flex flex-row items-center gap-1 fill-sky-400 text-sky-400 active:fill-sky-700 active:text-sky-700"
+                  href="https://maps.app.goo.gl/9kLNCJA7acvwyxJB8"
+                  target="_blank"
+                >
+                  <p class="font-manuale text-sm hover:underline active:font-bold lg:text-lg">Open in GMaps</p>
+                  <span class="size-3">
+                    <svg viewBox="0 0 33 33" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M32 0H23C22.4477 0 22 0.447716 22 1C22 1.55228 22.4477 2 23 2H29.5858L15.2929 16.2929L16.7071 17.7071L31 3.41421V10C31 10.5523 31.4477 11 32 11C32.5523 11 33 10.5523 33 10V1C33 0.447716 32.5523 0 32 0ZM7 3H16V1H7C3.13401 1 0 4.13401 0 8V26C0 29.866 3.13401 33 7 33H25C28.866 33 32 29.866 32 26V17H30V26C30 28.7614 27.7614 31 25 31H7C4.23858 31 2 28.7614 2 26V8C2 5.23858 4.23858 3 7 3Z"
+                      />
+                    </svg>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </app-class-on-view>
         </div>
       </section>
 
@@ -256,8 +270,6 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
   };
 
   kBrideOnView = ['animate', 'animate-scale-in', 'animate-fast'];
-  kAnimateGoFromLeft = ['animate-go-from-left'];
-  kAnimateGoFromRight = ['animate-go-from-right'];
 
   // Model related members
   logger = inject(LoggerService);
@@ -276,7 +288,7 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
   isBrowser = signal(false);
 
   constructor(@Inject(PLATFORM_ID) platformId: object) {
-    this.isBrowser.set(isPlatformBrowser(platformId)); // save isPlatformBrowser in signal
+    this.isBrowser.set(isPlatformBrowser(platformId));
   }
 
   ngOnInit() {
