@@ -14,6 +14,7 @@ import { signal } from '@angular/core';
 import { HomeLoadingComponent } from '../home-loading/home-loading.component';
 import { FooterComponent } from '../footer/footer.component';
 import { ClassOnViewComponent } from '../class-on-view/class-on-view.component';
+import { GalleryComponent } from '../gallery/gallery.component';
 
 @Component({
   selector: 'app-main-invitation',
@@ -164,33 +165,7 @@ import { ClassOnViewComponent } from '../class-on-view/class-on-view.component';
       <section class="bg-bg-main-shaded relative flex flex-col items-center justify-center gap-8 bg-opacity-30 py-8">
         <div class="relative my-5 flex h-full w-full max-w-screen-lg flex-col items-center justify-center gap-10">
           <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">GALLERY</p>
-          <div class="relative flex w-full flex-row justify-center gap-3 overflow-hidden">
-            <div
-              class="absolute left-0 top-[50%] z-10 flex h-[3rem] w-[2rem] translate-y-[-50%] items-center justify-center bg-black opacity-20 hover:opacity-30 active:hover:opacity-50"
-              #galleryPrev
-            >
-              <div
-                class="relative size-0 translate-x-[-12%] border-y-[1rem] border-r-[1rem] border-y-transparent border-r-white"
-              ></div>
-            </div>
-            <div
-              class="absolute right-0 top-[50%] z-10 flex h-[3rem] w-[2rem] translate-y-[-50%] items-center justify-center bg-black opacity-20 hover:opacity-30 active:hover:opacity-50"
-              #GalleryNext
-            >
-              <div
-                class="relative size-0 translate-x-[12%] border-y-[1rem] border-l-[1rem] border-y-transparent border-l-white"
-              ></div>
-            </div>
-            <div class="relative mx-2 flex flex-row overflow-x-scroll scroll-smooth">
-              <div class="relative flex flex-row gap-3" #galleryContentContainer>
-                <div class="h-[24rem] w-[18rem] bg-bg-grey lg:h-[32rem] lg:w-[24rem]"></div>
-                <div class="h-[24rem] w-[18rem] bg-bg-grey lg:h-[32rem] lg:w-[24rem]"></div>
-                <div class="h-[24rem] w-[18rem] bg-bg-grey lg:h-[32rem] lg:w-[24rem]"></div>
-                <div class="h-[24rem] w-[18rem] bg-bg-grey lg:h-[32rem] lg:w-[24rem]"></div>
-                <div class="h-[24rem] w-[18rem] bg-bg-grey lg:h-[32rem] lg:w-[24rem]"></div>
-              </div>
-            </div>
-          </div>
+          <app-gallery class="w-full"></app-gallery>
         </div>
       </section>
       <div class="bg-bg-main relative flex flex-col items-center justify-center bg-opacity-30">
@@ -254,6 +229,7 @@ import { ClassOnViewComponent } from '../class-on-view/class-on-view.component';
     HomeLoadingComponent,
     FooterComponent,
     ClassOnViewComponent,
+    GalleryComponent,
   ],
 })
 export class MainInvitationComponent implements OnInit, OnDestroy {
