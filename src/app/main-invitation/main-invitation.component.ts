@@ -223,9 +223,7 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
           </app-class-on-view>
 
           <app-class-on-view class="mt-5 flex w-full items-center justify-center" [classOnView]="kBrideOnView">
-            <div
-              class="mx-[min(5rem,10vw)] flex w-full max-w-screen-sm flex-row justify-center rounded-xl bg-secondary p-4"
-            >
+            <div class="mx-[min(5rem,10vw)] flex max-w-screen-sm flex-row justify-center rounded-xl bg-secondary p-4">
               <p class="md:text-md font-marcellus-sc text-sm text-white lg:text-lg">
                 Akad Nikah is scheduled to be held ahead of time on December 8, 2024, at the bride's family's residence.
               </p>
