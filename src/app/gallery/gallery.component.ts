@@ -24,7 +24,7 @@ type GalleryContent = {
   standalone: true,
   imports: [NgClass],
   template: `
-    <div class="relative flex w-full flex-row justify-center gap-3 overflow-hidden">
+    <div class="relative flex w-full flex-col justify-center gap-10 overflow-hidden">
       <button
         class="absolute left-0 top-[50%] z-10 flex h-[3rem] w-[2rem] translate-y-[-50%] items-center justify-center bg-black opacity-20 hover:opacity-30 active:hover:opacity-50"
         #galleryPrev
@@ -53,6 +53,16 @@ type GalleryContent = {
               [ngClass]="content.imageUrl"
               [id]="'content-' + id"
               #galleryContent
+            ></div>
+          }
+        </div>
+      </div>
+      <div class="flex w-full flex-row justify-center gap-2">
+        <div class="flex flex-row gap-2">
+          @for (content of contents; track content; let id = $index) {
+            <div
+              class="z-20 size-2 rounded-full shadow-md"
+              [ngClass]="id === currentId ? 'bg-gray-500' : 'bg-gray-300'"
             ></div>
           }
         </div>
@@ -86,6 +96,7 @@ export class GalleryComponent implements OnDestroy {
       imageUrl: 'bg-gray-500',
     },
   ];
+  currentId: number = 0;
   subscriptions: Subscription[] = [];
 
   // View related members
@@ -149,6 +160,7 @@ export class GalleryComponent implements OnDestroy {
     if (this.contentControlDisable) return;
     this.contentControlDisable = true;
     delta = delta % this.contents.length;
+    this.currentId = (this.currentId + delta + this.contents.length) % this.contents.length;
     const scrollElement = this.galleryScroll.nativeElement;
     this.scrollContentToCenter(this.getContentSize() * -delta, 'instant');
     if (delta == 1) {
