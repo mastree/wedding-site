@@ -37,8 +37,8 @@ import { TypewriterService } from '../typewriter.service';
               <p class="pointer-events-none opacity-0">{{ kTextContent }}</p>
             </div>
           </div>
-          <div class="my-5 flex h-full w-full flex-col items-center justify-start gap-5 opacity-0" #envelope>
-            <div class="relative" (click)="onOpenEnvelope(true)">
+          <div class="my-5 flex h-full w-full flex-col items-center justify-start gap-5" #envelope>
+            <div class="envelope-hit-box animate-scale-in relative opacity-0" (click)="onOpenEnvelope(true)">
               <div
                 class="paper absolute bottom-0 left-0 right-0 top-0 m-auto h-[11rem] w-[15rem] bg-envelope-paper shadow-md"
               >
@@ -71,16 +71,16 @@ import { TypewriterService } from '../typewriter.service';
                 <div class="envelope-body absolute top-0 z-0 h-full w-full bg-envelope-inner"></div>
               </div>
             </div>
-            <div class="mt-5 flex flex-row items-center justify-center gap-4">
+            <div class="mt-5 flex flex-row items-center justify-center gap-2">
               <button
                 (click)="onOpenEnvelope(true)"
-                class="active:ring-3 actove:text-primary active:bg-lwhite select-none rounded-lg bg-primary p-2 font-manuale font-semibold text-white shadow-md shadow-gray-400 ring-light-primary hover:ring-2 active:bg-white active:text-primary active:shadow-inner active:shadow-slate-100"
+                class="animate-delay-400 animate-scale-in active:ring-3 actove:text-primary active:bg-lwhite select-none rounded-lg bg-primary p-2 font-manuale font-semibold text-white opacity-0 shadow-md shadow-gray-400 ring-light-primary hover:ring-2 active:bg-white active:text-primary active:shadow-inner active:shadow-slate-100"
               >
                 OPEN INVITATION
               </button>
               <button
                 (click)="onDownloadAsPdf()"
-                class="active:ring-3 select-none rounded-lg bg-white p-2 font-manuale font-semibold text-primary shadow-md ring-white hover:ring-2 active:bg-primary active:text-white active:shadow-inner active:shadow-light-primary"
+                class="animate-delay-500 animate-scale-in active:ring-3 select-none rounded-lg bg-white p-2 font-manuale font-semibold text-primary opacity-0 shadow-md ring-white hover:ring-2 active:bg-primary active:text-white active:shadow-inner active:shadow-light-primary"
               >
                 DOWNLOAD PDF
               </button>
@@ -142,7 +142,7 @@ export class InvitationEnvelopeComponent {
                 this.textContent$ = this.typewritterService.getTypedText(this.kTextContent, 20);
                 this.textContent$.subscribe({
                   complete: () => {
-                    this.envelopeElement.nativeElement.classList.toggle('animate-scale-in', true);
+                    this.envelopeElement.nativeElement.classList.toggle('animate', true);
                   },
                 });
               }, 100);

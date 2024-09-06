@@ -15,11 +15,17 @@
   }
 }
 
-.animate-scale-in {
+.animate .animate-scale-in {
   animation-name: scaleIn;
   animation-fill-mode: both;
   animation-timing-function: ease;
-  animation-duration: 1s;
+  animation-duration: 0.6s;
+}
+.animate-delay-400 {
+  animation-delay: 400ms;
+}
+.animate-delay-500 {
+  animation-delay: 500ms;
 }
 /* ====================*/
 
@@ -53,7 +59,7 @@
 @keyframes letterUnfold {
   0%,
   25% {
-    transform: translateY(0%);
+    transform: none;
   }
   40% {
     transform: translateY(-65%);
@@ -131,6 +137,10 @@
 }
 
 .flap {
+  transform: rotatex(0deg);
+  transition:
+    transform 0.4s ease,
+    z-index 0.4s;
   z-index: 30;
 }
 
@@ -143,6 +153,14 @@
 }
 
 .open .flap {
+  transform: rotatex(180deg);
+  transition:
+    transform 0.4s ease,
+    z-index 0.4s;
+  z-index: 0;
+}
+
+.envelope-hit-box:hover .flap {
   transform: rotatex(180deg);
   transition:
     transform 0.4s ease,
