@@ -48,7 +48,7 @@ type RsvpState = {
             @if (alreadyFilled) {
               <div class="flex w-full flex-col items-center">
                 <div class="flex flex-row items-center gap-4">
-                  <p class="text-md font-manuale text-white">You have filled the RSVP</p>
+                  <p class="font-manuale text-base text-white">You have filled the RSVP</p>
                   <button
                     (click)="onUpdateRsvp()"
                     class="select-none rounded-lg bg-dark-secondary p-2 font-manuale font-semibold text-white ring-white hover:ring-2 active:bg-light-primary active:shadow-inner active:shadow-primary active:ring-2 md:p-3"
@@ -62,7 +62,7 @@ type RsvpState = {
                   class="fill-mode-forwards invisible rounded-lg border-2 border-black bg-secondary px-3 py-5 shadow-lg"
                   [ngClass]="state.status == 'sent' ? 'animate-notify-scale-in' : 'hidden'"
                 >
-                  <p class="text-md font-manuale text-white">Thanks for filling the RSVP!</p>
+                  <p class="font-manuale text-base text-white">Thanks for filling the RSVP!</p>
                 </div>
               </div>
             } @else {
@@ -71,7 +71,7 @@ type RsvpState = {
                 [ngClass]="state.loading || !state.invitation ? ['pointer-events-none', 'opacity-60'] : ''"
               >
                 <div class="flex w-full flex-col items-center">
-                  <p class="text-md font-manuale text-white">Would you be able to attend?</p>
+                  <p class="font-manuale text-base text-white">Would you be able to attend?</p>
                   <div class="mt-2 flex w-full flex-col gap-2">
                     <button
                       (click)="onWillAttend(true)"
@@ -117,7 +117,7 @@ type RsvpState = {
                 } @else {}
                 @if (state.rsvpPicked) {
                   <div class="flex flex-row items-center gap-5">
-                    <p class="text-md font-manuale text-white">Confirm RSVP?</p>
+                    <p class="font-manuale text-base text-white">Confirm RSVP?</p>
                     <div class="flex flex-row items-center gap-2">
                       <button
                         (click)="onSubmitRsvp(true)"

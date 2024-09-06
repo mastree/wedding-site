@@ -20,7 +20,7 @@ type MessageState = {
   template: `
     <div>
       <div class="relative flex w-full flex-col items-center gap-2">
-        <p class="text-md font-manuale text-white">Leave a message or wishes for the bride and groom!</p>
+        <p class="font-manuale text-base text-white">Leave a message or wishes for the bride and groom!</p>
         <form
           class="flex w-full flex-col gap-2 text-sm md:text-[1rem]"
           (submit)="onSubmitMessage($event)"
@@ -101,7 +101,7 @@ type MessageState = {
             class="fill-mode-forwards invisible rounded-lg border-2 border-black bg-secondary px-3 py-5 shadow-lg"
             [ngClass]="state.status == 'sent' ? 'animate-notify-scale-in' : 'hidden'"
           >
-            <p class="text-md font-manuale text-white">Message sent, thanks!</p>
+            <p class="font-manuale text-base text-white">Message sent, thanks!</p>
           </div>
         </div>
       </div>

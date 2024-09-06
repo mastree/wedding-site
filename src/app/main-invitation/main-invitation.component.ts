@@ -135,7 +135,7 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
             <app-class-on-view [classOnView]="kBrideOnView">
               <div class="mx-5 flex flex-col items-center justify-center gap-2 text-center">
                 <p class="font-manuale text-xl font-bold text-primary lg:text-2xl">Faiza Nurkholida</p>
-                <p class="text-md font-manuale text-primary lg:text-[1.2rem]">
+                <p class="font-manuale text-base text-primary lg:text-[1.2rem]">
                   Putri Bapak (Alm) Muh Khozin dan Ibu Isrofah Wijayanti
                 </p>
               </div>
@@ -154,7 +154,7 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
             <app-class-on-view [classOnView]="kBrideOnView">
               <div class="mx-5 flex flex-col items-center justify-center gap-2 text-center">
                 <p class="font-manuale text-xl font-bold text-primary lg:text-2xl">Muhammad Kamal Shafi</p>
-                <p class="text-md font-manuale text-primary lg:text-[1.2rem]">
+                <p class="font-manuale text-base text-primary lg:text-[1.2rem]">
                   Putra Bapak Shafiyuddin dan Ibu Rahmi Syahrini
                 </p>
               </div>
@@ -175,7 +175,7 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
           <app-class-on-view [classOnView]="kBrideOnView">
             <div class="flex w-full flex-col justify-center">
               <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">RESEPSI</p>
-              <p class="text-md text-center font-manuale font-light">Schedule & Location</p>
+              <p class="text-center font-manuale text-base font-light">Schedule & Location</p>
             </div>
           </app-class-on-view>
           <app-class-on-view
@@ -224,7 +224,7 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
 
           <app-class-on-view class="mt-5 flex w-full items-center justify-center" [classOnView]="kBrideOnView">
             <div class="mx-[min(5rem,10vw)] flex max-w-screen-sm flex-row justify-center rounded-xl bg-secondary p-4">
-              <p class="md:text-md font-marcellus-sc text-sm text-white lg:text-lg">
+              <p class="font-marcellus-sc text-sm text-white md:text-base lg:text-lg">
                 Akad Nikah is scheduled to be held ahead of time on December 8, 2024, at the bride's family's residence.
               </p>
             </div>
