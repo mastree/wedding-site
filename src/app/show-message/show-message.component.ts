@@ -100,6 +100,7 @@ type State = {
           <div
             class="z-20 size-2 rounded-full shadow-md"
             [ngClass]="id === currentId ? 'bg-white' : 'bg-gray-400'"
+            (click)="selectContentId(id)"
           ></div>
         }
       </div>
@@ -204,6 +205,7 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
   private lastContentChangeTime = 0;
   private pauseStart = 0;
   currentId = 0;
+  contentIdSelect = -1;
   contentBaseClasses =
     'pointer-events-none absolute top-0 flex w-full flex-col rounded-b-lg rounded-r-lg bg-amber-100 ' +
     'p-2 text-primary opacity-0 shadow-lg shadow-pink-400/50 scale-50 transition-all duration-1000';
@@ -295,31 +297,25 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
       );
     }
     this.updateHeight();
-    const intervalFunc = async () => {
-      const { contents } = this;
-      const nextId = (this.currentId + 1) % contents.length;
-      const nextElement = contents.get(nextId)?.nativeElement;
-      for (let i = 0; i < contents.length; i++) {
-        const selectElement = contents.get(i)?.nativeElement;
-        this.removeClasses(selectElement, [`scale-100`]);
-        this.addClasses(selectElement, [`opacity-0`, `scale-50`]);
-        if (i == this.currentId) await this.wait(1000);
-        this.addClasses(selectElement, [`pointer-events-none`]);
-      }
-      this.removeClasses(nextElement, [`opacity-0`, `scale-50`, `pointer-events-none`]);
-      this.addClasses(nextElement, [`scale-100`]);
-      this.currentId = nextId;
-      this.changeDetectorRef.detectChanges();
-    };
     const intervalMillis = 5000;
     this.lastContentChangeTime = new Date().valueOf();
-    intervalFunc();
+    this.contentIntervalFunction();
     if (this.isBrowser()) {
       this.renderInterval = setInterval(() => {
         const currentMillis = new Date().valueOf();
+        if (
+          0 <= this.contentIdSelect &&
+          this.contentIdSelect < this.contents.length &&
+          this.contentIdSelect != this.currentId
+        ) {
+          const contentIdSelect = this.contentIdSelect;
+          this.lastContentChangeTime = currentMillis;
+          this.contentIntervalFunction(contentIdSelect);
+        }
+        this.contentIdSelect = -1;
         if (this.pauseStart == 0 && currentMillis - this.lastContentChangeTime >= intervalMillis) {
           this.lastContentChangeTime = currentMillis;
-          intervalFunc();
+          this.contentIntervalFunction();
         }
       }, 100);
       this.resizeObservable$ = fromEvent(window, 'resize');
@@ -338,6 +334,29 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onRefresh() {
     this.messageService.reload();
+  }
+
+  async contentIntervalFunction(nextId = -1) {
+    const { contents } = this;
+    if (nextId == -1) {
+      nextId = (this.currentId + 1) % contents.length;
+    }
+    const nextElement = contents.get(nextId)?.nativeElement;
+    for (let i = 0; i < contents.length; i++) {
+      const selectElement = contents.get(i)?.nativeElement;
+      this.removeClasses(selectElement, [`scale-100`]);
+      this.addClasses(selectElement, [`opacity-0`, `scale-50`]);
+      if (i == this.currentId) await this.wait(1000);
+      this.addClasses(selectElement, [`pointer-events-none`]);
+    }
+    this.removeClasses(nextElement, [`opacity-0`, `scale-50`, `pointer-events-none`]);
+    this.addClasses(nextElement, [`scale-100`]);
+    this.currentId = nextId;
+    this.changeDetectorRef.detectChanges();
+  }
+
+  selectContentId(contentId: number) {
+    this.contentIdSelect = contentId;
   }
 
   pauseContentChange() {
