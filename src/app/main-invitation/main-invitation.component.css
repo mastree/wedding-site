@@ -50,3 +50,22 @@
 .active-go-up:active {
   transform: translate(0.06rem, -0.1rem);
 }
+
+@keyframes scaleInFrom40 {
+  from {
+    transform: scale(0.4);
+    opacity: 0.4;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate.animate-scale-in-from-40 {
+  animation-name: scaleInFrom40;
+}
+.animate.animate-very-fast {
+  animation-duration: 0.4s;
+}

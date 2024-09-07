@@ -51,14 +51,14 @@ export type GalleryContent = {
         <div class="relative my-5 flex flex-row gap-0" #galleryContainer>
           @for (content of contents!; track content; let id = $index) {
             <div
-              class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-2 lg:h-[32rem] lg:w-[24rem]"
+              class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
               [ngClass]="content.imageUrl"
               [id]="'content-dummy1-' + id"
             ></div>
           }
           @for (content of contents!; track content; let id = $index) {
             <div
-              class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-2 lg:h-[32rem] lg:w-[24rem]"
+              class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
               [ngClass]="content.imageUrl"
               [id]="'content-' + id"
               (click)="onOpenContent(content)"
@@ -67,7 +67,7 @@ export type GalleryContent = {
           }
           @for (content of contents!; track content; let id = $index) {
             <div
-              class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-2 lg:h-[32rem] lg:w-[24rem]"
+              class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
               [ngClass]="content.imageUrl"
               [id]="'content-dummy2-' + id"
             ></div>

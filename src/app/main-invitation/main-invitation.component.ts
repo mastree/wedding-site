@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild, inject } from '@angular/core';
 import { NavigationBarComponent } from '../navigation-bar/navigation-bar.component';
 import { CountdownComponent } from '../countdown/countdown.component';
 import { CardComponent } from '../card/card.component';
@@ -252,7 +252,11 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
           >
             x
           </button>
-          <div class="h-full w-full rounded-lg" [ngClass]="selectedGallery?.imageUrl" #modalContent></div>
+          <div
+            class="animate-scale-in-from-40 animate-very-fast h-full w-full rounded-lg"
+            [ngClass]="selectedGallery?.imageUrl"
+            #modalContent
+          ></div>
         </div>
         <div class="-z-1 absolute left-0 top-0 h-screen w-screen overflow-auto bg-black opacity-50" #galleryModal></div>
       </div>
@@ -282,6 +286,8 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
   // Model related members
   logger = inject(LoggerService);
   weddingService = inject(WeddingService);
+  @Inject({})
+  private renderer = inject(Renderer2);
   invitation?: Invitation | undefined;
   loading = true;
   selectedGallery?: GalleryContent | undefined;
@@ -290,6 +296,7 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
 
   // View related members
   @ViewChild('bigDay') bigDayElement: ElementRef | undefined;
+  @ViewChild('modalContent') modalContent: ElementRef | undefined;
 
   eventDate: Date = new Date('2024-12-15T14:30:00.000+07:00');
 
@@ -378,11 +385,27 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
     return this.kFirstSectionText[0];
   }
 
+  private addClasses(element: any, classes: string[]) {
+    classes.forEach((cls) => {
+      this.renderer.addClass(element, cls);
+    });
+  }
+
+  private removeClasses(element: any, classes: string[]) {
+    classes.forEach((cls) => {
+      this.renderer.removeClass(element, cls);
+    });
+  }
+
   onOpenGalleryModal(content: GalleryContent) {
+    const modalContentElement = this.modalContent?.nativeElement;
     this.selectedGallery = content;
+    this.addClasses(modalContentElement, ['animate']);
   }
 
   onCloseGalleryModal() {
+    const modalContentElement = this.modalContent?.nativeElement;
     this.selectedGallery = undefined;
+    this.removeClasses(modalContentElement, ['animate']);
   }
 }
