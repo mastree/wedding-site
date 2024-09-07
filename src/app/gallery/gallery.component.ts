@@ -47,15 +47,29 @@ export type GalleryContent = {
           class="relative size-0 translate-x-[12%] border-y-[1rem] border-l-[1rem] border-y-transparent border-l-white"
         ></div>
       </button>
-      <div class="relative mx-2 flex flex-row justify-start overflow-x-scroll scroll-smooth" #galleryScroll>
-        <div class="relative flex flex-row gap-0" #galleryContainer>
+      <div class="relative mx-2 flex flex-row justify-start overflow-x-hidden scroll-smooth" #galleryScroll>
+        <div class="relative my-5 flex flex-row gap-0" #galleryContainer>
           @for (content of contents!; track content; let id = $index) {
             <div
-              class="mx-1 h-[24rem] w-[18rem] lg:h-[32rem] lg:w-[24rem]"
+              class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-2 lg:h-[32rem] lg:w-[24rem]"
+              [ngClass]="content.imageUrl"
+              [id]="'content-dummy1-' + id"
+            ></div>
+          }
+          @for (content of contents!; track content; let id = $index) {
+            <div
+              class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-2 lg:h-[32rem] lg:w-[24rem]"
               [ngClass]="content.imageUrl"
               [id]="'content-' + id"
               (click)="onOpenContent(content)"
               #galleryContent
+            ></div>
+          }
+          @for (content of contents!; track content; let id = $index) {
+            <div
+              class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-2 lg:h-[32rem] lg:w-[24rem]"
+              [ngClass]="content.imageUrl"
+              [id]="'content-dummy2-' + id"
             ></div>
           }
         </div>
@@ -67,6 +81,7 @@ export type GalleryContent = {
           <div
             class="z-20 size-2 rounded-full shadow-md"
             [ngClass]="id === currentId ? 'bg-gray-500' : 'bg-gray-300'"
+            (click)="onChangeIndex(id - currentId)"
           ></div>
         }
       </div>
@@ -164,18 +179,25 @@ export class GalleryComponent implements OnDestroy {
     if (this.contentControlDisable) return;
     this.contentControlDisable = true;
     delta = delta % this.contents.length;
+    if (Math.abs(delta) > this.contents.length / 2) {
+      if (delta > 0) {
+        delta -= this.contents.length;
+      } else {
+        delta += this.contents.length;
+      }
+    }
     this.currentId = (this.currentId + delta + this.contents.length) % this.contents.length;
     const scrollElement = this.galleryScroll.nativeElement;
-    this.scrollContentToCenter(this.getContentSize() * -delta, 'instant');
-    if (delta == 1) {
+    if (delta >= 0) {
       const prefix = this.contents.slice(delta, this.contents.length);
       const suffix = this.contents.slice(0, delta);
       this.contents = [...prefix, ...suffix];
-    } else if (delta == -1) {
+    } else {
       const prefix = this.contents.slice(this.contents.length + delta, this.contents.length);
       const suffix = this.contents.slice(0, this.contents.length + delta);
       this.contents = [...prefix, ...suffix];
     }
+    this.scrollContentToCenter(this.getContentSize() * -delta, 'instant');
     this.scrollContentToCenter();
     setTimeout(() => (this.contentControlDisable = false), 700);
   }
