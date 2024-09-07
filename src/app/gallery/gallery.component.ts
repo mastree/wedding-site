@@ -113,6 +113,10 @@ export class GalleryComponent implements OnDestroy {
       title: '5',
       imageUrl: 'bg-gray-500',
     },
+    {
+      title: '6',
+      imageUrl: 'bg-gray-600',
+    },
   ];
   currentId: number = 0;
   subscriptions: Subscription[] = [];
@@ -138,7 +142,7 @@ export class GalleryComponent implements OnDestroy {
 
   ngAfterViewInit() {
     if (this.isBrowser()) {
-      this.scrollContentToCenter();
+      this.onChangeIndex(0);
       this.contentsQuery.reset(
         this.contentsQuery.toArray().sort((a, b) => {
           if (a.nativeElement.id === b.nativeElement.id) return 0;
@@ -177,6 +181,7 @@ export class GalleryComponent implements OnDestroy {
 
   onChangeIndex(delta: number) {
     if (this.contentControlDisable) return;
+    const defaultOffset = this.contents.length % 2 == 0 ? -this.getContentSize() / 2 : 0;
     this.contentControlDisable = true;
     delta = delta % this.contents.length;
     if (Math.abs(delta) > this.contents.length / 2) {
@@ -197,8 +202,8 @@ export class GalleryComponent implements OnDestroy {
       const suffix = this.contents.slice(0, this.contents.length + delta);
       this.contents = [...prefix, ...suffix];
     }
-    this.scrollContentToCenter(this.getContentSize() * -delta, 'instant');
-    this.scrollContentToCenter();
+    this.scrollContentToCenter(this.getContentSize() * -delta + defaultOffset, 'instant');
+    this.scrollContentToCenter(defaultOffset);
     setTimeout(() => (this.contentControlDisable = false), 700);
   }
 
