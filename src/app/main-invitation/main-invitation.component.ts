@@ -253,10 +253,12 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
             x
           </button>
           <div
-            class="animate-scale-in-from-40 animate-very-fast h-full w-full rounded-lg"
+            class="animate-scale-in-from-40 animate-very-fast relative flex h-full w-full justify-center rounded-lg bg-black"
             [ngClass]="selectedGallery?.imageUrl"
             #modalContent
-          ></div>
+          >
+            <img [src]="selectedGallery?.imageUrl" class="my-auto w-full overflow-hidden object-cover" />
+          </div>
         </div>
         <div class="-z-1 absolute left-0 top-0 h-screen w-screen overflow-auto bg-black opacity-50" #galleryModal></div>
       </div>

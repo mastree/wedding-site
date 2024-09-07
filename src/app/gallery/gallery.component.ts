@@ -54,7 +54,13 @@ export type GalleryContent = {
               class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
               [ngClass]="content.imageUrl"
               [id]="'content-dummy1-' + id"
-            ></div>
+            >
+              <img
+                [src]="content.imageUrl"
+                onerror="this.style.display = 'none';"
+                class="h-full overflow-hidden rounded-md object-cover"
+              />
+            </div>
           }
           @for (content of contents!; track content; let id = $index) {
             <div
@@ -63,14 +69,26 @@ export type GalleryContent = {
               [id]="'content-' + id"
               (click)="onOpenContent(content)"
               #galleryContent
-            ></div>
+            >
+              <img
+                [src]="content.imageUrl"
+                onerror="this.style.display = 'none';"
+                class="h-full overflow-hidden rounded-md object-cover"
+              />
+            </div>
           }
           @for (content of contents!; track content; let id = $index) {
             <div
               class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
               [ngClass]="content.imageUrl"
               [id]="'content-dummy2-' + id"
-            ></div>
+            >
+              <img
+                [src]="content.imageUrl"
+                onerror="this.style.display = 'none';"
+                class="h-full overflow-hidden rounded-md object-cover"
+              />
+            </div>
           }
         </div>
       </div>
@@ -94,6 +112,10 @@ export class GalleryComponent implements OnDestroy {
   logger = inject(LoggerService);
   contents: GalleryContent[] = [
     {
+      title: '0',
+      imageUrl: 'invitation-bg-video.png',
+    },
+    {
       title: '1',
       imageUrl: 'bg-gray-100',
     },
@@ -112,10 +134,6 @@ export class GalleryComponent implements OnDestroy {
     {
       title: '5',
       imageUrl: 'bg-gray-500',
-    },
-    {
-      title: '6',
-      imageUrl: 'bg-gray-600',
     },
   ];
   currentId: number = 0;
