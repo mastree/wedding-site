@@ -23,7 +23,7 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
     <div class="animate-fade-in h-full w-full">
       <div class="relative flex h-screen min-h-[37.5rem] w-full flex-col gap-0 lg:min-h-[45rem]">
         <header class="relative top-0 h-[66%] w-full bg-white bg-opacity-30">
-          <div class="absolute bottom-0 top-0 z-10 h-full w-full">
+          <div class="absolute bottom-0 top-0 z-20 h-full w-full">
             <app-navigation-bar></app-navigation-bar>
           </div>
           <div class="absolute left-0 top-0 -z-10 h-full w-full overflow-y-hidden object-cover">
