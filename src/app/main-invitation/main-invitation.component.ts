@@ -241,7 +241,7 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
       <app-footer></app-footer>
 
       <div
-        class="fixed left-0 top-0 z-50 flex h-screen w-screen items-center justify-center overflow-auto bg-transparent"
+        class="fixed left-0 top-0 z-50 flex h-[100vh] w-screen items-center justify-center overflow-auto bg-transparent"
         [ngClass]="selectedGallery === undefined ? 'hidden' : ''"
         #galleryModal
       >

@@ -72,5 +72,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   onEnvelopeEvent(doOpen: boolean) {
     this.logger.info(`envelope open: ${doOpen}`);
     this.envelopeOpened = doOpen;
+    window.scrollTo({ top: 0 });
   }
 }
