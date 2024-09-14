@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild, inject } from '@angular/core';
 import { NavigationBarComponent } from '../navigation-bar/navigation-bar.component';
 import { CountdownComponent } from '../countdown/countdown.component';
 import { CardComponent } from '../card/card.component';
@@ -13,6 +13,8 @@ import { isPlatformBrowser } from '@angular/common';
 import { signal } from '@angular/core';
 import { HomeLoadingComponent } from '../home-loading/home-loading.component';
 import { FooterComponent } from '../footer/footer.component';
+import { ClassOnViewComponent } from '../class-on-view/class-on-view.component';
+import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
 
 @Component({
   selector: 'app-main-invitation',
@@ -21,7 +23,7 @@ import { FooterComponent } from '../footer/footer.component';
     <div class="animate-fade-in h-full w-full">
       <div class="relative flex h-screen min-h-[37.5rem] w-full flex-col gap-0 lg:min-h-[45rem]">
         <header class="relative top-0 h-[66%] w-full bg-white bg-opacity-30">
-          <div class="absolute bottom-0 top-0 z-10 h-full w-full">
+          <div class="absolute bottom-0 top-0 z-20 h-full w-full">
             <app-navigation-bar></app-navigation-bar>
           </div>
           <div class="absolute left-0 top-0 -z-10 h-full w-full overflow-y-hidden object-cover">
@@ -49,15 +51,17 @@ import { FooterComponent } from '../footer/footer.component';
                   {{ getFirstSectionText[1] }}
                 </p>
               </div>
-              <div class="flex w-full flex-col items-center justify-center" #bigDay>
-                <div
-                  class="animate-scale-in animate-fast mx-8 flex h-[5rem] w-[18rem] max-w-[90vw] items-center justify-center rounded-md bg-primary shadow-lg lg:h-[6.5rem]"
-                >
-                  <p class="font-manuale text-[1.5rem] font-semibold text-white lg:text-[2rem]">
-                    {{ getFirstSectionText[2] }}
-                  </p>
+              <app-class-on-view [classOnView]="kBrideOnView">
+                <div class="flex w-full flex-col items-center justify-center">
+                  <div
+                    class="mx-8 flex h-[5rem] w-[18rem] max-w-[90vw] items-center justify-center rounded-md bg-primary shadow-lg lg:h-[6.5rem]"
+                  >
+                    <p class="font-manuale text-[1.5rem] font-semibold text-white lg:text-[2rem]">
+                      {{ getFirstSectionText[2] }}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </app-class-on-view>
               <app-countdown [eventDate]="eventDate"></app-countdown>
             </div>
           </div>
@@ -120,57 +124,111 @@ import { FooterComponent } from '../footer/footer.component';
         </section>
       </div>
 
-      <section class="relative flex flex-col gap-8 bg-white bg-opacity-30 pb-20 pt-16">
-        <div class="absolute right-0 top-0 -z-20 h-full w-full overflow-y-hidden object-cover">
-          <video
-            class="pointer-events-none absolute h-full w-full object-cover object-right-top"
-            poster="invitation-bg-video.png"
-            onloadedmetadata="this.muted=true"
-            playsinline
-            autoplay
-            muted
-            loop
-          >
-            <source src="invitation-bg-video.mp4" type="video/mp4" />
-            <source src="invitation-bg-video.mp4" type="video/webm" />
-            <img src="invitation-bg-video.png" title="Your browser does not support the <video> tag" />
-          </video>
-        </div>
-        <div class="relative mx-auto h-full w-full max-w-screen-lg text-primary">
-          <div class="mb-5 flex w-full flex-col justify-center">
-            <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">SCHEDULE & LOCATION</p>
-            <p class="text-md text-center font-manuale font-light">Jadwal & Tempat</p>
-          </div>
-          <div class="flex w-full flex-grow flex-col items-center justify-start gap-8 overflow-clip">
-            <app-card [classOnView]="animateGoFromLeft" icon="calendar.svg" title="Schedule">
-              <p class="font-manuale text-[1rem] lg:text-[1.25rem]">
-                <span class="font-semibold">Date:</span> Sunday, 15 Dec 2024
-              </p>
-              <p class="font-manuale text-[1rem] lg:text-[1.25rem]">
-                <span class="font-semibold">Time:</span> 14.30 &mdash; 18.00 WIB
-              </p>
-            </app-card>
-            <app-card [classOnView]="animateGoFromRight" icon="location-pin.svg" title="Location">
-              <p class="font-manuale text-[1rem] font-semibold lg:text-[1.25rem]">Maxi's Resto</p>
-              <p class="font-manuale text-[1rem] lg:text-[1.25rem]">Jl. Gunung Agung No.8, Ciumbuleuit, Kota Bandung</p>
-              <a
-                class="mt-2 flex flex-row items-center gap-1 fill-sky-400 text-sky-400 active:fill-sky-700 active:text-sky-700"
-                href="https://maps.app.goo.gl/9kLNCJA7acvwyxJB8"
-                target="_blank"
+      <section class="bg-bg-main relative flex flex-col items-center justify-center gap-8 pb-12 pt-16">
+        <div class="relative my-5 flex h-full w-full max-w-screen-lg flex-row items-center justify-center">
+          <div class="flex w-full flex-col items-center justify-center gap-10">
+            <app-class-on-view [classOnView]="kBrideOnView">
+              <div
+                class="mb-5 flex h-[14rem] w-[12rem] flex-col items-center justify-center rounded-lg bg-primary lg:h-[17.5rem] lg:w-[15rem]"
+              ></div>
+            </app-class-on-view>
+            <app-class-on-view [classOnView]="kBrideOnView">
+              <div class="mx-5 flex flex-col items-center justify-center gap-2 text-center">
+                <p class="font-manuale text-xl font-bold text-primary lg:text-2xl">Faiza Nurkholida</p>
+                <p class="font-manuale text-base text-primary lg:text-[1.2rem]">
+                  Putri Bapak (Alm) Muh Khozin dan Ibu Isrofah Wijayanti
+                </p>
+              </div>
+            </app-class-on-view>
+            <app-class-on-view [classOnView]="kBrideOnView">
+              <div
+                class="mx-5 flex size-[3rem] flex-col items-center justify-center rounded-full bg-primary lg:size-[4rem]"
               >
-                <p class="font-manuale text-[1rem] hover:underline active:font-bold">Open in GMaps</p>
-                <span class="size-3">
-                  <svg viewBox="0 0 33 33" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M32 0H23C22.4477 0 22 0.447716 22 1C22 1.55228 22.4477 2 23 2H29.5858L15.2929 16.2929L16.7071 17.7071L31 3.41421V10C31 10.5523 31.4477 11 32 11C32.5523 11 33 10.5523 33 10V1C33 0.447716 32.5523 0 32 0ZM7 3H16V1H7C3.13401 1 0 4.13401 0 8V26C0 29.866 3.13401 33 7 33H25C28.866 33 32 29.866 32 26V17H30V26C30 28.7614 27.7614 31 25 31H7C4.23858 31 2 28.7614 2 26V8C2 5.23858 4.23858 3 7 3Z"
-                    />
-                  </svg>
-                </span>
-              </a>
-            </app-card>
+                <p
+                  class="-translate-y-[0.2rem] text-center font-manuale text-[2rem] font-bold text-white lg:text-[2.6rem]"
+                >
+                  &
+                </p>
+              </div>
+            </app-class-on-view>
+            <app-class-on-view [classOnView]="kBrideOnView">
+              <div class="mx-5 flex flex-col items-center justify-center gap-2 text-center">
+                <p class="font-manuale text-xl font-bold text-primary lg:text-2xl">Muhammad Kamal Shafi</p>
+                <p class="font-manuale text-base text-primary lg:text-[1.2rem]">
+                  Putra Bapak Shafiyuddin dan Ibu Rahmi Syahrini
+                </p>
+              </div>
+            </app-class-on-view>
           </div>
+        </div>
+      </section>
+
+      <section class="bg-bg-main-shaded relative flex flex-col items-center justify-center gap-8 py-8">
+        <div class="relative my-5 flex h-full w-full max-w-screen-lg flex-col items-center justify-center gap-10">
+          <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">GALLERY</p>
+          <app-gallery class="w-full" (onOpenEvent)="onOpenGalleryModal($event)"></app-gallery>
+        </div>
+      </section>
+
+      <section class="bg-bg-main relative flex flex-col items-center justify-center pb-20 pt-14">
+        <div class="relative flex w-full max-w-screen-lg flex-col items-center justify-center gap-8">
+          <app-class-on-view [classOnView]="kBrideOnView">
+            <div class="flex w-full flex-col justify-center">
+              <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">RESEPSI</p>
+              <p class="text-center font-manuale text-base font-light">Schedule & Location</p>
+            </div>
+          </app-class-on-view>
+          <app-class-on-view
+            class="flex w-full max-w-screen-md flex-row px-[min(5rem,10vw)]"
+            [classOnView]="kBrideOnView"
+          >
+            <div class="flex w-full max-w-screen-md flex-row gap-8" #schedule>
+              <img class="max-h-32 max-w-[4.5rem]" src="calendar.svg" />
+              <div class="flex flex-col items-start">
+                <p class="text-center font-manuale text-sm font-light lg:text-lg">Sunday,</p>
+                <p class="text-center font-manuale text-2xl font-light lg:text-4xl">15</p>
+                <p class="text-center font-manuale text-sm font-light lg:text-lg">Desember 2024</p>
+                <p class="text-center font-manuale text-sm font-light lg:text-lg">14:30 — 18:00 WIB</p>
+              </div>
+            </div>
+          </app-class-on-view>
+          <app-class-on-view [classOnView]="kBrideOnView">
+            <div class="flex w-full max-w-screen-md flex-row gap-8 px-[min(6rem,10vw+1rem)]" #location>
+              <div class="flex flex-col items-start border-t-[0.5px] border-t-gray-500 pt-8">
+                <div class="flex flex-row items-center justify-start gap-2">
+                  <img class="max-h-[1rem] max-w-[1rem]" src="location-pin.svg" />
+                  <p class="text-center font-manuale text-2xl font-light lg:text-4xl">Maxi's Resto</p>
+                </div>
+                <p class="text-left font-manuale text-sm font-light lg:text-lg">
+                  Jl. Gunung Agung No.8, Ciumbuleuit, Kec. Cidadap, Kota Bandung, Jawa Barat 40143, Indonesia
+                </p>
+                <a
+                  class="mt-2 flex flex-row items-center gap-1 fill-sky-400 text-sky-400 active:fill-sky-700 active:text-sky-700"
+                  href="https://maps.app.goo.gl/9kLNCJA7acvwyxJB8"
+                  target="_blank"
+                >
+                  <p class="font-manuale text-sm hover:underline active:font-bold lg:text-lg">Open in GMaps</p>
+                  <span class="size-3">
+                    <svg viewBox="0 0 33 33" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M32 0H23C22.4477 0 22 0.447716 22 1C22 1.55228 22.4477 2 23 2H29.5858L15.2929 16.2929L16.7071 17.7071L31 3.41421V10C31 10.5523 31.4477 11 32 11C32.5523 11 33 10.5523 33 10V1C33 0.447716 32.5523 0 32 0ZM7 3H16V1H7C3.13401 1 0 4.13401 0 8V26C0 29.866 3.13401 33 7 33H25C28.866 33 32 29.866 32 26V17H30V26C30 28.7614 27.7614 31 25 31H7C4.23858 31 2 28.7614 2 26V8C2 5.23858 4.23858 3 7 3Z"
+                      />
+                    </svg>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </app-class-on-view>
+
+          <app-class-on-view class="mt-5 flex w-full items-center justify-center" [classOnView]="kBrideOnView">
+            <div class="mx-[min(5rem,10vw)] flex max-w-screen-sm flex-row justify-center rounded-xl bg-secondary p-4">
+              <p class="font-marcellus-sc text-sm text-white md:text-base lg:text-lg">
+                Akad Nikah is scheduled to be held ahead of time on December 8, 2024, at the bride's family's residence.
+              </p>
+            </div>
+          </app-class-on-view>
         </div>
       </section>
 
@@ -181,6 +239,29 @@ import { FooterComponent } from '../footer/footer.component';
       </section>
 
       <app-footer></app-footer>
+
+      <div
+        class="fixed left-0 top-0 z-50 flex h-full min-h-screen w-screen items-center justify-center overflow-auto bg-transparent"
+        [ngClass]="selectedGallery === undefined ? 'hidden' : ''"
+        #galleryModal
+      >
+        <div class="relative z-10 mx-5 aspect-[4/3] max-h-[80vh] w-full max-w-screen-lg opacity-100">
+          <button
+            class="pointer-events-auto absolute right-0 top-0 translate-y-[-110%] bg-black bg-opacity-30 px-2 py-0 font-manuale text-xl text-white hover:bg-opacity-50"
+            (click)="onCloseGalleryModal()"
+          >
+            x
+          </button>
+          <div
+            class="animate-scale-in-from-40 animate-very-fast relative flex h-full w-full justify-center rounded-lg bg-black"
+            [ngClass]="selectedGallery?.imageUrl"
+            #modalContent
+          >
+            <img [src]="selectedGallery?.imageUrl" class="my-auto w-full overflow-hidden object-cover" />
+          </div>
+        </div>
+        <div class="-z-1 absolute left-0 top-0 h-screen w-screen overflow-auto bg-black opacity-50" #galleryModal></div>
+      </div>
     </div>
   `,
   styleUrl: './main-invitation.component.css',
@@ -192,6 +273,8 @@ import { FooterComponent } from '../footer/footer.component';
     NgClass,
     HomeLoadingComponent,
     FooterComponent,
+    ClassOnViewComponent,
+    GalleryComponent,
   ],
 })
 export class MainInvitationComponent implements OnInit, OnDestroy {
@@ -200,25 +283,29 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
     1: ["YOU'RE", 'INVITED', 'TO THE BIG DAY!'],
   };
 
+  kBrideOnView = ['animate', 'animate-scale-in', 'animate-fast'];
+
   // Model related members
   logger = inject(LoggerService);
   weddingService = inject(WeddingService);
+  @Inject({})
+  private renderer = inject(Renderer2);
   invitation?: Invitation | undefined;
   loading = true;
+  selectedGallery?: GalleryContent | undefined;
 
   subscriptions: Subscription[] = [];
 
   // View related members
   @ViewChild('bigDay') bigDayElement: ElementRef | undefined;
+  @ViewChild('modalContent') modalContent: ElementRef | undefined;
 
   eventDate: Date = new Date('2024-12-15T14:30:00.000+07:00');
 
-  animateGoFromLeft = ['animate-go-from-left'];
-  animateGoFromRight = ['animate-go-from-right'];
   isBrowser = signal(false);
 
   constructor(@Inject(PLATFORM_ID) platformId: object) {
-    this.isBrowser.set(isPlatformBrowser(platformId)); // save isPlatformBrowser in signal
+    this.isBrowser.set(isPlatformBrowser(platformId));
   }
 
   ngOnInit() {
@@ -265,25 +352,6 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
           }
         });
       });
-      const threshold = [0, 0.1];
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            // WAR to handle weird intersection logic when animation active.
-            // - Observe the container for its child animation activation.
-            const child = entry.target.firstElementChild;
-            if (entry.intersectionRatio <= 0) {
-              child?.classList.add('opacity-0');
-              child?.classList.remove('animate');
-            } else {
-              child?.classList.remove('opacity-0');
-              child?.classList.add('animate');
-            }
-          });
-        },
-        { threshold },
-      );
-      observer.observe(this.bigDayElement!.nativeElement);
     }
   }
 
@@ -317,5 +385,29 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
       return this.kFirstSectionText[1];
     }
     return this.kFirstSectionText[0];
+  }
+
+  private addClasses(element: any, classes: string[]) {
+    classes.forEach((cls) => {
+      this.renderer.addClass(element, cls);
+    });
+  }
+
+  private removeClasses(element: any, classes: string[]) {
+    classes.forEach((cls) => {
+      this.renderer.removeClass(element, cls);
+    });
+  }
+
+  onOpenGalleryModal(content: GalleryContent) {
+    const modalContentElement = this.modalContent?.nativeElement;
+    this.selectedGallery = content;
+    this.addClasses(modalContentElement, ['animate']);
+  }
+
+  onCloseGalleryModal() {
+    const modalContentElement = this.modalContent?.nativeElement;
+    this.selectedGallery = undefined;
+    this.removeClasses(modalContentElement, ['animate']);
   }
 }

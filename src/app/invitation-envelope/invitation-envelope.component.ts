@@ -27,7 +27,7 @@ import { TypewriterService } from '../typewriter.service';
       </div>
       <div class="relative top-0 flex min-h-screen w-full flex-col items-center justify-center" #root>
         <div class="my-[max(10vh,4rem)] flex w-full max-w-screen-lg flex-col items-center justify-start gap-5">
-          <div class="relative mx-10 flex max-w-md flex-col gap-5 font-manuale text-lg text-primary">
+          <div class="relative mx-10 flex max-w-md flex-col gap-5 font-manuale text-base text-primary md:text-lg">
             <p>
               {{ textHeaderGreetings$ | async }}<span class="font-semibold">{{ textHeaderName$ | async }}</span
               >,
@@ -37,13 +37,13 @@ import { TypewriterService } from '../typewriter.service';
               <p class="pointer-events-none opacity-0">{{ kTextContent }}</p>
             </div>
           </div>
-          <div class="my-5 flex h-full w-full flex-col items-center justify-start gap-5 opacity-0" #envelope>
-            <div class="relative" (click)="onOpenEnvelope(true)">
+          <div class="my-5 flex h-full w-full flex-col items-center justify-start gap-5" #envelope>
+            <div class="envelope-hit-box animate-scale-in relative opacity-0" (click)="onOpenEnvelope(true)">
               <div
                 class="paper absolute bottom-0 left-0 right-0 top-0 m-auto h-[11rem] w-[15rem] bg-envelope-paper shadow-md"
               >
                 <div
-                  class="relative flex size-full flex-col items-center justify-center gap-1 font-manuale text-[1.4rem] font-semibold text-primary"
+                  class="relative flex size-full select-none flex-col items-center justify-center gap-1 font-manuale text-[1.4rem] font-semibold text-primary"
                 >
                   <p>WEDDING</p>
                   <p>INVITATION</p>
@@ -71,12 +71,18 @@ import { TypewriterService } from '../typewriter.service';
                 <div class="envelope-body absolute top-0 z-0 h-full w-full bg-envelope-inner"></div>
               </div>
             </div>
-            <div class="mt-5 flex flex-row items-center justify-center gap-4">
+            <div class="mt-5 flex flex-row items-center justify-center gap-2 text-sm md:text-base">
               <button
                 (click)="onOpenEnvelope(true)"
-                class="rounded-lg bg-primary p-2 font-manuale font-semibold text-white ring-sky-400 hover:ring-2 active:bg-light-primary active:shadow-inner active:shadow-primary active:ring-2"
+                class="animate-delay-400 animate-scale-in active:ring-3 flex-grow select-none rounded-lg bg-primary p-2 font-manuale font-semibold text-white opacity-0 shadow-md shadow-gray-400 ring-light-primary hover:ring-2 active:bg-white active:text-primary active:shadow-inner active:shadow-slate-100"
               >
                 OPEN INVITATION
+              </button>
+              <button
+                (click)="onDownloadAsPdf()"
+                class="animate-delay-500 animate-scale-in active:ring-3 flex-grow select-none rounded-lg bg-white p-2 font-manuale font-semibold text-primary opacity-0 shadow-md ring-white hover:ring-2 active:bg-primary active:text-white active:shadow-inner active:shadow-light-primary"
+              >
+                DOWNLOAD PDF
               </button>
             </div>
           </div>
@@ -136,7 +142,7 @@ export class InvitationEnvelopeComponent {
                 this.textContent$ = this.typewritterService.getTypedText(this.kTextContent, 20);
                 this.textContent$.subscribe({
                   complete: () => {
-                    this.envelopeElement.nativeElement.classList.toggle('animate-scale-in', true);
+                    this.envelopeElement.nativeElement.classList.toggle('animate', true);
                   },
                 });
               }, 100);
@@ -170,6 +176,31 @@ export class InvitationEnvelopeComponent {
         this.envelopeEvent.emit(false);
       }, 400);
     }
+  }
+
+  onDownloadAsPdf() {
+    this.logger.info(`Downloading invitation for ${JSON.stringify(this.invitation)}...`);
+    this.weddingService.downloadInvitationPdf(this.invitation!.name).subscribe({
+      next: (blob) => {
+        const file = new Blob([blob], { type: 'application/pdf' });
+        const fileURL = URL.createObjectURL(file);
+        // To open in new window
+        // window.open(fileURL);
+        const dummy = document.createElement('a') as HTMLAnchorElement;
+        dummy.href = fileURL;
+        dummy.target = '_blank';
+        dummy.download = 'invitation.pdf';
+        document.body.appendChild(dummy);
+        dummy.click();
+        document.body.removeChild(dummy);
+      },
+      error: (err) => {
+        this.logger.error(`Failed to download invitation ${JSON.stringify(this.invitation)}`);
+        if (this.isBrowser()) {
+          window.alert('Failed to download.');
+        }
+      },
+    });
   }
 
   get currentYear(): number {

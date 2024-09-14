@@ -100,6 +100,7 @@ type State = {
           <div
             class="z-20 size-2 rounded-full shadow-md"
             [ngClass]="id === currentId ? 'bg-white' : 'bg-gray-400'"
+            (click)="selectContentId(id)"
           ></div>
         }
       </div>
@@ -131,14 +132,14 @@ type State = {
         >
           <div class="flex w-full flex-row justify-start gap-2">
             <button
-              class="rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md hover:ring-2 active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400 disabled:pointer-events-none disabled:opacity-60"
+              class="select-none rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md hover:ring-2 active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400 disabled:pointer-events-none disabled:opacity-60"
               [disabled]="state.page <= minPage"
               (click)="changePage(state.page - 1)"
             >
               <p class="font-manuale text-sm font-semibold text-primary">< prev</p>
             </button>
             <button
-              class="rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md hover:ring-2 active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400 disabled:pointer-events-none disabled:opacity-60"
+              class="select-none rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md hover:ring-2 active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400 disabled:pointer-events-none disabled:opacity-60"
               [disabled]="state.page >= maxPage"
               (click)="changePage(state.page + 1)"
             >
@@ -146,7 +147,7 @@ type State = {
             </button>
 
             <button
-              class="absolute right-0 top-0 rounded-md bg-primary p-3 font-semibold drop-shadow-md hover:ring-2 active:bg-light-primary active:shadow-inner active:ring-2 active:ring-white"
+              class="absolute right-0 top-0 select-none rounded-md bg-primary p-3 font-semibold drop-shadow-md hover:ring-2 active:bg-light-primary active:shadow-inner active:ring-2 active:ring-white"
               (click)="onRefresh()"
             >
               <div class="size-4 fill-white">
@@ -204,6 +205,7 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
   private lastContentChangeTime = 0;
   private pauseStart = 0;
   currentId = 0;
+  contentIdSelect = -1;
   contentBaseClasses =
     'pointer-events-none absolute top-0 flex w-full flex-col rounded-b-lg rounded-r-lg bg-amber-100 ' +
     'p-2 text-primary opacity-0 shadow-lg shadow-pink-400/50 scale-50 transition-all duration-1000';
@@ -295,33 +297,25 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
       );
     }
     this.updateHeight();
-    const intervalFunc = async (firstCall = false) => {
-      const { contents } = this;
-      const prevId = (this.currentId - 1 + contents.length) % contents.length;
-      const nextId = (this.currentId + 1) % contents.length;
-      const prevElement = contents.get(prevId)?.nativeElement;
-      const currentElement = contents.get(this.currentId)?.nativeElement;
-      if (!firstCall) {
-        this.logger.debug(`[kamalshafi] prevId ${prevId}, currentId ${this.currentId}, nextId ${nextId}`);
-        this.removeClasses(prevElement, [`scale-100`]);
-        this.addClasses(prevElement, [`opacity-0`, `scale-50`]);
-        await this.wait(1000);
-        this.addClasses(prevElement, [`pointer-events-none`]);
-      }
-      this.removeClasses(currentElement, [`opacity-0`, `scale-50`, `pointer-events-none`]);
-      this.addClasses(currentElement, [`scale-100`]);
-      this.currentId = nextId;
-      this.changeDetectorRef.detectChanges();
-    };
     const intervalMillis = 5000;
     this.lastContentChangeTime = new Date().valueOf();
-    intervalFunc();
+    this.contentIntervalFunction();
     if (this.isBrowser()) {
       this.renderInterval = setInterval(() => {
         const currentMillis = new Date().valueOf();
+        if (
+          0 <= this.contentIdSelect &&
+          this.contentIdSelect < this.contents.length &&
+          this.contentIdSelect != this.currentId
+        ) {
+          const contentIdSelect = this.contentIdSelect;
+          this.lastContentChangeTime = currentMillis;
+          this.contentIntervalFunction(contentIdSelect);
+        }
+        this.contentIdSelect = -1;
         if (this.pauseStart == 0 && currentMillis - this.lastContentChangeTime >= intervalMillis) {
           this.lastContentChangeTime = currentMillis;
-          intervalFunc();
+          this.contentIntervalFunction();
         }
       }, 100);
       this.resizeObservable$ = fromEvent(window, 'resize');
@@ -340,6 +334,29 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onRefresh() {
     this.messageService.reload();
+  }
+
+  async contentIntervalFunction(nextId = -1) {
+    const { contents } = this;
+    if (nextId == -1) {
+      nextId = (this.currentId + 1) % contents.length;
+    }
+    const nextElement = contents.get(nextId)?.nativeElement;
+    for (let i = 0; i < contents.length; i++) {
+      const selectElement = contents.get(i)?.nativeElement;
+      this.removeClasses(selectElement, [`scale-100`]);
+      this.addClasses(selectElement, [`opacity-0`, `scale-50`]);
+      if (i == this.currentId) await this.wait(1000);
+      this.addClasses(selectElement, [`pointer-events-none`]);
+    }
+    this.removeClasses(nextElement, [`opacity-0`, `scale-50`, `pointer-events-none`]);
+    this.addClasses(nextElement, [`scale-100`]);
+    this.currentId = nextId;
+    this.changeDetectorRef.detectChanges();
+  }
+
+  selectContentId(contentId: number) {
+    this.contentIdSelect = contentId;
   }
 
   pauseContentChange() {
