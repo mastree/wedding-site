@@ -21,11 +21,15 @@ import { TypewriterService } from '../typewriter.service';
   selector: 'app-invitation-envelope',
   standalone: true,
   template: `
-    <div class="relative h-full w-full bg-bg-envelope">
-      <div class="absolute top-0 w-full">
-        <app-navigation-bar></app-navigation-bar>
+    <div class="relative flex h-full min-h-screen w-full flex-col justify-between bg-bg-envelope">
+      <div class="absolute top-0 -z-10 w-full">
+        <app-navigation-bar additinalClass="bg-bg-envelope"></app-navigation-bar>
       </div>
-      <div class="relative top-0 flex min-h-screen w-full flex-col items-center justify-center" #root>
+      <div class="relative top-0 flex w-full flex-grow flex-col items-center justify-center" #root>
+        <div class="absolute left-0 top-0 w-full translate-x-[-5px] translate-y-[-10px]">
+          <img src="flower-deco-angle.png" class="relative w-[60%] max-w-[14rem]" />
+        </div>
+
         <div class="my-[max(10vh,4rem)] flex w-full max-w-screen-lg flex-col items-center justify-start gap-5">
           <div class="relative mx-10 flex max-w-md flex-col gap-5 font-manuale text-base text-primary md:text-lg">
             <p>
@@ -43,14 +47,12 @@ import { TypewriterService } from '../typewriter.service';
                 class="paper absolute bottom-0 left-0 right-0 top-0 m-auto h-[11rem] w-[15rem] bg-envelope-paper shadow-md"
               >
                 <div
-                  class="relative flex size-full select-none flex-col items-center justify-center gap-1 font-manuale text-[1.4rem] font-semibold text-primary"
+                  class="relative flex size-full select-none flex-col items-center justify-center gap-1 overflow-clip font-manuale text-[1.4rem] font-semibold text-primary"
                 >
                   <p>WEDDING</p>
                   <p>INVITATION</p>
-                  <img
-                    class="absolute bottom-0 left-0 -z-10 h-[70%] translate-x-[-10%] translate-y-[10%]"
-                    src="letter-background.png"
-                  />
+                  <img class="absolute left-0 top-0 h-full translate-x-[-30%]" src="flower-deco-left.png" />
+                  <img class="absolute right-0 top-0 h-full translate-x-[30%]" src="flower-deco-right.png" />
                 </div>
               </div>
 
