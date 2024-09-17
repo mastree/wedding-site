@@ -124,13 +124,23 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
         </section>
       </div>
 
-      <section class="bg-bg-main relative flex flex-col items-center justify-center gap-8 pb-12 pt-16">
-        <div class="relative my-5 flex h-full w-full max-w-screen-lg flex-row items-center justify-center">
-          <div class="flex w-full flex-col items-center justify-center gap-10">
+      <section class="bg-bg-main relative z-10 flex flex-col items-center justify-center gap-8 pb-12 pt-16">
+        <div class="relative my-10 flex h-full w-full max-w-screen-lg flex-row items-center justify-center">
+          <div class="flex w-full flex-col items-center justify-center gap-16">
             <app-class-on-view [classOnView]="kBrideOnView">
               <div
-                class="mb-5 flex h-[14rem] w-[12rem] flex-col items-center justify-center rounded-lg bg-primary lg:h-[17.5rem] lg:w-[15rem]"
-              ></div>
+                class="bg-illustration-bg relative mb-10 flex h-[14rem] w-[12rem] flex-col items-center justify-center rounded-lg shadow-lg shadow-gray-400 ring-[3px] ring-white lg:h-[17.5rem] lg:w-[15rem]"
+              >
+                <img src="illustration-no-bg.png" class="h-full overflow-hidden rounded-lg object-cover" />
+                <img
+                  src="flower-deco-angle.png"
+                  class="absolute left-0 top-0 w-[60%] translate-x-[-20%] translate-y-[-30%]"
+                />
+                <img
+                  src="flower-deco-angle.png"
+                  class="absolute bottom-0 right-0 w-[60%] translate-x-[20%] translate-y-[30%] scale-[-100%]"
+                />
+              </div>
             </app-class-on-view>
             <app-class-on-view [classOnView]="kBrideOnView">
               <div class="mx-5 flex flex-col items-center justify-center gap-2 text-center">
@@ -160,6 +170,9 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
               </div>
             </app-class-on-view>
           </div>
+        </div>
+        <div class="absolute bottom-0 left-0 flex w-full translate-y-[50%] justify-center">
+          <img src="flower-deco-line.png" class="w-[80%] max-w-[25rem] object-fill" />
         </div>
       </section>
 

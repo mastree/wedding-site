@@ -103,6 +103,7 @@ module.exports = {
         "envelope-inner": "#97B8B3",
         "envelope-paper": "#FEEEEF",
         "bg-envelope": "#EBEDED",
+        "illustration-bg": "#B0CCCC",
       },
       transitionDuration: {
         1500: "1500ms",
