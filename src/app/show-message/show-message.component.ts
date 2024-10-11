@@ -37,7 +37,7 @@ type State = {
       #dummyClass
     ></div>
     <div class="relative flex w-full flex-col items-center justify-center gap-12">
-      <div class="relative flex w-full select-none items-center justify-center overflow-clip" #container>
+      <div class="relative flex w-full select-none items-center justify-center" #container>
         <div
           [class]="contentBaseClasses"
           (pointerdown)="pauseContentChange()"
@@ -47,6 +47,10 @@ type State = {
           id="primary"
           #content
         >
+          <img
+            src="flower-deco-angle.png"
+            class="absolute bottom-0 right-0 h-[70%] max-h-[8rem] translate-x-[10%] translate-y-[30%] scale-[-100%]"
+          />
           <p class="font-manuale font-semibold">From: Faiza & Kamal</p>
           <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
           <div class="w-full p-1 md:p-2">
@@ -66,6 +70,10 @@ type State = {
           (touchend)="resumeContentChange()"
           #content
         >
+          <img
+            src="flower-deco-angle.png"
+            class="absolute bottom-0 right-0 h-[70%] max-h-[8rem] translate-x-[10%] translate-y-[30%] scale-[-100%]"
+          />
           <p class="font-manuale font-semibold">QS. An-Nisa' Ayat 1</p>
           <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
           <div class="w-full p-1 md:p-2">
@@ -85,6 +93,10 @@ type State = {
           (touchend)="resumeContentChange()"
           #content
         >
+          <img
+            src="flower-deco-angle.png"
+            class="absolute bottom-0 right-0 h-[70%] max-h-[8rem] translate-x-[10%] translate-y-[30%] scale-[-100%]"
+          />
           <p class="font-manuale font-semibold">QS. Az-Zariyat Ayat 49</p>
           <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
           <div class="w-full p-1 md:p-2">
@@ -299,7 +311,7 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.updateHeight();
     const intervalMillis = 5000;
     this.lastContentChangeTime = new Date().valueOf();
-    this.contentIntervalFunction();
+    this.contentIntervalFunction(0);
     if (this.isBrowser()) {
       this.renderInterval = setInterval(() => {
         const currentMillis = new Date().valueOf();
