@@ -22,7 +22,7 @@ import { TypewriterService } from '../typewriter.service';
   standalone: true,
   template: `
     <div class="relative flex h-full min-h-screen w-full flex-col justify-between">
-      <div class="-z-10 absolute h-screen w-screen top-0">
+      <div class="-z-10 absolute h-full w-screen top-0">
         <div class="w-full h-full bg-gradient-to-b from-bg-envelope to-bg-envelope-bottom opacity-80"></div>
         <img src="prewed/IMG_0151.jpg" class="-z-10 absolute object-cover object-cover-image h-screen w-screen top-0" />
       </div>
