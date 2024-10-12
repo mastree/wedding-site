@@ -177,7 +177,7 @@ import { GalleryComponent } from '../gallery/gallery.component';
       </section>
 
       <section class="bg-bg-main-shaded relative flex flex-col items-center justify-center gap-8 py-8">
-        <div class="relative my-5 flex h-full w-full max-w-screen-lg flex-col items-center justify-center gap-10">
+        <div class="relative my-5 flex h-full w-full max-w-screen-2xl flex-col items-center justify-center gap-10">
           <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">GALLERY</p>
           <app-gallery class="w-full"></app-gallery>
         </div>
