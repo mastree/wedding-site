@@ -14,7 +14,7 @@ import { signal } from '@angular/core';
 import { HomeLoadingComponent } from '../home-loading/home-loading.component';
 import { FooterComponent } from '../footer/footer.component';
 import { ClassOnViewComponent } from '../class-on-view/class-on-view.component';
-import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
+import { GalleryComponent } from '../gallery/gallery.component';
 
 @Component({
   selector: 'app-main-invitation',
@@ -179,7 +179,7 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
       <section class="bg-bg-main-shaded relative flex flex-col items-center justify-center gap-8 py-8">
         <div class="relative my-5 flex h-full w-full max-w-screen-lg flex-col items-center justify-center gap-10">
           <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">GALLERY</p>
-          <app-gallery class="w-full" (onOpenEvent)="onOpenGalleryModal($event)"></app-gallery>
+          <app-gallery class="w-full"></app-gallery>
         </div>
       </section>
 
@@ -252,29 +252,6 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
       </section>
 
       <app-footer></app-footer>
-
-      <div
-        class="fixed left-0 top-0 z-50 flex h-full min-h-screen w-screen items-center justify-center overflow-auto bg-transparent"
-        [ngClass]="selectedGallery === undefined ? 'hidden' : ''"
-        #galleryModal
-      >
-        <div class="relative z-10 mx-5 aspect-[4/3] max-h-[80vh] w-full max-w-screen-lg opacity-100">
-          <button
-            class="pointer-events-auto absolute right-0 top-0 translate-y-[-110%] bg-black bg-opacity-30 px-2 py-0 font-manuale text-xl text-white hover:bg-opacity-50"
-            (click)="onCloseGalleryModal()"
-          >
-            x
-          </button>
-          <div
-            class="animate-scale-in-from-40 animate-very-fast relative flex h-full w-full justify-center rounded-lg bg-black"
-            [ngClass]="selectedGallery?.imageUrl"
-            #modalContent
-          >
-            <img [src]="selectedGallery?.imageUrl" class="my-auto w-full overflow-hidden object-cover" />
-          </div>
-        </div>
-        <div class="-z-1 absolute left-0 top-0 h-screen w-screen overflow-auto bg-black opacity-50" #galleryModal></div>
-      </div>
     </div>
   `,
   styleUrl: './main-invitation.component.css',
@@ -305,13 +282,11 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
   private renderer = inject(Renderer2);
   invitation?: Invitation | undefined;
   loading = true;
-  selectedGallery?: GalleryContent | undefined;
 
   subscriptions: Subscription[] = [];
 
   // View related members
   @ViewChild('bigDay') bigDayElement: ElementRef | undefined;
-  @ViewChild('modalContent') modalContent: ElementRef | undefined;
 
   eventDate: Date = new Date('2024-12-15T14:30:00.000+07:00');
 
@@ -410,17 +385,5 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
     classes.forEach((cls) => {
       this.renderer.removeClass(element, cls);
     });
-  }
-
-  onOpenGalleryModal(content: GalleryContent) {
-    const modalContentElement = this.modalContent?.nativeElement;
-    this.selectedGallery = content;
-    this.addClasses(modalContentElement, ['animate']);
-  }
-
-  onCloseGalleryModal() {
-    const modalContentElement = this.modalContent?.nativeElement;
-    this.selectedGallery = undefined;
-    this.removeClasses(modalContentElement, ['animate']);
   }
 }

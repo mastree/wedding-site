@@ -2,12 +2,11 @@ import { NgClass, isPlatformBrowser } from '@angular/common';
 import {
   Component,
   ElementRef,
-  EventEmitter,
   Inject,
   OnDestroy,
-  Output,
   PLATFORM_ID,
   QueryList,
+  Renderer2,
   ViewChild,
   ViewChildren,
   inject,
@@ -67,7 +66,7 @@ export type GalleryContent = {
               class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
               [ngClass]="content.imageUrl"
               [id]="'content-' + id"
-              (click)="onOpenContent(content)"
+              (click)="onOpenContent(id)"
               #galleryContent
             >
               <img
@@ -104,12 +103,59 @@ export type GalleryContent = {
         }
       </div>
     </div>
+
+    <div
+      class="fixed left-0 top-0 z-50 flex h-full min-h-screen w-screen items-center justify-center overflow-auto bg-transparent"
+      [ngClass]="selectedGallery === undefined ? 'hidden' : ''"
+      #galleryModal
+    >
+      <button
+        class="absolute left-0 top-[50%] z-20 flex h-[3rem] w-[2rem] translate-y-[-50%] items-center justify-center bg-white opacity-20 hover:opacity-30 active:hover:opacity-50"
+        #galleryPrev
+        (click)="onChangeOpenContentIndex(-1)"
+        [disabled]="contentControlDisable"
+      >
+        <div
+          class="relative size-0 translate-x-[-12%] border-y-[1rem] border-r-[1rem] border-y-transparent border-r-black"
+        ></div>
+      </button>
+      <button
+        class="absolute right-0 top-[50%] z-20 flex h-[3rem] w-[2rem] translate-y-[-50%] items-center justify-center bg-white opacity-20 hover:opacity-30 active:hover:opacity-50"
+        #GalleryNext
+        (click)="onChangeOpenContentIndex(1)"
+        [disabled]="contentControlDisable"
+      >
+        <div
+          class="relative size-0 translate-x-[12%] border-y-[1rem] border-l-[1rem] border-y-transparent border-l-black"
+        ></div>
+      </button>
+
+      <div class="relative z-10 mx-5 aspect-[4/3] max-h-[80vh] w-full max-w-screen-lg opacity-100">
+        <button
+          class="pointer-events-auto absolute right-0 top-0 translate-y-[-110%] bg-black bg-opacity-30 px-2 py-0 font-manuale text-xl text-white hover:bg-opacity-50"
+          (click)="onCloseGalleryModal()"
+        >
+          x
+        </button>
+        <div
+          class="animate-scale-in-from-40 animate-very-fast relative flex h-full w-full justify-center rounded-lg bg-black"
+          [ngClass]="selectedGallery?.imageUrl"
+          #modalContent
+        >
+          <img [src]="selectedGallery?.imageUrl" class="my-auto w-full overflow-hidden object-cover" />
+        </div>
+      </div>
+      <div class="-z-1 absolute left-0 top-0 h-screen w-screen overflow-auto bg-black opacity-70" #galleryModal></div>
+    </div>
   `,
   styleUrl: './gallery.component.css',
 })
 export class GalleryComponent implements OnDestroy {
   // Model related members
   logger = inject(LoggerService);
+  @Inject({})
+  private renderer = inject(Renderer2);
+
   contents: GalleryContent[] = [
     {
       title: '0',
@@ -138,13 +184,16 @@ export class GalleryComponent implements OnDestroy {
   ];
   currentId: number = 0;
   subscriptions: Subscription[] = [];
-  @Output() onOpenEvent = new EventEmitter<GalleryContent>();
+  selectedGallery?: GalleryContent | undefined;
+  selectedGalleryId: number = -1;
 
   // View related members
   @ViewChild('galleryScroll') galleryScroll!: ElementRef;
   @ViewChild('galleryContainer') galleryContainer!: ElementRef;
   @ViewChildren('galleryContent') contentsQuery!: QueryList<ElementRef>;
   contentControlDisable: boolean = false;
+
+  @ViewChild('modalContent') modalContent: ElementRef | undefined;
 
   isBrowser = signal(false);
 
@@ -237,7 +286,35 @@ export class GalleryComponent implements OnDestroy {
     return ret;
   }
 
-  onOpenContent(content: GalleryContent) {
-    this.onOpenEvent.emit(content);
+  private addClasses(element: any, classes: string[]) {
+    classes.forEach((cls) => {
+      this.renderer.addClass(element, cls);
+    });
+  }
+
+  private removeClasses(element: any, classes: string[]) {
+    classes.forEach((cls) => {
+      this.renderer.removeClass(element, cls);
+    });
+  }
+
+  onChangeOpenContentIndex(delta: number) {
+    this.selectedGalleryId = (this.selectedGalleryId + delta + this.contents.length) % this.contents.length;
+    this.selectedGallery = this.contents[this.selectedGalleryId];
+  }
+
+  onOpenContent(contentId: number) {
+    // this.onOpenEvent.emit(content);
+    const modalContentElement = this.modalContent?.nativeElement;
+    this.selectedGalleryId = contentId;
+    this.selectedGallery = this.contents[this.selectedGalleryId];
+    this.addClasses(modalContentElement, ['animate']);
+  }
+
+  onCloseGalleryModal() {
+    const modalContentElement = this.modalContent?.nativeElement;
+    this.selectedGallery = undefined;
+    this.selectedGalleryId = -1;
+    this.removeClasses(modalContentElement, ['animate']);
   }
 }
