@@ -171,43 +171,43 @@ export class GalleryComponent implements OnDestroy {
   contents: GalleryContent[] = [
     {
       title: '0',
-      imageUrl: 'prewed/IMG_0151.jpg',
+      imageUrl: 'compressed-prewed/IMG_0151.jpg',
     },
     {
       title: '1',
-      imageUrl: 'prewed/IMG_0163.jpg',
+      imageUrl: 'compressed-prewed/IMG_0163.jpg',
     },
     {
       title: '2',
-      imageUrl: 'prewed/IMG_0191.jpg',
+      imageUrl: 'compressed-prewed/IMG_0191.jpg',
     },
     {
       title: '3',
-      imageUrl: 'prewed/IMG_0196.jpg',
+      imageUrl: 'compressed-prewed/IMG_0196.jpg',
     },
     {
       title: '4',
-      imageUrl: 'prewed/IMG_0214.jpg',
+      imageUrl: 'compressed-prewed/IMG_0214.jpg',
     },
     {
       title: '5',
-      imageUrl: 'prewed/IMG_0306.jpg',
+      imageUrl: 'compressed-prewed/IMG_0306.jpg',
     },
     {
       title: '6',
-      imageUrl: 'prewed/IMG_0317-2.jpg',
+      imageUrl: 'compressed-prewed/IMG_0317-2.jpg',
     },
     {
       title: '7',
-      imageUrl: 'prewed/IMG_0368.jpg',
+      imageUrl: 'compressed-prewed/IMG_0368.jpg',
     },
     {
       title: '8',
-      imageUrl: 'prewed/IMG_0381.jpg',
+      imageUrl: 'compressed-prewed/IMG_0381.jpg',
     },
     {
       title: '9',
-      imageUrl: 'prewed/IMG_0395.jpg',
+      imageUrl: 'compressed-prewed/IMG_0395.jpg',
     },
   ];
   currentId: number = 0;
