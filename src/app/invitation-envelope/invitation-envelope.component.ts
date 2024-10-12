@@ -24,7 +24,7 @@ import { TypewriterService } from '../typewriter.service';
     <div class="relative flex h-full min-h-screen w-full flex-col justify-between">
       <div class="-z-10 absolute h-full w-screen top-0">
         <div class="w-full h-full bg-gradient-to-b from-bg-envelope to-bg-envelope-bottom opacity-80"></div>
-        <img src="prewed/IMG_0151.jpg" class="-z-10 absolute object-cover object-cover-image h-screen w-screen top-0" />
+        <img src="prewed/IMG_0151.jpg" class="-z-10 absolute object-cover object-cover-image h-full w-screen top-0" />
       </div>
       <div class="relative top-0 flex w-full flex-grow flex-col items-center justify-start" #root>
         <div class="my-[max(10vh,4rem)] mx-[max(10vw,2rem)] flex w-full max-w-screen-lg flex-col items-start justify-start gap-5">
