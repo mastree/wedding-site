@@ -19,9 +19,14 @@
   }
 }
 
-.animate.animate-scale-in-from-40 {
+.animate .animate-scale-in-from-40 {
   animation-name: scaleInFrom40;
 }
-.animate.animate-very-fast {
+.animate .animate-very-fast {
   animation-duration: 0.4s;
+}
+
+.accelerate {
+  -webkit-transform: translate3d(0,0,1px);
+  -webkit-backface-visibility: hidden;
 }

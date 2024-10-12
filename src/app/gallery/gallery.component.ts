@@ -46,20 +46,23 @@ export type GalleryContent = {
           class="relative size-0 translate-x-[12%] border-y-[1rem] border-l-[1rem] border-y-transparent border-l-white"
         ></div>
       </button>
-      <div class="relative mx-2 flex flex-row justify-start overflow-x-hidden scroll-smooth" #galleryScroll>
+      <div class="accelerate relative mx-2 flex flex-row justify-start overflow-x-hidden scroll-smooth" #galleryScroll>
         <div class="relative my-5 flex flex-row gap-0" #galleryContainer>
           @for (content of contents!; track content; let id = $index) {
-            <div
-              class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
-              [ngClass]="content.imageUrl"
-              [id]="'content-dummy1-' + id"
-            >
-              <img
-                [src]="content.imageUrl"
-                onerror="this.style.display = 'none';"
-                class="h-full overflow-hidden rounded-md object-cover"
-              />
-            </div>
+            @if (id >= contents.length - 3) {
+              <div
+                class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
+                [ngClass]="content.imageUrl"
+                [id]="'content-dummy1-' + id"
+              >
+                <img
+                  [src]="content.imageUrl"
+                  onerror="this.style.display = 'none';"
+                  class="h-full w-full overflow-hidden rounded-md object-cover"
+                  loading="lazy"
+                />
+              </div>
+            }
           }
           @for (content of contents!; track content; let id = $index) {
             <div
@@ -72,22 +75,26 @@ export type GalleryContent = {
               <img
                 [src]="content.imageUrl"
                 onerror="this.style.display = 'none';"
-                class="h-full overflow-hidden rounded-md object-cover"
+                class="h-full w-full overflow-hidden rounded-md object-cover"
+                loading="lazy"
               />
             </div>
           }
           @for (content of contents!; track content; let id = $index) {
-            <div
-              class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
-              [ngClass]="content.imageUrl"
-              [id]="'content-dummy2-' + id"
-            >
-              <img
-                [src]="content.imageUrl"
-                onerror="this.style.display = 'none';"
-                class="h-full overflow-hidden rounded-md object-cover"
-              />
-            </div>
+            @if (id < 3) {
+              <div
+                class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
+                [ngClass]="content.imageUrl"
+                [id]="'content-dummy2-' + id"
+              >
+                <img
+                  [src]="content.imageUrl"
+                  onerror="this.style.display = 'none';"
+                  class="h-full w-full overflow-hidden rounded-md object-cover"
+                  loading="lazy"
+                />
+              </div>
+            }
           }
         </div>
       </div>
@@ -105,7 +112,7 @@ export type GalleryContent = {
     </div>
 
     <div
-      class="fixed left-0 top-0 z-50 flex h-full min-h-screen w-screen items-center justify-center overflow-auto bg-transparent"
+      class="fixed left-0 top-0 z-50 m-0 flex h-full min-h-screen w-screen items-center justify-center overflow-auto bg-transparent p-0"
       [ngClass]="selectedGallery === undefined ? 'hidden' : ''"
       #galleryModal
     >
@@ -130,19 +137,24 @@ export type GalleryContent = {
         ></div>
       </button>
 
-      <div class="relative z-10 mx-5 aspect-[4/3] max-h-[80vh] w-full max-w-screen-lg opacity-100">
-        <button
-          class="pointer-events-auto absolute right-0 top-0 translate-y-[-110%] bg-black bg-opacity-30 px-2 py-0 font-manuale text-xl text-white hover:bg-opacity-50"
-          (click)="onCloseGalleryModal()"
-        >
-          x
-        </button>
+      <div class="relative z-10 mx-5 h-[90vh] w-full max-w-screen-lg opacity-100">
         <div
-          class="animate-scale-in-from-40 animate-very-fast relative flex h-full w-full justify-center rounded-lg bg-black"
+          class="relative flex h-full w-full flex-col justify-center bg-transparent"
           [ngClass]="selectedGallery?.imageUrl"
           #modalContent
         >
-          <img [src]="selectedGallery?.imageUrl" class="my-auto w-full overflow-hidden object-cover" />
+          <div class="relative w-full">
+            <button
+              class="pointer-events-auto absolute right-0 top-0 translate-y-[-110%] bg-black bg-opacity-30 px-2 py-0 font-manuale text-xl text-white hover:bg-opacity-50"
+              (click)="onCloseGalleryModal()"
+            >
+              x
+            </button>
+          </div>
+          <img
+            [src]="selectedGallery?.imageUrl"
+            class="animate-scale-in-from-40 animate-very-fast relative max-h-full max-w-full overflow-hidden object-contain"
+          />
         </div>
       </div>
       <div class="-z-1 absolute left-0 top-0 h-screen w-screen overflow-auto bg-black opacity-70" #galleryModal></div>
@@ -159,27 +171,43 @@ export class GalleryComponent implements OnDestroy {
   contents: GalleryContent[] = [
     {
       title: '0',
-      imageUrl: 'invitation-bg-video.png',
+      imageUrl: 'prewed/IMG_0151.jpg',
     },
     {
       title: '1',
-      imageUrl: 'bg-gray-100',
+      imageUrl: 'prewed/IMG_0163.jpg',
     },
     {
       title: '2',
-      imageUrl: 'bg-gray-200',
+      imageUrl: 'prewed/IMG_0191.jpg',
     },
     {
       title: '3',
-      imageUrl: 'bg-gray-300',
+      imageUrl: 'prewed/IMG_0196.jpg',
     },
     {
       title: '4',
-      imageUrl: 'bg-gray-400',
+      imageUrl: 'prewed/IMG_0214.jpg',
     },
     {
       title: '5',
-      imageUrl: 'bg-gray-500',
+      imageUrl: 'prewed/IMG_0306.jpg',
+    },
+    {
+      title: '6',
+      imageUrl: 'prewed/IMG_0317-2.jpg',
+    },
+    {
+      title: '7',
+      imageUrl: 'prewed/IMG_0368.jpg',
+    },
+    {
+      title: '8',
+      imageUrl: 'prewed/IMG_0381.jpg',
+    },
+    {
+      title: '9',
+      imageUrl: 'prewed/IMG_0395.jpg',
     },
   ];
   currentId: number = 0;
@@ -209,7 +237,9 @@ export class GalleryComponent implements OnDestroy {
 
   ngAfterViewInit() {
     if (this.isBrowser()) {
-      this.onChangeIndex(0);
+      // WAR: put the first index as the first content index
+      this.onChangeIndex(-(Math.floor(this.contents.length / 2) - 1));
+      this.currentId = 0;
       this.contentsQuery.reset(
         this.contentsQuery.toArray().sort((a, b) => {
           if (a.nativeElement.id === b.nativeElement.id) return 0;
@@ -270,6 +300,7 @@ export class GalleryComponent implements OnDestroy {
       this.contents = [...prefix, ...suffix];
     }
     this.scrollContentToCenter(this.getContentSize() * -delta + defaultOffset, 'instant');
+    this.wait(50);
     this.scrollContentToCenter(defaultOffset);
     setTimeout(() => (this.contentControlDisable = false), 700);
   }
@@ -284,6 +315,10 @@ export class GalleryComponent implements OnDestroy {
       }
     }
     return ret;
+  }
+
+  private async wait(ms: number) {
+    return new Promise<void>((resolve) => setTimeout(() => resolve(), ms));
   }
 
   private addClasses(element: any, classes: string[]) {
