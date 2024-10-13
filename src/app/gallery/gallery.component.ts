@@ -54,10 +54,10 @@ export type GalleryContent = {
                 class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
                 [ngClass]="content.imageUrl"
                 [id]="'content-dummy1-' + id"
+                (click)="onOpenContent(id)"
               >
                 <img
                   [src]="content.imageUrl"
-                  onerror="this.style.display = 'none';"
                   class="h-full w-full overflow-hidden rounded-md object-cover"
                 />
               </div>
@@ -73,7 +73,6 @@ export type GalleryContent = {
             >
               <img
                 [src]="content.imageUrl"
-                onerror="this.style.display = 'none';"
                 class="h-full w-full overflow-hidden rounded-md object-cover"
               />
             </div>
@@ -84,10 +83,10 @@ export type GalleryContent = {
                 class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
                 [ngClass]="content.imageUrl"
                 [id]="'content-dummy2-' + id"
+                (click)="onOpenContent(id)"
               >
                 <img
                   [src]="content.imageUrl"
-                  onerror="this.style.display = 'none';"
                   class="h-full w-full overflow-hidden rounded-md object-cover"
                 />
               </div>
