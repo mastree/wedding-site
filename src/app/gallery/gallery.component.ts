@@ -59,7 +59,6 @@ export type GalleryContent = {
                   [src]="content.imageUrl"
                   onerror="this.style.display = 'none';"
                   class="h-full w-full overflow-hidden rounded-md object-cover"
-                  loading="lazy"
                 />
               </div>
             }
@@ -76,7 +75,6 @@ export type GalleryContent = {
                 [src]="content.imageUrl"
                 onerror="this.style.display = 'none';"
                 class="h-full w-full overflow-hidden rounded-md object-cover"
-                loading="lazy"
               />
             </div>
           }
@@ -91,7 +89,6 @@ export type GalleryContent = {
                   [src]="content.imageUrl"
                   onerror="this.style.display = 'none';"
                   class="h-full w-full overflow-hidden rounded-md object-cover"
-                  loading="lazy"
                 />
               </div>
             }
