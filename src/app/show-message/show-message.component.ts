@@ -185,6 +185,24 @@ type State = {
                   <p class="min-h-16 font-lato">{{ message.message }}</p>
                 </div>
               }
+              @if (state.messages.length == 0) {
+                <div class="my-5 flex w-full flex-col items-center justify-center">
+                  <div class="flex items-center justify-center">
+                    <svg class="opacity-30" width="64" height="53" viewBox="0 0 64 53" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M19 0C8.50659 0 0 8.50659 0 19V25C0 32.0883 3.88161 38.2701 9.63518 41.5356L8.06438 52.7825L19.5499 44H45C55.4934 44 64 35.4934 64 25V19C64 8.50659 55.4934 0 45 0H19Z"
+                        class="fill-white"
+                      />
+                    </svg>
+                    <p class="absolute font-manuale text-white">...</p>
+                  </div>
+                  <p class="pointer-events-none select-none font-manuale font-semibold text-white drop-shadow-md">
+                    No message to show!
+                  </p>
+                </div>
+              }
             }
           </div>
         </div>
