@@ -29,7 +29,7 @@ export type GalleryContent = {
       <button
         class="absolute left-0 top-[50%] z-10 flex h-[3rem] w-[2rem] translate-y-[-50%] items-center justify-center bg-black opacity-20 hover:opacity-30 active:hover:opacity-50"
         #galleryPrev
-        (click)="onChangeIndex(-1)"
+        (click)="onChangeIndex(-getNumberOfContentsInScrollWindow())"
         [disabled]="contentControlDisable"
       >
         <div
@@ -39,7 +39,7 @@ export type GalleryContent = {
       <button
         class="absolute right-0 top-[50%] z-10 flex h-[3rem] w-[2rem] translate-y-[-50%] items-center justify-center bg-black opacity-20 hover:opacity-30 active:hover:opacity-50"
         #GalleryNext
-        (click)="onChangeIndex(1)"
+        (click)="onChangeIndex(getNumberOfContentsInScrollWindow())"
         [disabled]="contentControlDisable"
       >
         <div
@@ -212,6 +212,8 @@ export class GalleryComponent implements OnDestroy {
   selectedGallery?: GalleryContent | undefined;
   selectedGalleryId: number = -1;
 
+  defaultOffset: number = 0;
+
   // View related members
   @ViewChild('galleryScroll') galleryScroll!: ElementRef;
   @ViewChild('galleryContainer') galleryContainer!: ElementRef;
@@ -234,9 +236,7 @@ export class GalleryComponent implements OnDestroy {
 
   ngAfterViewInit() {
     if (this.isBrowser()) {
-      // WAR: put the first index as the first content index
-      this.onChangeIndex(-(Math.floor(this.contents.length / 2) - 1));
-      this.currentId = 0;
+      this.onChangeIndex(0);
       this.contentsQuery.reset(
         this.contentsQuery.toArray().sort((a, b) => {
           if (a.nativeElement.id === b.nativeElement.id) return 0;
@@ -259,7 +259,6 @@ export class GalleryComponent implements OnDestroy {
   }
 
   scrollContentToCenter(offset = 0, behavior = 'smooth') {
-    this.contentControlDisable = true;
     const scrollElement = this.galleryScroll.nativeElement;
     const containerElement = this.galleryContainer.nativeElement;
     this.logger.debug(
@@ -270,36 +269,12 @@ export class GalleryComponent implements OnDestroy {
       top: 0,
       behavior: behavior,
     });
-    setTimeout(() => (this.contentControlDisable = false), 500);
   }
 
   onChangeIndex(delta: number) {
     if (this.contentControlDisable) return;
-    const defaultOffset = this.contents.length % 2 == 0 ? -this.getContentSize() / 2 : 0;
-    this.contentControlDisable = true;
-    delta = delta % this.contents.length;
-    if (Math.abs(delta) > this.contents.length / 2) {
-      if (delta > 0) {
-        delta -= this.contents.length;
-      } else {
-        delta += this.contents.length;
-      }
-    }
     this.currentId = (this.currentId + delta + this.contents.length) % this.contents.length;
-    const scrollElement = this.galleryScroll.nativeElement;
-    if (delta >= 0) {
-      const prefix = this.contents.slice(delta, this.contents.length);
-      const suffix = this.contents.slice(0, delta);
-      this.contents = [...prefix, ...suffix];
-    } else {
-      const prefix = this.contents.slice(this.contents.length + delta, this.contents.length);
-      const suffix = this.contents.slice(0, this.contents.length + delta);
-      this.contents = [...prefix, ...suffix];
-    }
-    this.scrollContentToCenter(this.getContentSize() * -delta + defaultOffset, 'instant');
-    this.wait(50);
-    this.scrollContentToCenter(defaultOffset);
-    setTimeout(() => (this.contentControlDisable = false), 700);
+    this.scrollContentToCenter(this.getContentSize() * this.currentId + this.getBaseContentOffset(), 'smooth');
   }
 
   getContentSize() {
@@ -312,6 +287,17 @@ export class GalleryComponent implements OnDestroy {
       }
     }
     return ret;
+  }
+
+  private getBaseContentOffset() {
+    const contentSize = this.getContentSize();
+    return -(((this.contents.length - 1) * contentSize) / 2);
+  }
+
+  getNumberOfContentsInScrollWindow() {
+    const scrollElementSize = this.galleryScroll.nativeElement.offsetWidth;
+    const contentSize = this.getContentSize();
+    return Math.floor((scrollElementSize - contentSize) / (contentSize * 2)) * 2 + 1;
   }
 
   private async wait(ms: number) {
@@ -336,7 +322,6 @@ export class GalleryComponent implements OnDestroy {
   }
 
   onOpenContent(contentId: number) {
-    // this.onOpenEvent.emit(content);
     const modalContentElement = this.modalContent?.nativeElement;
     this.selectedGalleryId = contentId;
     this.selectedGallery = this.contents[this.selectedGalleryId];
