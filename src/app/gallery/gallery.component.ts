@@ -113,33 +113,33 @@ export type GalleryContent = {
       [ngClass]="selectedGallery === undefined ? 'hidden' : ''"
       #galleryModal
     >
-      <button
-        class="absolute left-0 top-[50%] z-20 flex h-[3rem] w-[2rem] translate-y-[-50%] items-center justify-center bg-white opacity-20 hover:opacity-30 active:hover:opacity-50"
-        #galleryPrev
-        (click)="onChangeOpenContentIndex(-1)"
-        [disabled]="contentControlDisable"
-      >
-        <div
-          class="relative size-0 translate-x-[-12%] border-y-[1rem] border-r-[1rem] border-y-transparent border-r-black"
-        ></div>
-      </button>
-      <button
-        class="absolute right-0 top-[50%] z-20 flex h-[3rem] w-[2rem] translate-y-[-50%] items-center justify-center bg-white opacity-20 hover:opacity-30 active:hover:opacity-50"
-        #GalleryNext
-        (click)="onChangeOpenContentIndex(1)"
-        [disabled]="contentControlDisable"
-      >
-        <div
-          class="relative size-0 translate-x-[12%] border-y-[1rem] border-l-[1rem] border-y-transparent border-l-black"
-        ></div>
-      </button>
-
-      <div class="relative z-10 mx-5 h-[90vh] w-full max-w-screen-lg opacity-100">
+      <div class="relative z-10 mx-5 h-[90vh] max-w-screen-lg opacity-100">
         <div
           class="relative flex h-full w-full flex-col justify-center bg-transparent"
           [ngClass]="selectedGallery?.imageUrl"
           #modalContent
         >
+          <button
+            class="absolute left-0 top-[50%] z-20 flex h-[3rem] w-[2rem] translate-y-[-50%] items-center justify-center bg-white opacity-20 hover:opacity-30 active:hover:opacity-50"
+            #galleryPrev
+            (click)="onChangeOpenContentIndex(-1)"
+            [disabled]="contentControlDisable"
+          >
+            <div
+              class="relative size-0 translate-x-[-12%] border-y-[1rem] border-r-[1rem] border-y-transparent border-r-black"
+            ></div>
+          </button>
+          <button
+            class="absolute right-0 top-[50%] z-20 flex h-[3rem] w-[2rem] translate-y-[-50%] items-center justify-center bg-white opacity-20 hover:opacity-30 active:hover:opacity-50"
+            #GalleryNext
+            (click)="onChangeOpenContentIndex(1)"
+            [disabled]="contentControlDisable"
+          >
+            <div
+              class="relative size-0 translate-x-[12%] border-y-[1rem] border-l-[1rem] border-y-transparent border-l-black"
+            ></div>
+          </button>
+
           <div class="relative w-full">
             <button
               class="pointer-events-auto absolute right-0 top-0 translate-y-[-110%] bg-black bg-opacity-30 px-2 py-0 font-manuale text-xl text-white hover:bg-opacity-50"
