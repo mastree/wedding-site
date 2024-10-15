@@ -188,7 +188,14 @@ type State = {
               @if (state.messages.length == 0) {
                 <div class="my-5 flex w-full flex-col items-center justify-center">
                   <div class="flex items-center justify-center">
-                    <svg class="opacity-30" width="64" height="53" viewBox="0 0 64 53" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg
+                      class="opacity-30"
+                      width="64"
+                      height="53"
+                      viewBox="0 0 64 53"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
                       <path
                         fill-rule="evenodd"
                         clip-rule="evenodd"
@@ -327,7 +334,7 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
       );
     }
     this.updateHeight();
-    const intervalMillis = 5000;
+    const intervalMillis = 7000;
     this.lastContentChangeTime = new Date().valueOf();
     this.contentIntervalFunction(0);
     if (this.isBrowser()) {
@@ -374,13 +381,12 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
     const nextElement = contents.get(nextId)?.nativeElement;
     for (let i = 0; i < contents.length; i++) {
       const selectElement = contents.get(i)?.nativeElement;
-      this.removeClasses(selectElement, [`scale-100`]);
+      this.removeClasses(selectElement, [`delay-700`, `scale-100`]);
       this.addClasses(selectElement, [`opacity-0`, `scale-50`]);
-      if (i == this.currentId) await this.wait(1000);
       this.addClasses(selectElement, [`pointer-events-none`]);
     }
     this.removeClasses(nextElement, [`opacity-0`, `scale-50`, `pointer-events-none`]);
-    this.addClasses(nextElement, [`scale-100`]);
+    this.addClasses(nextElement, [`delay-700`, `scale-100`]);
     this.currentId = nextId;
     this.changeDetectorRef.detectChanges();
   }
