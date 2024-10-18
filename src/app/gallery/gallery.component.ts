@@ -99,7 +99,7 @@ export type GalleryContent = {
       <div class="flex flex-row gap-2">
         @for (content of contents; track content; let id = $index) {
           <div
-            class="z-20 size-2 rounded-full shadow-md"
+            class="z-20 size-2 rounded-full"
             [ngClass]="id === currentId ? 'bg-gray-500' : 'bg-gray-300'"
             (click)="onChangeIndex(id - currentId)"
           ></div>
