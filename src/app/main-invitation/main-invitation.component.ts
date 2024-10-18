@@ -20,6 +20,10 @@ import { GalleryComponent } from '../gallery/gallery.component';
   selector: 'app-main-invitation',
   standalone: true,
   template: `
+    <div
+      class="delay-50 scale-0 scale-100 opacity-0 opacity-100 transition-all delay-1000 duration-700"
+      #dummyClass
+    ></div>
     <div class="animate-fade-in h-full w-full">
       <div class="relative flex h-screen min-h-[37.5rem] w-full flex-col gap-0 lg:min-h-[45rem]">
         <header class="relative top-0 h-[66%] w-full bg-white bg-opacity-30">
@@ -51,7 +55,11 @@ import { GalleryComponent } from '../gallery/gallery.component';
                   {{ getFirstSectionText[1] }}
                 </p>
               </div>
-              <app-class-on-view [classOnView]="kBrideOnView">
+              <app-class-on-view
+                [defaultClass]="kDefaultClass"
+                [classOnView]="kClassOnView"
+                [classOffView]="kClassOffView"
+              >
                 <div class="flex w-full flex-col items-center justify-center">
                   <div
                     class="mx-8 flex h-[5rem] w-[18rem] max-w-[90vw] items-center justify-center rounded-md bg-primary shadow-lg lg:h-[6.5rem]"
@@ -124,12 +132,16 @@ import { GalleryComponent } from '../gallery/gallery.component';
         </section>
       </div>
 
-      <section class="bg-bg-main relative z-10 flex flex-col items-center justify-center gap-8 pb-12 pt-16">
+      <section class="relative z-10 flex flex-col items-center justify-center gap-8 bg-bg-main pb-12 pt-16">
         <div class="relative my-10 flex h-full w-full max-w-screen-lg flex-row items-center justify-center">
           <div class="flex w-full flex-col items-center justify-center gap-16">
-            <app-class-on-view [classOnView]="kBrideOnView">
+            <app-class-on-view
+              [defaultClass]="kDefaultClass"
+              [classOnView]="kClassOnView"
+              [classOffView]="kClassOffView"
+            >
               <div
-                class="bg-illustration-bg relative mb-10 flex h-[14rem] w-[12rem] flex-col items-center justify-center rounded-lg shadow-lg shadow-gray-400 ring-[3px] ring-white lg:h-[17.5rem] lg:w-[15rem]"
+                class="relative mb-10 flex h-[14rem] w-[12rem] flex-col items-center justify-center rounded-lg bg-illustration-bg shadow-lg shadow-gray-400 ring-[3px] ring-white lg:h-[17.5rem] lg:w-[15rem]"
               >
                 <img src="illustration-no-bg.png" class="h-full overflow-hidden rounded-lg object-cover" />
                 <img
@@ -142,7 +154,11 @@ import { GalleryComponent } from '../gallery/gallery.component';
                 />
               </div>
             </app-class-on-view>
-            <app-class-on-view [classOnView]="kBrideOnView">
+            <app-class-on-view
+              [defaultClass]="kDefaultClass"
+              [classOnView]="kClassOnView"
+              [classOffView]="kClassOffView"
+            >
               <div class="mx-5 flex flex-col items-center justify-center gap-2 text-center">
                 <p class="font-manuale text-xl font-bold text-primary lg:text-2xl">Faiza Nurkholida</p>
                 <p class="font-manuale text-base text-primary lg:text-[1.2rem]">
@@ -150,7 +166,11 @@ import { GalleryComponent } from '../gallery/gallery.component';
                 </p>
               </div>
             </app-class-on-view>
-            <app-class-on-view [classOnView]="kBrideOnView">
+            <app-class-on-view
+              [defaultClass]="kDefaultClass"
+              [classOnView]="kClassOnView"
+              [classOffView]="kClassOffView"
+            >
               <div
                 class="mx-5 flex size-[3rem] flex-col items-center justify-center rounded-full bg-primary lg:size-[4rem]"
               >
@@ -161,7 +181,11 @@ import { GalleryComponent } from '../gallery/gallery.component';
                 </p>
               </div>
             </app-class-on-view>
-            <app-class-on-view [classOnView]="kBrideOnView">
+            <app-class-on-view
+              [defaultClass]="kDefaultClass"
+              [classOnView]="kClassOnView"
+              [classOffView]="kClassOffView"
+            >
               <div class="mx-5 flex flex-col items-center justify-center gap-2 text-center">
                 <p class="font-manuale text-xl font-bold text-primary lg:text-2xl">Muhammad Kamal Shafi</p>
                 <p class="font-manuale text-base text-primary lg:text-[1.2rem]">
@@ -176,16 +200,16 @@ import { GalleryComponent } from '../gallery/gallery.component';
         </div>
       </section>
 
-      <section class="bg-bg-main-shaded relative flex flex-col items-center justify-center gap-8 py-8">
+      <section class="relative flex flex-col items-center justify-center gap-8 bg-bg-main-shaded py-8">
         <div class="relative my-5 flex h-full w-full max-w-screen-2xl flex-col items-center justify-center gap-10">
           <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">GALLERY</p>
           <app-gallery class="w-full"></app-gallery>
         </div>
       </section>
 
-      <section class="bg-bg-main relative flex flex-col items-center justify-center pb-20 pt-14">
+      <section class="relative flex flex-col items-center justify-center bg-bg-main pb-20 pt-14">
         <div class="relative flex w-full max-w-screen-lg flex-col items-center justify-center gap-8">
-          <app-class-on-view [classOnView]="kBrideOnView">
+          <app-class-on-view [defaultClass]="kDefaultClass" [classOnView]="kClassOnView" [classOffView]="kClassOffView">
             <div class="flex w-full flex-col justify-center">
               <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">RESEPSI</p>
               <p class="text-center font-manuale text-base font-light">Schedule & Location</p>
@@ -193,7 +217,9 @@ import { GalleryComponent } from '../gallery/gallery.component';
           </app-class-on-view>
           <app-class-on-view
             class="flex w-full max-w-screen-md flex-row px-[min(5rem,10vw)]"
-            [classOnView]="kBrideOnView"
+            [defaultClass]="kDefaultClass"
+            [classOnView]="kClassOnView"
+            [classOffView]="kClassOffView"
           >
             <div class="flex w-full max-w-screen-md flex-row gap-8" #schedule>
               <img class="max-h-32 max-w-[4.5rem]" src="calendar.svg" />
@@ -205,7 +231,7 @@ import { GalleryComponent } from '../gallery/gallery.component';
               </div>
             </div>
           </app-class-on-view>
-          <app-class-on-view [classOnView]="kBrideOnView">
+          <app-class-on-view [defaultClass]="kDefaultClass" [classOnView]="kClassOnView" [classOffView]="kClassOffView">
             <div class="flex w-full max-w-screen-md flex-row gap-8 px-[min(6rem,10vw+1rem)]" #location>
               <div class="flex flex-col items-start border-t-[0.5px] border-t-gray-500 pt-8">
                 <div class="flex flex-row items-center justify-start gap-2">
@@ -235,7 +261,12 @@ import { GalleryComponent } from '../gallery/gallery.component';
             </div>
           </app-class-on-view>
 
-          <app-class-on-view class="mt-5 flex w-full items-center justify-center" [classOnView]="kBrideOnView">
+          <app-class-on-view
+            class="mt-5 flex w-full items-center justify-center"
+            [defaultClass]="kDefaultClass"
+            [classOnView]="kClassOnView"
+            [classOffView]="kClassOffView"
+          >
             <div class="mx-[min(5rem,10vw)] flex max-w-screen-sm flex-row justify-center rounded-xl bg-secondary p-4">
               <p class="font-marcellus-sc text-sm text-white md:text-base lg:text-lg">
                 Akad Nikah is scheduled to be held ahead of time on December 8, 2024, at the bride's family's residence.
@@ -273,7 +304,9 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
     1: ["YOU'RE", 'INVITED', 'TO THE BIG DAY!'],
   };
 
-  kBrideOnView = ['animate', 'animate-scale-in', 'animate-fast'];
+  kClassOnView = ['scale-100', 'opacity-100'];
+  kClassOffView = ['scale-0', 'opacity-0', 'delay-1000'];
+  kDefaultClass = ['transition-all', 'duration-700', 'delay-50'];
 
   // Model related members
   logger = inject(LoggerService);

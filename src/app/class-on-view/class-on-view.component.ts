@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Inject, inject } from '@angular/core';
+import { Inject, inject, ChangeDetectorRef } from '@angular/core';
 import { PLATFORM_ID } from '@angular/core';
 import { signal } from '@angular/core';
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
@@ -21,21 +21,41 @@ export class ClassOnViewComponent {
   @Input() title: string = '';
   @Input() classOnView: string[] = [];
   @Input() classOffView: string[] = [];
+  @Input() defaultClass: string[] = [];
 
   @ViewChild('container') container: ElementRef | undefined;
 
   isBrowser = signal(false);
   logger = inject(LoggerService);
+  onViewObserver: IntersectionObserver | undefined = undefined;
 
-  constructor(@Inject(PLATFORM_ID) platformId: object) {
+  constructor(
+    @Inject(PLATFORM_ID) platformId: object,
+    private changeDetectorRef: ChangeDetectorRef,
+  ) {
     this.isBrowser.set(isPlatformBrowser(platformId)); // save isPlatformBrowser in signal
+  }
+
+  private addClasses(element: any, classes: string[]) {
+    this.logger.debug(`addClasses(${element}, ${classes})`);
+    classes.forEach((cls) => {
+      element.classList.toggle(cls, true);
+    });
+  }
+
+  private removeClasses(element: any, classes: string[]) {
+    this.logger.debug(`removeClasses(${element}, ${classes})`);
+    classes.forEach((cls) => {
+      element.classList.toggle(cls, false);
+    });
   }
 
   ngAfterViewInit() {
     if (this.isBrowser()) {
+      this.addClasses(this.container?.nativeElement.firstChild, this.defaultClass);
       if (this.classOnView.length > 0) {
         const threshold = [0, 0.1];
-        const observer = new IntersectionObserver(
+        this.onViewObserver = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
               // WAR to handle weird intersection logic when animation active.
@@ -45,17 +65,23 @@ export class ClassOnViewComponent {
                 this.logger.debug(`[kamalshafi] off view ${this.classOffView} ${this.classOnView}`);
                 child?.classList.add(...this.classOffView);
                 child?.classList.remove(...this.classOnView);
+                this.changeDetectorRef.detectChanges();
               } else {
                 this.logger.debug(`[kamalshafi] on view ${this.classOffView} ${this.classOnView}`);
                 child?.classList.remove(...this.classOffView);
                 child?.classList.add(...this.classOnView);
+                this.changeDetectorRef.detectChanges();
               }
             });
           },
           { threshold },
         );
-        observer.observe(this.container?.nativeElement);
+        this.onViewObserver.observe(this.container?.nativeElement);
       }
     }
+  }
+
+  disconnectOnViewObserver() {
+    this.onViewObserver?.disconnect();
   }
 }

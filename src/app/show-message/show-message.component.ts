@@ -33,7 +33,7 @@ type State = {
   imports: [NgClass],
   template: `
     <div
-      class="pointer-events-none pointer-events-auto hidden scale-0 scale-100 opacity-0 opacity-100"
+      class="pointer-events-none pointer-events-auto hidden scale-0 scale-100 opacity-0 opacity-100 delay-1000"
       #dummyClass
     ></div>
     <div class="relative flex w-full flex-col items-center justify-center gap-12">
@@ -334,7 +334,7 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
       );
     }
     this.updateHeight();
-    const intervalMillis = 7000;
+    const intervalMillis = 10000;
     this.lastContentChangeTime = new Date().valueOf();
     this.contentIntervalFunction(0);
     if (this.isBrowser()) {
@@ -381,12 +381,12 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
     const nextElement = contents.get(nextId)?.nativeElement;
     for (let i = 0; i < contents.length; i++) {
       const selectElement = contents.get(i)?.nativeElement;
-      this.removeClasses(selectElement, [`delay-700`, `scale-100`]);
+      this.removeClasses(selectElement, [`delay-1000`, `scale-100`]);
       this.addClasses(selectElement, [`opacity-0`, `scale-50`]);
       this.addClasses(selectElement, [`pointer-events-none`]);
     }
     this.removeClasses(nextElement, [`opacity-0`, `scale-50`, `pointer-events-none`]);
-    this.addClasses(nextElement, [`delay-700`, `scale-100`]);
+    this.addClasses(nextElement, [`delay-1000`, `scale-100`]);
     this.currentId = nextId;
     this.changeDetectorRef.detectChanges();
   }
