@@ -35,7 +35,7 @@ type RsvpState = {
                   {{ invitedPax }} person(s) only.<br/>Due to limited seating, RSVP is required.
                 </p>
                 <p class="font-manuale text-base">
-                  Don't worry as you can always update later.
+                  Don't worry as you can always update it later.
                 </p>
                 <div class="flex w-full flex-row justify-end">
                   <button
