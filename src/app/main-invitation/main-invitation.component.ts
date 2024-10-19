@@ -59,8 +59,9 @@ import { GalleryComponent } from '../gallery/gallery.component';
                 [defaultClass]="kDefaultClass"
                 [classOnView]="kClassOnView"
                 [classOffView]="kClassOffView"
+                [oneShot]="true"
               >
-                <div class="flex w-full flex-col items-center justify-center">
+                <div class="flex w-full scale-0 flex-col items-center justify-center opacity-0">
                   <div
                     class="mx-8 flex h-[5rem] w-[18rem] max-w-[90vw] items-center justify-center rounded-md bg-primary shadow-lg lg:h-[6.5rem]"
                   >
@@ -139,9 +140,10 @@ import { GalleryComponent } from '../gallery/gallery.component';
               [defaultClass]="kDefaultClass"
               [classOnView]="kClassOnView"
               [classOffView]="kClassOffView"
+              [oneShot]="true"
             >
               <div
-                class="relative mb-10 flex h-[14rem] w-[12rem] flex-col items-center justify-center rounded-lg bg-illustration-bg shadow-lg shadow-gray-400 ring-[3px] ring-white lg:h-[17.5rem] lg:w-[15rem]"
+                class="relative mb-10 flex h-[14rem] w-[12rem] scale-0 flex-col items-center justify-center rounded-lg bg-illustration-bg opacity-0 shadow-lg shadow-gray-400 ring-[3px] ring-white lg:h-[17.5rem] lg:w-[15rem]"
               >
                 <img src="illustration-no-bg.png" class="h-full overflow-hidden rounded-lg object-cover" />
                 <img
@@ -158,8 +160,9 @@ import { GalleryComponent } from '../gallery/gallery.component';
               [defaultClass]="kDefaultClass"
               [classOnView]="kClassOnView"
               [classOffView]="kClassOffView"
+              [oneShot]="true"
             >
-              <div class="mx-5 flex flex-col items-center justify-center gap-2 text-center">
+              <div class="mx-5 flex scale-0 flex-col items-center justify-center gap-2 text-center opacity-0">
                 <p class="font-manuale text-xl font-bold text-primary lg:text-2xl">Faiza Nurkholida</p>
                 <p class="font-manuale text-base text-primary lg:text-[1.2rem]">
                   Putri Bapak (Alm) Muh Khozin dan Ibu Isrofah Wijayanti
@@ -170,9 +173,10 @@ import { GalleryComponent } from '../gallery/gallery.component';
               [defaultClass]="kDefaultClass"
               [classOnView]="kClassOnView"
               [classOffView]="kClassOffView"
+              [oneShot]="true"
             >
               <div
-                class="mx-5 flex size-[3rem] flex-col items-center justify-center rounded-full bg-primary lg:size-[4rem]"
+                class="mx-5 flex size-[3rem] scale-0 flex-col items-center justify-center rounded-full bg-primary opacity-0 lg:size-[4rem]"
               >
                 <p
                   class="-translate-y-[0.2rem] text-center font-manuale text-[2rem] font-bold text-white lg:text-[2.6rem]"
@@ -185,8 +189,9 @@ import { GalleryComponent } from '../gallery/gallery.component';
               [defaultClass]="kDefaultClass"
               [classOnView]="kClassOnView"
               [classOffView]="kClassOffView"
+              [oneShot]="true"
             >
-              <div class="mx-5 flex flex-col items-center justify-center gap-2 text-center">
+              <div class="mx-5 flex scale-0 flex-col items-center justify-center gap-2 text-center opacity-0">
                 <p class="font-manuale text-xl font-bold text-primary lg:text-2xl">Muhammad Kamal Shafi</p>
                 <p class="font-manuale text-base text-primary lg:text-[1.2rem]">
                   Putra Bapak Shafiyuddin dan Ibu Rahmi Syahrini
@@ -209,8 +214,13 @@ import { GalleryComponent } from '../gallery/gallery.component';
 
       <section class="relative flex flex-col items-center justify-center bg-bg-main pb-20 pt-14">
         <div class="relative flex w-full max-w-screen-lg flex-col items-center justify-center gap-8">
-          <app-class-on-view [defaultClass]="kDefaultClass" [classOnView]="kClassOnView" [classOffView]="kClassOffView">
-            <div class="flex w-full flex-col justify-center">
+          <app-class-on-view
+            [defaultClass]="kDefaultClass"
+            [classOnView]="kClassOnView"
+            [classOffView]="kClassOffView"
+            [oneShot]="true"
+          >
+            <div class="flex w-full scale-0 flex-col justify-center opacity-0">
               <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">RESEPSI</p>
               <p class="text-center font-manuale text-base font-light">Schedule & Location</p>
             </div>
@@ -220,8 +230,9 @@ import { GalleryComponent } from '../gallery/gallery.component';
             [defaultClass]="kDefaultClass"
             [classOnView]="kClassOnView"
             [classOffView]="kClassOffView"
+            [oneShot]="true"
           >
-            <div class="flex w-full max-w-screen-md flex-row gap-8" #schedule>
+            <div class="flex w-full max-w-screen-md scale-0 flex-row gap-8 opacity-0" #schedule>
               <img class="max-h-32 max-w-[4.5rem]" src="calendar.svg" />
               <div class="flex flex-col items-start">
                 <p class="text-center font-manuale text-sm font-light lg:text-lg">Sunday,</p>
@@ -231,8 +242,16 @@ import { GalleryComponent } from '../gallery/gallery.component';
               </div>
             </div>
           </app-class-on-view>
-          <app-class-on-view [defaultClass]="kDefaultClass" [classOnView]="kClassOnView" [classOffView]="kClassOffView">
-            <div class="flex w-full max-w-screen-md flex-row gap-8 px-[min(6rem,10vw+1rem)]" #location>
+          <app-class-on-view
+            [defaultClass]="kDefaultClass"
+            [classOnView]="kClassOnView"
+            [classOffView]="kClassOffView"
+            [oneShot]="true"
+          >
+            <div
+              class="flex w-full max-w-screen-md scale-0 flex-row gap-8 px-[min(6rem,10vw+1rem)] opacity-0"
+              #location
+            >
               <div class="flex flex-col items-start border-t-[0.5px] border-t-gray-500 pt-8">
                 <div class="flex flex-row items-center justify-start gap-2">
                   <img class="max-h-[1rem] max-w-[1rem]" src="location-pin.svg" />
@@ -266,8 +285,11 @@ import { GalleryComponent } from '../gallery/gallery.component';
             [defaultClass]="kDefaultClass"
             [classOnView]="kClassOnView"
             [classOffView]="kClassOffView"
+            [oneShot]="true"
           >
-            <div class="mx-[min(5rem,10vw)] flex max-w-screen-sm flex-row justify-center rounded-xl bg-secondary p-4">
+            <div
+              class="mx-[min(5rem,10vw)] flex max-w-screen-sm scale-0 flex-row justify-center rounded-xl bg-secondary p-4 opacity-0"
+            >
               <p class="font-marcellus-sc text-sm text-white md:text-base lg:text-lg">
                 Akad Nikah is scheduled to be held ahead of time on December 8, 2024, at the bride's family's residence.
               </p>

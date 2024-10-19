@@ -22,6 +22,7 @@ export class ClassOnViewComponent {
   @Input() classOnView: string[] = [];
   @Input() classOffView: string[] = [];
   @Input() defaultClass: string[] = [];
+  @Input() oneShot: boolean = false;
 
   @ViewChild('container') container: ElementRef | undefined;
 
@@ -71,6 +72,7 @@ export class ClassOnViewComponent {
                 child?.classList.remove(...this.classOffView);
                 child?.classList.add(...this.classOnView);
                 this.changeDetectorRef.detectChanges();
+                if (this.oneShot) this.disconnectOnViewObserver();
               }
             });
           },
