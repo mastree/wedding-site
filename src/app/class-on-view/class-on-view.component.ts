@@ -38,14 +38,12 @@ export class ClassOnViewComponent {
   }
 
   private addClasses(element: any, classes: string[]) {
-    this.logger.debug(`addClasses(${element}, ${classes})`);
     classes.forEach((cls) => {
       element.classList.toggle(cls, true);
     });
   }
 
   private removeClasses(element: any, classes: string[]) {
-    this.logger.debug(`removeClasses(${element}, ${classes})`);
     classes.forEach((cls) => {
       element.classList.toggle(cls, false);
     });
@@ -63,12 +61,10 @@ export class ClassOnViewComponent {
               // - Observe the container for its child animation activation.
               const child = entry.target.firstElementChild;
               if (entry.intersectionRatio <= 0) {
-                this.logger.debug(`[kamalshafi] off view ${this.classOffView} ${this.classOnView}`);
                 child?.classList.add(...this.classOffView);
                 child?.classList.remove(...this.classOnView);
                 this.changeDetectorRef.detectChanges();
               } else {
-                this.logger.debug(`[kamalshafi] on view ${this.classOffView} ${this.classOnView}`);
                 child?.classList.remove(...this.classOffView);
                 child?.classList.add(...this.classOnView);
                 this.changeDetectorRef.detectChanges();

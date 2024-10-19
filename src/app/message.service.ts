@@ -138,7 +138,6 @@ export class MessageService {
     this.subscription.push(
       combineLatest([this.pageRequest, this.sourceCache]).subscribe(([pageRequest, source]) => {
         if (!pageRequest || !source) return;
-        this.logger.debug(`combine(pageRequest=${JSON.stringify(pageRequest)}, sourceCache=${JSON.stringify(source)})`);
         this.pageData.next({
           ...this.pageData.value,
           messages: getMessagePageFromSource(pageRequest, source),
@@ -156,7 +155,7 @@ export class MessageService {
   }
 
   private updateSource(offset: number, rangeSize: number, pagination?: Pagination) {
-    this.logger.info(`updateSource(${offset}, ${rangeSize}, ${JSON.stringify(pagination)})`);
+    // this.logger.info(`updateSource(${offset}, ${rangeSize}, ${JSON.stringify(pagination)})`);
     this.pageData.next({
       ...this.pageData.value,
       status: 'loading',
@@ -165,8 +164,6 @@ export class MessageService {
       next: (res) => {
         (() => {
           const data = (res as HttpGetRange).data as GetRangeData;
-          this.logger.debug(`message http get (${offset}, ${rangeSize}) = ${JSON.stringify(res)}`);
-          this.logger.debug(`pagination = ${JSON.stringify(pagination)}`);
           if (!this.sourceCache.value) {
             this.sourceCache.next({
               messages: data.data,
@@ -202,7 +199,6 @@ export class MessageService {
           }
           // merge data
           const mergeArray = (a: Message[], b: Message[]) => {
-            this.logger.debug(`a = ${JSON.stringify(a)}, b = ${JSON.stringify(b)}`);
             let ret: Message[] = [];
             let i = 0;
             let j = 0;

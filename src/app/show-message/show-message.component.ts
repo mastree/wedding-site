@@ -219,6 +219,11 @@ type State = {
   styleUrl: './show-message.component.css',
 })
 export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
+  // Disabling polling because of poor performance.
+  // The polling mode will enable pausing the content cycle by stay clicking/touching them.
+  private kEnablePolling = false;
+
+  private kIntervalMillis = 10000;
   private kPageSize = 5;
 
   logger = inject(LoggerService);
@@ -259,7 +264,6 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.subscriptions.push(
       this.messageService.pageData.subscribe((data) => {
-        this.logger.debug(`pageData updated ${JSON.stringify(data)}`);
         this.state.messages = data.messages;
         this.state.page = data.pagination.page;
         this.state.pageSize = data.pagination.pageSize;
@@ -279,14 +283,12 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private addClasses(element: any, classes: string[]) {
-    this.logger.debug(`addClasses(${element}, ${classes})`);
     classes.forEach((cls) => {
       element.classList.toggle(cls, true);
     });
   }
 
   private removeClasses(element: any, classes: string[]) {
-    this.logger.debug(`removeClasses(${element}, ${classes})`);
     classes.forEach((cls) => {
       element.classList.toggle(cls, false);
     });
@@ -334,27 +336,32 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
       );
     }
     this.updateHeight();
-    const intervalMillis = 10000;
     this.lastContentChangeTime = new Date().valueOf();
     this.contentIntervalFunction(0);
     if (this.isBrowser()) {
-      this.renderInterval = setInterval(() => {
-        const currentMillis = new Date().valueOf();
-        if (
-          0 <= this.contentIdSelect &&
-          this.contentIdSelect < this.contents.length &&
-          this.contentIdSelect != this.currentId
-        ) {
-          const contentIdSelect = this.contentIdSelect;
-          this.lastContentChangeTime = currentMillis;
-          this.contentIntervalFunction(contentIdSelect);
-        }
-        this.contentIdSelect = -1;
-        if (this.pauseStart == 0 && currentMillis - this.lastContentChangeTime >= intervalMillis) {
-          this.lastContentChangeTime = currentMillis;
+      if (this.kEnablePolling) {
+        this.renderInterval = setInterval(() => {
+          const currentMillis = new Date().valueOf();
+          if (
+            0 <= this.contentIdSelect &&
+            this.contentIdSelect < this.contents.length &&
+            this.contentIdSelect != this.currentId
+          ) {
+            const contentIdSelect = this.contentIdSelect;
+            this.lastContentChangeTime = currentMillis;
+            this.contentIntervalFunction(contentIdSelect);
+          }
+          this.contentIdSelect = -1;
+          if (this.pauseStart == 0 && currentMillis - this.lastContentChangeTime >= this.kIntervalMillis) {
+            this.lastContentChangeTime = currentMillis;
+            this.contentIntervalFunction();
+          }
+        }, 100);
+      } else {
+        this.renderInterval = setInterval(() => {
           this.contentIntervalFunction();
-        }
-      }, 100);
+        }, this.kIntervalMillis);
+      }
       this.resizeObservable$ = fromEvent(window, 'resize');
       this.subscriptions.push(this.resizeObservable$.subscribe((e) => this.updateHeight()));
     }
@@ -392,20 +399,32 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   selectContentId(contentId: number) {
-    this.contentIdSelect = contentId;
+    if (this.kEnablePolling) {
+      this.contentIdSelect = contentId;
+    } else if (0 <= contentId && contentId < this.contents.length && contentId != this.currentId) {
+      clearInterval(this.renderInterval);
+      this.contentIntervalFunction(contentId);
+      this.renderInterval = setInterval(() => {
+        this.contentIntervalFunction();
+      }, this.kIntervalMillis);
+    }
   }
 
   pauseContentChange() {
-    this.logger.debug(`[kamalshafi] pause content change`);
-    this.pauseStart = new Date().valueOf();
+    if (this.kEnablePolling) {
+      this.logger.debug(`[kamalshafi] pause content change`);
+      this.pauseStart = new Date().valueOf();
+    }
   }
 
   resumeContentChange() {
-    this.logger.debug(`[kamalshafi] resume content change`);
-    if (this.pauseStart) {
-      const currentMillis = new Date().valueOf();
-      this.lastContentChangeTime += currentMillis - this.pauseStart;
-      this.pauseStart = 0;
+    if (this.kEnablePolling) {
+      this.logger.debug(`[kamalshafi] resume content change`);
+      if (this.pauseStart) {
+        const currentMillis = new Date().valueOf();
+        this.lastContentChangeTime += currentMillis - this.pauseStart;
+        this.pauseStart = 0;
+      }
     }
   }
 

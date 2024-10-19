@@ -55,7 +55,7 @@ export class WeddingService {
     this.invitation.next({ status: 'loading' });
     this.http.get(`${this.baseUrl}/wedding/invitation/${id}`).subscribe({
       next: (res) => {
-        this.logger.info(`getInvitation(${id}) response: ${JSON.stringify(res)}`);
+        // this.logger.info(`getInvitation(${id}) response: ${JSON.stringify(res)}`);
         this.invitation.next({
           invitation: (res as { data: Invitation | undefined }).data,
           status: 'success',
@@ -75,7 +75,7 @@ export class WeddingService {
       })
       .subscribe({
         next: (res) => {
-          this.logger.info(`updateRsvp(${invitation.id}}, ${JSON.stringify(rsvp)}) response: ${JSON.stringify(res)}`);
+          // this.logger.info(`updateRsvp(${invitation.id}}, ${JSON.stringify(rsvp)}) response: ${JSON.stringify(res)}`);
           const { data } = res as { data: Invitation };
           this.invitation.next({
             invitation: data,

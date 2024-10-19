@@ -148,7 +148,6 @@ export class MessageComponent {
   }
 
   onSubmitMessage(event: SubmitEvent) {
-    this.logger.debug('Send message:', this.state.name, this.state.message);
     if (this.state.message.length == 0) {
       window.alert("message can't be empty.");
     } else {
