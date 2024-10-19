@@ -103,11 +103,15 @@ module.exports = {
         "envelope-inner": "#97B8B3",
         "envelope-paper": "#FEEEEF",
         "bg-envelope": "#FEFAFA",
+        "bg-envelope-bottom": "#868787",
         "illustration-bg": "#B0CCCC",
       },
       transitionDuration: {
         1500: "1500ms",
         2000: "2000ms",
+      },
+      objectPosition: {
+        "cover-image": "40% 0%",
       },
     },
     fontFamily: {

@@ -132,7 +132,7 @@ export class MessageService {
         if (currentSource) {
           currentRange = getSourceRange(currentSource);
         }
-        this.updateSource(currentRange[0], currentRange[1] - currentRange[0] + 1, this.pageRequest.value);
+        this.updateSource(currentRange[0], Math.max(currentRange[1] - currentRange[0] + 1, this.kRadius), this.pageRequest.value);
       }),
     );
     this.subscription.push(

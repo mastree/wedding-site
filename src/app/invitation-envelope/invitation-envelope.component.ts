@@ -21,17 +21,14 @@ import { TypewriterService } from '../typewriter.service';
   selector: 'app-invitation-envelope',
   standalone: true,
   template: `
-    <div class="relative flex h-full min-h-screen w-full flex-col justify-between bg-bg-envelope">
-      <div class="absolute top-0 -z-10 w-full">
-        <app-navigation-bar additinalClass="bg-bg-envelope"></app-navigation-bar>
+    <div class="relative flex h-full min-h-screen w-full flex-col justify-between">
+      <div class="-z-10 absolute h-full w-screen top-0">
+        <div class="w-full h-full bg-gradient-to-b from-bg-envelope to-bg-envelope-bottom opacity-80"></div>
+        <img src="prewed/IMG_0151.jpg" class="-z-10 absolute object-cover object-cover-image h-full w-screen top-0" />
       </div>
-      <div class="relative top-0 flex w-full flex-grow flex-col items-center justify-center" #root>
-        <div class="absolute left-0 top-0 w-full translate-x-[-5px] translate-y-[-10px]">
-          <img src="flower-deco-angle.png" class="relative w-[60%] max-w-[14rem]" />
-        </div>
-
-        <div class="my-[max(10vh,4rem)] flex w-full max-w-screen-lg flex-col items-center justify-start gap-5">
-          <div class="relative mx-10 flex max-w-md flex-col gap-5 font-manuale text-base text-primary md:text-lg">
+      <div class="relative top-0 flex w-full flex-grow flex-col items-center justify-start" #root>
+        <div class="my-[max(10vh,4rem)] mx-[max(10vw,2rem)] flex w-full max-w-screen-lg flex-col items-start justify-start gap-5">
+          <div class="relative mx-10 flex max-w-md flex-col gap-5 font-manuale text-base text-primary md:text-lg lg:text-xl">
             <p>
               {{ textHeaderGreetings$ | async }}<span class="font-semibold">{{ textHeaderName$ | async }}</span
               >,
@@ -40,49 +37,17 @@ import { TypewriterService } from '../typewriter.service';
               <p class="absolute">{{ textContent$ | async }}</p>
               <p class="pointer-events-none opacity-0">{{ kTextContent }}</p>
             </div>
-          </div>
-          <div class="my-5 flex h-full w-full flex-col items-center justify-start gap-5" #envelope>
-            <div class="envelope-hit-box animate-scale-in relative opacity-0" (click)="onOpenEnvelope(true)">
-              <div
-                class="paper absolute bottom-0 left-0 right-0 top-0 m-auto h-[11rem] w-[15rem] bg-envelope-paper shadow-md"
-              >
-                <div
-                  class="relative flex size-full select-none flex-col items-center justify-center gap-1 overflow-clip font-manuale text-[1.4rem] font-semibold text-primary"
-                >
-                  <p>WEDDING</p>
-                  <p>INVITATION</p>
-                  <img class="absolute left-0 top-0 h-full translate-x-[-30%]" src="flower-deco-left.png" />
-                  <img class="absolute right-0 top-0 h-full translate-x-[30%]" src="flower-deco-right.png" />
-                </div>
-              </div>
 
-              <div class="flap absolute top-0">
-                <div
-                  class="envelope-flap size-0 border-x-[9rem] border-t-[7.5rem] border-x-transparent border-t-envelope-flap drop-shadow-md"
-                ></div>
-              </div>
-              <div class="h-[12rem] w-[18rem]">
-                <div class="envelope-body absolute z-20 h-full w-full fill-envelope-body drop-shadow-md">
-                  <svg viewBox="0 0 288 192" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M269.489 0L144 99L18.511 0H0V192H288V0H269.489Z" />
-                  </svg>
-                </div>
-                <div
-                  class="envelope-body absolute bottom-0 z-20 size-0 border-x-[9rem] border-b-[6rem] border-x-transparent border-b-envelope-bottom bg-transparent"
-                ></div>
-                <div class="envelope-body absolute top-0 z-0 h-full w-full bg-envelope-inner"></div>
-              </div>
-            </div>
-            <div class="mt-5 flex flex-row items-center justify-center gap-2 text-sm md:text-base">
+            <div class="mt-5 flex flex-row items-center justify-center w-full gap-2 text-sm md:text-base" #envelope>
               <button
                 (click)="onOpenEnvelope(true)"
-                class="animate-delay-400 animate-scale-in active:ring-3 flex-grow select-none rounded-lg bg-primary p-2 font-manuale font-semibold text-white opacity-0 shadow-md shadow-gray-400 ring-light-primary hover:ring-2 active:bg-white active:text-primary active:shadow-inner active:shadow-slate-100"
+                class="animate-delay-400 animate-scale-in active:ring-3 flex-grow select-none rounded-lg bg-primary p-2 font-manuale font-semibold text-white opacity-0 shadow-md shadow-gray-400 hover:ring-white active:ring-light-primary hover:ring-2 active:bg-white active:text-primary active:shadow-inner active:shadow-slate-100"
               >
                 OPEN INVITATION
               </button>
               <button
                 (click)="onDownloadAsPdf()"
-                class="animate-delay-500 animate-scale-in active:ring-3 flex-grow select-none rounded-lg bg-white p-2 font-manuale font-semibold text-primary opacity-0 shadow-md ring-white hover:ring-2 active:bg-primary active:text-white active:shadow-inner active:shadow-light-primary"
+                class="animate-delay-500 animate-scale-in active:ring-3 flex-grow select-none rounded-lg bg-white p-2 font-manuale font-semibold text-primary opacity-0 shadow-md hover:ring-light-primary active:ring-white hover:ring-2 active:bg-primary active:text-white active:shadow-inner active:shadow-light-primary"
               >
                 DOWNLOAD PDF
               </button>
@@ -166,10 +131,10 @@ export class InvitationEnvelopeComponent {
     if (doOpen) {
       this.envelopeElement.nativeElement.classList.toggle('close', false);
       this.envelopeElement.nativeElement.classList.toggle('open', true);
-      this.rootElement.nativeElement.classList.toggle('animate-fade-out', true);
+      this.rootElement.nativeElement.classList.toggle('animate-fade-out-fast', true);
       setTimeout(() => {
         this.envelopeEvent.emit(true);
-      }, 2300);
+      }, 600);
     } else {
       this.envelopeElement.nativeElement.classList.toggle('open', false);
       this.envelopeElement.nativeElement.classList.toggle('close', true);

@@ -14,12 +14,16 @@ import { signal } from '@angular/core';
 import { HomeLoadingComponent } from '../home-loading/home-loading.component';
 import { FooterComponent } from '../footer/footer.component';
 import { ClassOnViewComponent } from '../class-on-view/class-on-view.component';
-import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
+import { GalleryComponent } from '../gallery/gallery.component';
 
 @Component({
   selector: 'app-main-invitation',
   standalone: true,
   template: `
+    <div
+      class="delay-50 scale-0 scale-100 opacity-0 opacity-100 transition-all delay-1000 duration-700"
+      #dummyClass
+    ></div>
     <div class="animate-fade-in h-full w-full">
       <div class="relative flex h-screen min-h-[37.5rem] w-full flex-col gap-0 lg:min-h-[45rem]">
         <header class="relative top-0 h-[66%] w-full bg-white bg-opacity-30">
@@ -51,8 +55,13 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
                   {{ getFirstSectionText[1] }}
                 </p>
               </div>
-              <app-class-on-view [classOnView]="kBrideOnView">
-                <div class="flex w-full flex-col items-center justify-center">
+              <app-class-on-view
+                [defaultClass]="kDefaultClass"
+                [classOnView]="kClassOnView"
+                [classOffView]="kClassOffView"
+                [oneShot]="true"
+              >
+                <div class="flex w-full scale-0 flex-col items-center justify-center opacity-0">
                   <div
                     class="mx-8 flex h-[5rem] w-[18rem] max-w-[90vw] items-center justify-center rounded-md bg-primary shadow-lg lg:h-[6.5rem]"
                   >
@@ -124,12 +133,17 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
         </section>
       </div>
 
-      <section class="bg-bg-main relative z-10 flex flex-col items-center justify-center gap-8 pb-12 pt-16">
+      <section class="relative z-10 flex flex-col items-center justify-center gap-8 bg-bg-main pb-12 pt-16">
         <div class="relative my-10 flex h-full w-full max-w-screen-lg flex-row items-center justify-center">
           <div class="flex w-full flex-col items-center justify-center gap-16">
-            <app-class-on-view [classOnView]="kBrideOnView">
+            <app-class-on-view
+              [defaultClass]="kDefaultClass"
+              [classOnView]="kClassOnView"
+              [classOffView]="kClassOffView"
+              [oneShot]="true"
+            >
               <div
-                class="bg-illustration-bg relative mb-10 flex h-[14rem] w-[12rem] flex-col items-center justify-center rounded-lg shadow-lg shadow-gray-400 ring-[3px] ring-white lg:h-[17.5rem] lg:w-[15rem]"
+                class="relative mb-10 flex h-[14rem] w-[12rem] scale-0 flex-col items-center justify-center rounded-lg bg-illustration-bg opacity-0 shadow-lg shadow-gray-400 ring-[3px] ring-white lg:h-[17.5rem] lg:w-[15rem]"
               >
                 <img src="illustration-no-bg.png" class="h-full overflow-hidden rounded-lg object-cover" />
                 <img
@@ -142,17 +156,27 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
                 />
               </div>
             </app-class-on-view>
-            <app-class-on-view [classOnView]="kBrideOnView">
-              <div class="mx-5 flex flex-col items-center justify-center gap-2 text-center">
+            <app-class-on-view
+              [defaultClass]="kDefaultClass"
+              [classOnView]="kClassOnView"
+              [classOffView]="kClassOffView"
+              [oneShot]="true"
+            >
+              <div class="mx-5 flex scale-0 flex-col items-center justify-center gap-2 text-center opacity-0">
                 <p class="font-manuale text-xl font-bold text-primary lg:text-2xl">Faiza Nurkholida</p>
                 <p class="font-manuale text-base text-primary lg:text-[1.2rem]">
                   Putri Bapak (Alm) Muh Khozin dan Ibu Isrofah Wijayanti
                 </p>
               </div>
             </app-class-on-view>
-            <app-class-on-view [classOnView]="kBrideOnView">
+            <app-class-on-view
+              [defaultClass]="kDefaultClass"
+              [classOnView]="kClassOnView"
+              [classOffView]="kClassOffView"
+              [oneShot]="true"
+            >
               <div
-                class="mx-5 flex size-[3rem] flex-col items-center justify-center rounded-full bg-primary lg:size-[4rem]"
+                class="mx-5 flex size-[3rem] scale-0 flex-col items-center justify-center rounded-full bg-primary opacity-0 lg:size-[4rem]"
               >
                 <p
                   class="-translate-y-[0.2rem] text-center font-manuale text-[2rem] font-bold text-white lg:text-[2.6rem]"
@@ -161,8 +185,13 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
                 </p>
               </div>
             </app-class-on-view>
-            <app-class-on-view [classOnView]="kBrideOnView">
-              <div class="mx-5 flex flex-col items-center justify-center gap-2 text-center">
+            <app-class-on-view
+              [defaultClass]="kDefaultClass"
+              [classOnView]="kClassOnView"
+              [classOffView]="kClassOffView"
+              [oneShot]="true"
+            >
+              <div class="mx-5 flex scale-0 flex-col items-center justify-center gap-2 text-center opacity-0">
                 <p class="font-manuale text-xl font-bold text-primary lg:text-2xl">Muhammad Kamal Shafi</p>
                 <p class="font-manuale text-base text-primary lg:text-[1.2rem]">
                   Putra Bapak Shafiyuddin dan Ibu Rahmi Syahrini
@@ -176,26 +205,34 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
         </div>
       </section>
 
-      <section class="bg-bg-main-shaded relative flex flex-col items-center justify-center gap-8 py-8">
-        <div class="relative my-5 flex h-full w-full max-w-screen-lg flex-col items-center justify-center gap-10">
+      <section class="relative flex flex-col items-center justify-center gap-8 bg-bg-main-shaded py-8">
+        <div class="relative my-5 flex h-full w-full max-w-screen-2xl flex-col items-center justify-center gap-10">
           <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">GALLERY</p>
-          <app-gallery class="w-full" (onOpenEvent)="onOpenGalleryModal($event)"></app-gallery>
+          <app-gallery class="w-full"></app-gallery>
         </div>
       </section>
 
-      <section class="bg-bg-main relative flex flex-col items-center justify-center pb-20 pt-14">
+      <section class="relative flex flex-col items-center justify-center bg-bg-main pb-20 pt-14">
         <div class="relative flex w-full max-w-screen-lg flex-col items-center justify-center gap-8">
-          <app-class-on-view [classOnView]="kBrideOnView">
-            <div class="flex w-full flex-col justify-center">
+          <app-class-on-view
+            [defaultClass]="kDefaultClass"
+            [classOnView]="kClassOnView"
+            [classOffView]="kClassOffView"
+            [oneShot]="true"
+          >
+            <div class="flex w-full scale-0 flex-col justify-center opacity-0">
               <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">RESEPSI</p>
               <p class="text-center font-manuale text-base font-light">Schedule & Location</p>
             </div>
           </app-class-on-view>
           <app-class-on-view
             class="flex w-full max-w-screen-md flex-row px-[min(5rem,10vw)]"
-            [classOnView]="kBrideOnView"
+            [defaultClass]="kDefaultClass"
+            [classOnView]="kClassOnView"
+            [classOffView]="kClassOffView"
+            [oneShot]="true"
           >
-            <div class="flex w-full max-w-screen-md flex-row gap-8" #schedule>
+            <div class="flex w-full max-w-screen-md scale-0 flex-row gap-8 opacity-0" #schedule>
               <img class="max-h-32 max-w-[4.5rem]" src="calendar.svg" />
               <div class="flex flex-col items-start">
                 <p class="text-center font-manuale text-sm font-light lg:text-lg">Sunday,</p>
@@ -205,8 +242,16 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
               </div>
             </div>
           </app-class-on-view>
-          <app-class-on-view [classOnView]="kBrideOnView">
-            <div class="flex w-full max-w-screen-md flex-row gap-8 px-[min(6rem,10vw+1rem)]" #location>
+          <app-class-on-view
+            [defaultClass]="kDefaultClass"
+            [classOnView]="kClassOnView"
+            [classOffView]="kClassOffView"
+            [oneShot]="true"
+          >
+            <div
+              class="flex w-full max-w-screen-md scale-0 flex-row gap-8 px-[min(6rem,10vw+1rem)] opacity-0"
+              #location
+            >
               <div class="flex flex-col items-start border-t-[0.5px] border-t-gray-500 pt-8">
                 <div class="flex flex-row items-center justify-start gap-2">
                   <img class="max-h-[1rem] max-w-[1rem]" src="location-pin.svg" />
@@ -235,8 +280,16 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
             </div>
           </app-class-on-view>
 
-          <app-class-on-view class="mt-5 flex w-full items-center justify-center" [classOnView]="kBrideOnView">
-            <div class="mx-[min(5rem,10vw)] flex max-w-screen-sm flex-row justify-center rounded-xl bg-secondary p-4">
+          <app-class-on-view
+            class="mt-5 flex w-full items-center justify-center"
+            [defaultClass]="kDefaultClass"
+            [classOnView]="kClassOnView"
+            [classOffView]="kClassOffView"
+            [oneShot]="true"
+          >
+            <div
+              class="mx-[min(5rem,10vw)] flex max-w-screen-sm scale-0 flex-row justify-center rounded-xl bg-secondary p-4 opacity-0"
+            >
               <p class="font-marcellus-sc text-sm text-white md:text-base lg:text-lg">
                 Akad Nikah is scheduled to be held ahead of time on December 8, 2024, at the bride's family's residence.
               </p>
@@ -252,29 +305,6 @@ import { GalleryComponent, GalleryContent } from '../gallery/gallery.component';
       </section>
 
       <app-footer></app-footer>
-
-      <div
-        class="fixed left-0 top-0 z-50 flex h-full min-h-screen w-screen items-center justify-center overflow-auto bg-transparent"
-        [ngClass]="selectedGallery === undefined ? 'hidden' : ''"
-        #galleryModal
-      >
-        <div class="relative z-10 mx-5 aspect-[4/3] max-h-[80vh] w-full max-w-screen-lg opacity-100">
-          <button
-            class="pointer-events-auto absolute right-0 top-0 translate-y-[-110%] bg-black bg-opacity-30 px-2 py-0 font-manuale text-xl text-white hover:bg-opacity-50"
-            (click)="onCloseGalleryModal()"
-          >
-            x
-          </button>
-          <div
-            class="animate-scale-in-from-40 animate-very-fast relative flex h-full w-full justify-center rounded-lg bg-black"
-            [ngClass]="selectedGallery?.imageUrl"
-            #modalContent
-          >
-            <img [src]="selectedGallery?.imageUrl" class="my-auto w-full overflow-hidden object-cover" />
-          </div>
-        </div>
-        <div class="-z-1 absolute left-0 top-0 h-screen w-screen overflow-auto bg-black opacity-50" #galleryModal></div>
-      </div>
     </div>
   `,
   styleUrl: './main-invitation.component.css',
@@ -296,7 +326,9 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
     1: ["YOU'RE", 'INVITED', 'TO THE BIG DAY!'],
   };
 
-  kBrideOnView = ['animate', 'animate-scale-in', 'animate-fast'];
+  kClassOnView = ['scale-100', 'opacity-100'];
+  kClassOffView = ['scale-0', 'opacity-0', 'delay-1000'];
+  kDefaultClass = ['transition-all', 'duration-700', 'delay-50'];
 
   // Model related members
   logger = inject(LoggerService);
@@ -305,13 +337,11 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
   private renderer = inject(Renderer2);
   invitation?: Invitation | undefined;
   loading = true;
-  selectedGallery?: GalleryContent | undefined;
 
   subscriptions: Subscription[] = [];
 
   // View related members
   @ViewChild('bigDay') bigDayElement: ElementRef | undefined;
-  @ViewChild('modalContent') modalContent: ElementRef | undefined;
 
   eventDate: Date = new Date('2024-12-15T14:30:00.000+07:00');
 
@@ -410,17 +440,5 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
     classes.forEach((cls) => {
       this.renderer.removeClass(element, cls);
     });
-  }
-
-  onOpenGalleryModal(content: GalleryContent) {
-    const modalContentElement = this.modalContent?.nativeElement;
-    this.selectedGallery = content;
-    this.addClasses(modalContentElement, ['animate']);
-  }
-
-  onCloseGalleryModal() {
-    const modalContentElement = this.modalContent?.nativeElement;
-    this.selectedGallery = undefined;
-    this.removeClasses(modalContentElement, ['animate']);
   }
 }

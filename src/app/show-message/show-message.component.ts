@@ -33,7 +33,7 @@ type State = {
   imports: [NgClass],
   template: `
     <div
-      class="pointer-events-none pointer-events-auto hidden scale-0 scale-100 opacity-0 opacity-100"
+      class="pointer-events-none pointer-events-auto hidden scale-0 scale-100 opacity-0 opacity-100 delay-1000"
       #dummyClass
     ></div>
     <div class="relative flex w-full flex-col items-center justify-center gap-12">
@@ -110,7 +110,7 @@ type State = {
       <div class="flex flex-row gap-2">
         @for (content of contents!; track content; let id = $index) {
           <div
-            class="z-20 size-2 rounded-full shadow-md"
+            class="z-20 size-2 rounded-full"
             [ngClass]="id === currentId ? 'bg-white' : 'bg-gray-400'"
             (click)="selectContentId(id)"
           ></div>
@@ -183,6 +183,31 @@ type State = {
                   </div>
                   <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
                   <p class="min-h-16 font-lato">{{ message.message }}</p>
+                </div>
+              }
+              @if (state.messages.length == 0) {
+                <div class="my-5 flex w-full flex-col items-center justify-center">
+                  <div class="flex items-center justify-center">
+                    <svg
+                      class="opacity-30"
+                      width="64"
+                      height="53"
+                      viewBox="0 0 64 53"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M19 0C8.50659 0 0 8.50659 0 19V25C0 32.0883 3.88161 38.2701 9.63518 41.5356L8.06438 52.7825L19.5499 44H45C55.4934 44 64 35.4934 64 25V19C64 8.50659 55.4934 0 45 0H19Z"
+                        class="fill-white"
+                      />
+                    </svg>
+                    <p class="absolute font-manuale text-white">...</p>
+                  </div>
+                  <p class="pointer-events-none select-none font-manuale font-semibold text-white drop-shadow-md">
+                    No message to show!
+                  </p>
                 </div>
               }
             }
@@ -309,7 +334,7 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
       );
     }
     this.updateHeight();
-    const intervalMillis = 5000;
+    const intervalMillis = 10000;
     this.lastContentChangeTime = new Date().valueOf();
     this.contentIntervalFunction(0);
     if (this.isBrowser()) {
@@ -356,13 +381,12 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
     const nextElement = contents.get(nextId)?.nativeElement;
     for (let i = 0; i < contents.length; i++) {
       const selectElement = contents.get(i)?.nativeElement;
-      this.removeClasses(selectElement, [`scale-100`]);
+      this.removeClasses(selectElement, [`delay-1000`, `scale-100`]);
       this.addClasses(selectElement, [`opacity-0`, `scale-50`]);
-      if (i == this.currentId) await this.wait(1000);
       this.addClasses(selectElement, [`pointer-events-none`]);
     }
     this.removeClasses(nextElement, [`opacity-0`, `scale-50`, `pointer-events-none`]);
-    this.addClasses(nextElement, [`scale-100`]);
+    this.addClasses(nextElement, [`delay-1000`, `scale-100`]);
     this.currentId = nextId;
     this.changeDetectorRef.detectChanges();
   }

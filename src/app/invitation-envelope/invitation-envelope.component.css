@@ -62,6 +62,12 @@
   animation-delay: 1.7s;
 }
 
+.animate-fade-out-fast {
+  animation: fadeOutAnimation ease-in-out 0.6s;
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
+}
+
 @keyframes letterUnfold {
   0%,
   25% {

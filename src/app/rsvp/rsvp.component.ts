@@ -25,6 +25,29 @@ type RsvpState = {
         <div class="flex w-full flex-col items-center justify-center gap-5">
           <p class="font-regular w-full text-center align-top font-manuale text-3xl font-semibold text-white">RSVP</p>
           <div class="relative flex w-full flex-col items-center justify-center gap-5">
+            @if (isInvited && !alreadyFilled) {
+              <div
+                class="absolute z-30 flex select-none flex-col gap-4 rounded-b-lg rounded-r-lg bg-amber-100 bg-opacity-80 backdrop-blur-sm px-3 py-3 text-primary drop-shadow-md transition-all duration-700"
+                [ngClass]="acknowledgeNote ? ['scale-0', 'opacity-0'] : ''"
+              >
+                <p class="font-manuale text-base">
+                  <span class="font-bold">Note: </span>This invitation is not for sharing and valid for
+                  {{ invitedPax }} person(s) only.<br/>Due to limited seating, RSVP is required.
+                </p>
+                <p class="font-manuale text-base">
+                  Don't worry as you can always update later.
+                </p>
+                <div class="flex w-full flex-row justify-end">
+                  <button
+                    (click)="onAcknowledgeRsvpNote()"
+                    class="select-none rounded-lg bg-emerald-800 p-2 font-manuale font-semibold text-white ring-white hover:ring-2 active:bg-light-primary active:shadow-inner active:shadow-primary active:ring-2"
+                  >
+                    Acknowledge
+                  </button>
+                </div>
+              </div>
+            }
+
             <div
               class="pointer-events-none absolute z-10 flex items-center justify-center opacity-100"
               [ngClass]="state.loading ? '' : 'hidden'"
@@ -48,7 +71,17 @@ type RsvpState = {
             @if (alreadyFilled) {
               <div class="flex w-full flex-col items-center">
                 <div class="flex flex-row items-center gap-4">
-                  <p class="font-manuale text-base text-white">You have filled the RSVP</p>
+                  <div class="flex flex-col items-center justify-center gap-1">
+                    <p class="font-manuale text-base text-white">You have filled the RSVP</p>
+                    @if (state.invitation!.rsvp!.will_attend) {
+                      <p class="font-manuale text-base font-light text-white underline">
+                        Status: Will attend with {{ state.invitation!.rsvp!.num_attendee }} person(s)
+                      </p>
+                    } @else {
+                      <p class="font-manuale text-base font-light text-white underline">Status: Unable to attend</p>
+                    }
+                  </div>
+
                   <button
                     (click)="onUpdateRsvp()"
                     class="select-none rounded-lg bg-dark-secondary p-2 font-manuale font-semibold text-white ring-white hover:ring-2 active:bg-light-primary active:shadow-inner active:shadow-primary active:ring-2 md:p-3"
@@ -165,6 +198,8 @@ export class RsvpComponent implements OnDestroy {
 
   isInvited: boolean = false;
 
+  acknowledgeNote: boolean = false;
+
   @ViewChild('container') outerContainer: ElementRef | undefined;
   @ViewChild('buttonYesAttend') buttonYesAttend: ElementRef | undefined;
   @ViewChild('buttonNoAttend') buttonNoAttend: ElementRef | undefined;
@@ -225,6 +260,7 @@ export class RsvpComponent implements OnDestroy {
 
   onUpdateRsvp() {
     this.state.invitation!.rsvp = undefined;
+    this.acknowledgeNote = false;
   }
 
   onSubmitRsvp(submit: boolean = true) {
@@ -246,6 +282,15 @@ export class RsvpComponent implements OnDestroy {
       this.removeClasses(this.buttonNoAttend?.nativeElement, ['shadow-red-200', 'ring-2', 'bg-red-100']);
       this.removeClasses(this.buttonYesAttend?.nativeElement, ['shadow-primary', 'ring-2', 'bg-light-primary']);
     }
+  }
+
+  onAcknowledgeRsvpNote() {
+    this.acknowledgeNote = true;
+  }
+
+  get invitedPax() {
+    if (!this.state.invitation) return 0;
+    return this.state.invitation.invitation_pax;
   }
 
   get alreadyFilled() {
