@@ -52,12 +52,11 @@ export type GalleryContent = {
             @if (id >= contents.length - 3) {
               <div
                 class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
-                [ngClass]="content.imageUrl"
                 [id]="'content-dummy1-' + id"
                 (click)="onOpenContent(id)"
               >
                 <img
-                  [src]="content.imageUrl"
+                  [src]="'compressed-prewed/'+content.imageUrl"
                   class="h-full w-full overflow-hidden rounded-md object-cover"
                 />
               </div>
@@ -66,13 +65,12 @@ export type GalleryContent = {
           @for (content of contents!; track content; let id = $index) {
             <div
               class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
-              [ngClass]="content.imageUrl"
               [id]="'content-' + id"
               (click)="onOpenContent(id)"
               #galleryContent
             >
               <img
-                [src]="content.imageUrl"
+                [src]="'compressed-prewed/'+content.imageUrl"
                 class="h-full w-full overflow-hidden rounded-md object-cover"
               />
             </div>
@@ -81,12 +79,11 @@ export type GalleryContent = {
             @if (id < 3) {
               <div
                 class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
-                [ngClass]="content.imageUrl"
                 [id]="'content-dummy2-' + id"
                 (click)="onOpenContent(id)"
               >
                 <img
-                  [src]="content.imageUrl"
+                  [src]="'compressed-prewed/'+content.imageUrl"
                   class="h-full w-full overflow-hidden rounded-md object-cover"
                 />
               </div>
@@ -115,7 +112,6 @@ export type GalleryContent = {
       <div class="relative z-10 mx-5 h-[90vh] max-w-screen-lg opacity-100">
         <div
           class="relative flex h-full w-full flex-col justify-center bg-transparent"
-          [ngClass]="selectedGallery?.imageUrl"
           #modalContent
         >
           <button
@@ -148,7 +144,7 @@ export type GalleryContent = {
             </button>
           </div>
           <img
-            [src]="selectedGallery?.imageUrl"
+            [src]="'prewed/'+selectedGallery?.imageUrl"
             class="animate-scale-in-from-40 animate-very-fast relative max-h-full max-w-full overflow-hidden object-contain"
           />
         </div>
@@ -167,43 +163,43 @@ export class GalleryComponent implements OnDestroy {
   contents: GalleryContent[] = [
     {
       title: '0',
-      imageUrl: 'compressed-prewed/IMG_0151.jpg',
+      imageUrl: 'IMG_0151.jpg',
     },
     {
       title: '1',
-      imageUrl: 'compressed-prewed/IMG_0163.jpg',
+      imageUrl: 'IMG_0163.jpg',
     },
     {
       title: '2',
-      imageUrl: 'compressed-prewed/IMG_0191.jpg',
+      imageUrl: 'IMG_0191.jpg',
     },
     {
       title: '3',
-      imageUrl: 'compressed-prewed/IMG_0196.jpg',
+      imageUrl: 'IMG_0196.jpg',
     },
     {
       title: '4',
-      imageUrl: 'compressed-prewed/IMG_0214.jpg',
+      imageUrl: 'IMG_0214.jpg',
     },
     {
       title: '5',
-      imageUrl: 'compressed-prewed/IMG_0306.jpg',
+      imageUrl: 'IMG_0306.jpg',
     },
     {
       title: '6',
-      imageUrl: 'compressed-prewed/IMG_0317-2.jpg',
+      imageUrl: 'IMG_0317-2.jpg',
     },
     {
       title: '7',
-      imageUrl: 'compressed-prewed/IMG_0368.jpg',
+      imageUrl: 'IMG_0368.jpg',
     },
     {
       title: '8',
-      imageUrl: 'compressed-prewed/IMG_0381.jpg',
+      imageUrl: 'IMG_0381.jpg',
     },
     {
       title: '9',
-      imageUrl: 'compressed-prewed/IMG_0395.jpg',
+      imageUrl: 'IMG_0395.jpg',
     },
   ];
   currentId: number = 0;
