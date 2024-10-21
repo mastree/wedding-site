@@ -16,7 +16,7 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
         </div>
         <div class="flex h-full w-full flex-row items-center">
           <div class="flex h-full min-w-[25%] max-w-[35%] flex-col items-center justify-center">
-            <img class="max-h-32 max-w-[4.5rem]" [src]="icon" />
+            <img class="max-h-32 max-w-[4.5rem]" [src]="icon" loading="eager" fetchpriority="high" />
           </div>
           <div class="w-full grow-[2] pl-3">
             <ng-content></ng-content>

@@ -42,7 +42,12 @@ import { GalleryComponent } from '../gallery/gallery.component';
             >
               <source src="invitation-bg-video.mp4" type="video/mp4" />
               <source src="invitation-bg-video.mp4" type="video/webm" />
-              <img src="invitation-bg-video.png" title="Your browser does not support the <video> tag" />
+              <img
+                src="invitation-bg-video.png"
+                title="Your browser does not support the <video> tag"
+                loading="eager"
+                fetchpriority="high"
+              />
             </video>
           </div>
           <div class="relative mx-auto h-full max-w-screen-lg">
@@ -101,7 +106,7 @@ import { GalleryComponent } from '../gallery/gallery.component';
                 class="active-go-up relative flex select-none gap-2 rounded-lg p-1 font-lato font-light text-white ring-white hover:cursor-pointer hover:ring-2 active:text-slate-300"
                 [ngClass]="invitation ? '' : ['hidden']"
               >
-                <img src="download.svg" />
+                <img src="download.svg" loading="eager" fetchpriority="high" />
                 <p class="line-2 text-sm lg:text-[1rem]">Download invitation as PDF</p>
               </div>
             </div>
@@ -145,14 +150,23 @@ import { GalleryComponent } from '../gallery/gallery.component';
               <div
                 class="relative mb-10 flex h-[14rem] w-[12rem] scale-0 flex-col items-center justify-center rounded-lg bg-illustration-bg opacity-0 shadow-lg shadow-gray-400 ring-[3px] ring-white lg:h-[17.5rem] lg:w-[15rem]"
               >
-                <img src="illustration-no-bg.png" class="h-full overflow-hidden rounded-lg object-cover" />
+                <img
+                  src="illustration-no-bg.png"
+                  class="h-full overflow-hidden rounded-lg object-cover"
+                  loading="eager"
+                  fetchpriority="high"
+                />
                 <img
                   src="flower-deco-angle.png"
                   class="absolute left-0 top-0 w-[60%] translate-x-[-20%] translate-y-[-30%]"
+                  loading="eager"
+                  fetchpriority="high"
                 />
                 <img
                   src="flower-deco-angle.png"
                   class="absolute bottom-0 right-0 w-[60%] translate-x-[20%] translate-y-[30%] scale-[-100%]"
+                  loading="eager"
+                  fetchpriority="high"
                 />
               </div>
             </app-class-on-view>
@@ -201,7 +215,12 @@ import { GalleryComponent } from '../gallery/gallery.component';
           </div>
         </div>
         <div class="absolute bottom-0 left-0 flex w-full translate-y-[50%] justify-center">
-          <img src="flower-deco-line.png" class="w-[80%] max-w-[25rem] object-fill" />
+          <img
+            src="flower-deco-line.png"
+            class="w-[80%] max-w-[25rem] object-fill"
+            loading="eager"
+            fetchpriority="high"
+          />
         </div>
       </section>
 
@@ -233,7 +252,7 @@ import { GalleryComponent } from '../gallery/gallery.component';
             [oneShot]="true"
           >
             <div class="flex w-full max-w-screen-md scale-0 flex-row gap-8 opacity-0" #schedule>
-              <img class="max-h-32 max-w-[4.5rem]" src="calendar.svg" />
+              <img class="max-h-32 max-w-[4.5rem]" src="calendar.svg" loading="eager" fetchpriority="high" />
               <div class="flex flex-col items-start">
                 <p class="text-center font-manuale text-sm font-light lg:text-lg">Sunday,</p>
                 <p class="text-center font-manuale text-2xl font-light lg:text-4xl">15</p>
@@ -254,7 +273,7 @@ import { GalleryComponent } from '../gallery/gallery.component';
             >
               <div class="flex flex-col items-start border-t-[0.5px] border-t-gray-500 pt-8">
                 <div class="flex flex-row items-center justify-start gap-2">
-                  <img class="max-h-[1rem] max-w-[1rem]" src="location-pin.svg" />
+                  <img class="max-h-[1rem] max-w-[1rem]" src="location-pin.svg" loading="eager" fetchpriority="high" />
                   <p class="text-center font-manuale text-2xl font-light lg:text-4xl">Maxi's Resto</p>
                 </div>
                 <p class="text-left font-manuale text-sm font-light lg:text-lg">

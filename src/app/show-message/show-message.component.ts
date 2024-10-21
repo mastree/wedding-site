@@ -50,6 +50,8 @@ type State = {
           <img
             src="flower-deco-angle.png"
             class="absolute bottom-0 right-0 h-[70%] max-h-[8rem] translate-x-[10%] translate-y-[30%] scale-[-100%]"
+            loading="eager"
+            fetchpriority="high"
           />
           <p class="font-manuale font-semibold">From: Faiza & Kamal</p>
           <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
@@ -73,6 +75,8 @@ type State = {
           <img
             src="flower-deco-angle.png"
             class="absolute bottom-0 right-0 h-[70%] max-h-[8rem] translate-x-[10%] translate-y-[30%] scale-[-100%]"
+            loading="eager"
+            fetchpriority="high"
           />
           <p class="font-manuale font-semibold">QS. An-Nisa' Ayat 1</p>
           <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
@@ -96,6 +100,8 @@ type State = {
           <img
             src="flower-deco-angle.png"
             class="absolute bottom-0 right-0 h-[70%] max-h-[8rem] translate-x-[10%] translate-y-[30%] scale-[-100%]"
+            loading="eager"
+            fetchpriority="high"
           />
           <p class="font-manuale font-semibold">QS. Az-Zariyat Ayat 49</p>
           <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>

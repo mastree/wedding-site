@@ -56,8 +56,10 @@ export type GalleryContent = {
                 (click)="onOpenContent(id)"
               >
                 <img
-                  [src]="'compressed-prewed/'+content.imageUrl"
+                  [src]="'compressed-prewed/' + content.imageUrl"
                   class="h-full w-full overflow-hidden rounded-md object-cover"
+                  loading="eager"
+                  fetchpriority="high"
                 />
               </div>
             }
@@ -70,8 +72,10 @@ export type GalleryContent = {
               #galleryContent
             >
               <img
-                [src]="'compressed-prewed/'+content.imageUrl"
+                [src]="'compressed-prewed/' + content.imageUrl"
                 class="h-full w-full overflow-hidden rounded-md object-cover"
+                loading="eager"
+                fetchpriority="high"
               />
             </div>
           }
@@ -83,8 +87,10 @@ export type GalleryContent = {
                 (click)="onOpenContent(id)"
               >
                 <img
-                  [src]="'compressed-prewed/'+content.imageUrl"
+                  [src]="'compressed-prewed/' + content.imageUrl"
                   class="h-full w-full overflow-hidden rounded-md object-cover"
+                  loading="eager"
+                  fetchpriority="high"
                 />
               </div>
             }
@@ -110,10 +116,7 @@ export type GalleryContent = {
       #galleryModal
     >
       <div class="relative z-10 mx-5 h-[90vh] max-w-screen-lg opacity-100">
-        <div
-          class="relative flex h-full w-full flex-col justify-center bg-transparent"
-          #modalContent
-        >
+        <div class="relative flex h-full w-full flex-col justify-center bg-transparent" #modalContent>
           <button
             class="absolute left-0 top-[50%] z-20 flex h-[3rem] w-[2rem] translate-y-[-50%] items-center justify-center bg-white opacity-20 hover:opacity-30 active:hover:opacity-50"
             #galleryPrev
@@ -144,8 +147,10 @@ export type GalleryContent = {
             </button>
           </div>
           <img
-            [src]="'prewed/'+selectedGallery?.imageUrl"
+            [src]="'prewed/' + selectedGallery?.imageUrl"
             class="animate-scale-in-from-40 animate-very-fast relative max-h-full max-w-full overflow-hidden object-contain"
+            loading="lazy"
+            fetchpriority="high"
           />
         </div>
       </div>

@@ -22,13 +22,22 @@ import { TypewriterService } from '../typewriter.service';
   standalone: true,
   template: `
     <div class="relative flex h-full min-h-screen w-full flex-col justify-between">
-      <div class="-z-10 absolute h-full w-screen top-0">
-        <div class="w-full h-full bg-gradient-to-b from-bg-envelope to-bg-envelope-bottom opacity-80"></div>
-        <img src="prewed/IMG_0151.jpg" class="-z-10 absolute object-cover object-cover-image h-full w-screen top-0" />
+      <div class="absolute top-0 -z-10 h-full w-screen">
+        <div class="h-full w-full bg-gradient-to-b from-bg-envelope to-bg-envelope-bottom opacity-80"></div>
+        <img
+          src="prewed/IMG_0151.jpg"
+          class="absolute top-0 -z-10 h-full w-screen object-cover object-cover-image"
+          loading="eager"
+          fetchpriority="high"
+        />
       </div>
       <div class="relative top-0 flex w-full flex-grow flex-col items-center justify-start" #root>
-        <div class="my-[max(10vh,4rem)] mx-[max(10vw,2rem)] flex w-full max-w-screen-lg flex-col items-start justify-start gap-5">
-          <div class="relative mx-10 flex max-w-md flex-col gap-5 font-manuale text-base text-primary md:text-lg lg:text-xl">
+        <div
+          class="mx-[max(10vw,2rem)] my-[max(10vh,4rem)] flex w-full max-w-screen-lg flex-col items-start justify-start gap-5"
+        >
+          <div
+            class="relative mx-10 flex max-w-md flex-col gap-5 font-manuale text-base text-primary md:text-lg lg:text-xl"
+          >
             <p>
               {{ textHeaderGreetings$ | async }}<span class="font-semibold">{{ textHeaderName$ | async }}</span
               >,
@@ -38,16 +47,16 @@ import { TypewriterService } from '../typewriter.service';
               <p class="pointer-events-none opacity-0">{{ kTextContent }}</p>
             </div>
 
-            <div class="mt-5 flex flex-row items-center justify-center w-full gap-2 text-sm md:text-base" #envelope>
+            <div class="mt-5 flex w-full flex-row items-center justify-center gap-2 text-sm md:text-base" #envelope>
               <button
                 (click)="onOpenEnvelope(true)"
-                class="animate-delay-400 animate-scale-in active:ring-3 flex-grow select-none rounded-lg bg-primary p-2 font-manuale font-semibold text-white opacity-0 shadow-md shadow-gray-400 hover:ring-white active:ring-light-primary hover:ring-2 active:bg-white active:text-primary active:shadow-inner active:shadow-slate-100"
+                class="animate-delay-400 animate-scale-in active:ring-3 flex-grow select-none rounded-lg bg-primary p-2 font-manuale font-semibold text-white opacity-0 shadow-md shadow-gray-400 hover:ring-2 hover:ring-white active:bg-white active:text-primary active:shadow-inner active:shadow-slate-100 active:ring-light-primary"
               >
                 OPEN INVITATION
               </button>
               <button
                 (click)="onDownloadAsPdf()"
-                class="animate-delay-500 animate-scale-in active:ring-3 flex-grow select-none rounded-lg bg-white p-2 font-manuale font-semibold text-primary opacity-0 shadow-md hover:ring-light-primary active:ring-white hover:ring-2 active:bg-primary active:text-white active:shadow-inner active:shadow-light-primary"
+                class="animate-delay-500 animate-scale-in active:ring-3 flex-grow select-none rounded-lg bg-white p-2 font-manuale font-semibold text-primary opacity-0 shadow-md hover:ring-2 hover:ring-light-primary active:bg-primary active:text-white active:shadow-inner active:shadow-light-primary active:ring-white"
               >
                 DOWNLOAD PDF
               </button>
