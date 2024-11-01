@@ -150,7 +150,7 @@ export type GalleryContent = {
             </button>
           </div>
           <img
-            [src]="'prewed/' + selectedGallery?.imageUrl"
+            [src]="'compressed-prewed/' + selectedGallery?.imageUrl"
             class="animate-scale-in-from-40 animate-very-fast relative max-h-full max-w-full overflow-hidden object-contain"
             loading="lazy"
             fetchpriority="high"
@@ -264,9 +264,6 @@ export class GalleryComponent implements OnDestroy {
   scrollContentToCenter(offset = 0, behavior = 'smooth') {
     const scrollElement = this.galleryScroll.nativeElement;
     const containerElement = this.galleryContainer.nativeElement;
-    this.logger.debug(
-      `[gallery] offset ${offset}, scroll window ${scrollElement.offsetWidth}, container ${containerElement.offsetWidth}`,
-    );
     this.logger.debug(
       `[gallery] offset ${offset}, scroll window ${scrollElement.offsetWidth}, `,
       `container ${containerElement.offsetWidth}, current.scrollLeft ${scrollElement.scrollLeft}`,
