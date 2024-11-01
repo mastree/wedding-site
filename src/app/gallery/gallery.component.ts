@@ -60,6 +60,7 @@ export type GalleryContent = {
                   class="h-full w-full overflow-hidden rounded-md object-cover"
                   loading="eager"
                   fetchpriority="high"
+                  (error)="reloadImage($event)"
                 />
               </div>
             }
@@ -76,6 +77,7 @@ export type GalleryContent = {
                 class="h-full w-full overflow-hidden rounded-md object-cover"
                 loading="eager"
                 fetchpriority="high"
+                (error)="reloadImage($event)"
               />
             </div>
           }
@@ -91,6 +93,7 @@ export type GalleryContent = {
                   class="h-full w-full overflow-hidden rounded-md object-cover"
                   loading="eager"
                   fetchpriority="high"
+                  (error)="reloadImage($event)"
                 />
               </div>
             }
@@ -208,6 +211,7 @@ export class GalleryComponent implements OnDestroy {
     },
   ];
   currentId: number = 0;
+  xScrollPosition: number = -1;
   subscriptions: Subscription[] = [];
   selectedGallery?: GalleryContent | undefined;
   selectedGalleryId: number = -1;
@@ -264,11 +268,22 @@ export class GalleryComponent implements OnDestroy {
     this.logger.debug(
       `[gallery] offset ${offset}, scroll window ${scrollElement.offsetWidth}, container ${containerElement.offsetWidth}`,
     );
-    scrollElement.scrollTo({
-      left: containerElement.offsetWidth / 2 - scrollElement.offsetWidth / 2 + offset,
-      top: 0,
-      behavior: behavior,
-    });
+    if (this.xScrollPosition == -1) {
+      this.xScrollPosition = containerElement.offsetWidth / 2 - scrollElement.offsetWidth / 2 + offset;
+      scrollElement.scrollTo({
+        left: this.xScrollPosition,
+        top: 0,
+        behavior: behavior,
+      });
+    } else {
+      const newXScrollPosition = containerElement.offsetWidth / 2 - scrollElement.offsetWidth / 2 + offset;
+      scrollElement.scrollBy({
+        left: newXScrollPosition - this.xScrollPosition,
+        top: 0,
+        behavior: behavior,
+      });
+      this.xScrollPosition = newXScrollPosition;
+    }
   }
 
   onChangeIndex(delta: number) {
@@ -333,5 +348,14 @@ export class GalleryComponent implements OnDestroy {
     this.selectedGallery = undefined;
     this.selectedGalleryId = -1;
     this.removeClasses(modalContentElement, ['animate']);
+  }
+
+  reloadImage(error: any) {
+    if (this.isBrowser()) {
+      setTimeout(() => {
+        const source = error.target.src;
+        error.target.src = source;
+      }, 1000);
+    }
   }
 }
