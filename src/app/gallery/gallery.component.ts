@@ -211,7 +211,6 @@ export class GalleryComponent implements OnDestroy {
     },
   ];
   currentId: number = 0;
-  xScrollPosition: number = -1;
   subscriptions: Subscription[] = [];
   selectedGallery?: GalleryContent | undefined;
   selectedGalleryId: number = -1;
@@ -268,22 +267,15 @@ export class GalleryComponent implements OnDestroy {
     this.logger.debug(
       `[gallery] offset ${offset}, scroll window ${scrollElement.offsetWidth}, container ${containerElement.offsetWidth}`,
     );
-    if (this.xScrollPosition == -1) {
-      this.xScrollPosition = containerElement.offsetWidth / 2 - scrollElement.offsetWidth / 2 + offset;
-      scrollElement.scrollTo({
-        left: this.xScrollPosition,
-        top: 0,
-        behavior: behavior,
-      });
-    } else {
-      const newXScrollPosition = containerElement.offsetWidth / 2 - scrollElement.offsetWidth / 2 + offset;
-      scrollElement.scrollBy({
-        left: newXScrollPosition - this.xScrollPosition,
-        top: 0,
-        behavior: behavior,
-      });
-      this.xScrollPosition = newXScrollPosition;
-    }
+    this.logger.debug(
+      `[gallery] offset ${offset}, scroll window ${scrollElement.offsetWidth}, `,
+      `container ${containerElement.offsetWidth}, current.scrollLeft ${scrollElement.scrollLeft}`,
+    );
+    scrollElement.scrollBy({
+      left: containerElement.offsetWidth / 2 - scrollElement.offsetWidth / 2 + offset - scrollElement.scrollLeft,
+      top: 0,
+      behavior: behavior,
+    });
   }
 
   onChangeIndex(delta: number) {
