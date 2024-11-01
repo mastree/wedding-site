@@ -53,7 +53,7 @@ export class ClassOnViewComponent {
     if (this.isBrowser()) {
       this.addClasses(this.container?.nativeElement.firstChild, this.defaultClass);
       if (this.classOnView.length > 0) {
-        const threshold = [0, 0.1];
+        const threshold = [0, 0.9];
         this.onViewObserver = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
@@ -61,9 +61,11 @@ export class ClassOnViewComponent {
               // - Observe the container for its child animation activation.
               const child = entry.target.firstElementChild;
               if (entry.intersectionRatio <= 0) {
-                child?.classList.add(...this.classOffView);
-                child?.classList.remove(...this.classOnView);
-                this.changeDetectorRef.detectChanges();
+                if (!this.oneShot) {
+                  child?.classList.add(...this.classOffView);
+                  child?.classList.remove(...this.classOnView);
+                  this.changeDetectorRef.detectChanges();
+                }
               } else {
                 child?.classList.remove(...this.classOffView);
                 child?.classList.add(...this.classOnView);

@@ -21,7 +21,7 @@ import { GalleryComponent } from '../gallery/gallery.component';
   standalone: true,
   template: `
     <div
-      class="delay-50 scale-0 scale-100 opacity-0 opacity-100 transition-all delay-1000 duration-700"
+      class="delay-50 scale-0 scale-100 opacity-0 opacity-100 transition-all delay-1000 duration-700 delay-100"
       #dummyClass
     ></div>
     <div class="animate-fade-in h-full w-full">
@@ -345,7 +345,7 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
     1: ["YOU'RE", 'INVITED', 'TO THE BIG DAY!'],
   };
 
-  kClassOnView = ['scale-100', 'opacity-100'];
+  kClassOnView = ['scale-100', 'opacity-100', 'delay-100'];
   kClassOffView = ['scale-0', 'opacity-0', 'delay-1000'];
   kDefaultClass = ['transition-all', 'duration-700', 'delay-50'];
 
