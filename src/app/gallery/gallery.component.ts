@@ -46,7 +46,7 @@ export type GalleryContent = {
           class="relative size-0 translate-x-[12%] border-y-[1rem] border-l-[1rem] border-y-transparent border-l-white"
         ></div>
       </button>
-      <div class="accelerate relative mx-2 flex flex-row justify-start overflow-x-hidden scroll-smooth" #galleryScroll>
+      <div class="relative mx-2 flex flex-row justify-start overflow-x-hidden scroll-smooth" #galleryScroll>
         <div class="relative my-5 flex flex-row gap-0" #galleryContainer>
           @for (content of contents!; track content; let id = $index) {
             @if (id >= contents.length - 3) {
