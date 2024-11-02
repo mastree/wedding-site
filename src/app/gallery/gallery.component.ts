@@ -46,12 +46,12 @@ export type GalleryContent = {
           class="relative size-0 translate-x-[12%] border-y-[1rem] border-l-[1rem] border-y-transparent border-l-white"
         ></div>
       </button>
-      <div class="relative mx-2 flex flex-row justify-start overflow-x-hidden scroll-smooth" #galleryScroll>
+      <div class="relative mx-2 flex snap-x snap-mandatory flex-row justify-start overflow-x-hidden" #galleryScroll>
         <div class="relative my-5 flex flex-row gap-0" #galleryContainer>
           @for (content of contents!; track content; let id = $index) {
             @if (id >= contents.length - 3) {
               <div
-                class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
+                class="mx-1 h-[24rem] w-[18rem] snap-center rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
                 [id]="'content-dummy1-' + id"
                 (click)="onOpenContent(id)"
               >
@@ -67,7 +67,7 @@ export type GalleryContent = {
           }
           @for (content of contents!; track content; let id = $index) {
             <div
-              class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
+              class="mx-1 h-[24rem] w-[18rem] snap-center rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
               [id]="'content-' + id"
               (click)="onOpenContent(id)"
               #galleryContent
@@ -84,7 +84,7 @@ export type GalleryContent = {
           @for (content of contents!; track content; let id = $index) {
             @if (id < 3) {
               <div
-                class="mx-1 h-[24rem] w-[18rem] rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
+                class="mx-1 h-[24rem] w-[18rem] snap-center rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
                 [id]="'content-dummy2-' + id"
                 (click)="onOpenContent(id)"
               >
@@ -239,7 +239,7 @@ export class GalleryComponent implements OnDestroy {
 
   ngAfterViewInit() {
     if (this.isBrowser()) {
-      this.onChangeIndex(0);
+      this.scrollToIndex(0);
       this.contentsQuery.reset(
         this.contentsQuery.toArray().sort((a, b) => {
           if (a.nativeElement.id === b.nativeElement.id) return 0;
@@ -261,12 +261,17 @@ export class GalleryComponent implements OnDestroy {
     }
   }
 
-  scrollContentToCenter(offset = 0, behavior = 'smooth') {
+  private scrollToIndex(id: number, behavior = 'smooth') {
+    this.scrollContentToCenter(this.getContentSize() * id + this.getBaseContentOffset(), behavior);
+  }
+
+  private scrollContentToCenter(offset = 0, behavior = 'smooth') {
     const scrollElement = this.galleryScroll.nativeElement;
     const containerElement = this.galleryContainer.nativeElement;
     this.logger.debug(
-      `[gallery] offset ${offset}, scroll window ${scrollElement.offsetWidth}, `,
-      `container ${containerElement.offsetWidth}, current.scrollLeft ${scrollElement.scrollLeft}`,
+      `[gallery] offset: ${offset}, scroll window: ${scrollElement.offsetWidth}, `,
+      `container: ${containerElement.offsetWidth}, current.scrollLeft: ${scrollElement.scrollLeft}, `,
+      `behavior: ${behavior}`,
     );
     scrollElement.scrollBy({
       left: containerElement.offsetWidth / 2 - scrollElement.offsetWidth / 2 + offset - scrollElement.scrollLeft,
@@ -277,8 +282,13 @@ export class GalleryComponent implements OnDestroy {
 
   onChangeIndex(delta: number) {
     if (this.contentControlDisable) return;
+    if (this.currentId == 0 && delta == -1) {
+      this.scrollToIndex(this.contents.length, 'instant');
+    } else if (this.currentId == this.contents.length - 1 && delta == 1) {
+      this.scrollToIndex(-1, 'instant');
+    }
     this.currentId = (this.currentId + delta + this.contents.length) % this.contents.length;
-    this.scrollContentToCenter(this.getContentSize() * this.currentId + this.getBaseContentOffset(), 'smooth');
+    this.scrollToIndex(this.currentId);
   }
 
   getContentSize() {
