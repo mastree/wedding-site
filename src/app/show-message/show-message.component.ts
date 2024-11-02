@@ -116,8 +116,8 @@ type State = {
       <div class="flex flex-row gap-2">
         @for (content of contents!; track content; let id = $index) {
           <div
-            class="z-20 size-2 rounded-full"
-            [ngClass]="id === currentId ? 'bg-white' : 'bg-gray-400'"
+            class="z-20 size-2 rounded-full transition-all delay-500"
+            [ngClass]="id === currentId ? ['bg-white', 'scale-125'] : 'bg-gray-400'"
             (click)="selectContentId(id)"
           ></div>
         }
