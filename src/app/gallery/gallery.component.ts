@@ -13,7 +13,7 @@ import {
   signal,
 } from '@angular/core';
 import { LoggerService } from '../logger.service';
-import { Subscription } from 'rxjs';
+import { Subscription, fromEvent } from 'rxjs';
 
 export type GalleryContent = {
   title: string;
@@ -46,7 +46,7 @@ export type GalleryContent = {
           class="relative size-0 translate-x-[12%] border-y-[1rem] border-l-[1rem] border-y-transparent border-l-white"
         ></div>
       </button>
-      <div class="relative mx-2 flex snap-x snap-mandatory flex-row justify-start overflow-x-hidden" #galleryScroll>
+      <div class="relative mx-2 flex snap-x snap-mandatory flex-row justify-start overflow-x-scroll" #galleryScroll>
         <div class="relative my-5 flex flex-row gap-0" #galleryContainer>
           @for (content of contents!; track content; let id = $index) {
             @if (id >= contents.length - 3) {
@@ -239,6 +239,7 @@ export class GalleryComponent implements OnDestroy {
 
   ngAfterViewInit() {
     if (this.isBrowser()) {
+      this.subscribeForScrollIndicator();
       this.scrollToIndex(0);
       this.contentsQuery.reset(
         this.contentsQuery.toArray().sort((a, b) => {
@@ -261,6 +262,20 @@ export class GalleryComponent implements OnDestroy {
     }
   }
 
+  private scrollPositionToIndex() {
+    const scrollElement = this.galleryScroll.nativeElement;
+    const containerElement = this.galleryContainer.nativeElement;
+
+    const contentSize = this.getContentSize();
+    const offset = containerElement.offsetWidth / 2 - scrollElement.offsetWidth / 2 + this.getBaseContentOffset();
+    let scrollLeft = scrollElement.scrollLeft;
+    scrollLeft = scrollLeft - offset;
+    let ret = Math.floor(scrollLeft / contentSize);
+    scrollLeft = (scrollLeft + contentSize) % contentSize;
+    if (scrollLeft > contentSize / 2) ret++;
+    return ret;
+  }
+
   private scrollToIndex(id: number, behavior = 'smooth') {
     this.scrollContentToCenter(this.getContentSize() * id + this.getBaseContentOffset(), behavior);
   }
@@ -280,15 +295,43 @@ export class GalleryComponent implements OnDestroy {
     });
   }
 
+  private subscribeForScrollIndicator() {
+    const scrollElement = this.galleryScroll.nativeElement;
+    this.subscriptions.push(
+      fromEvent(scrollElement, 'scroll').subscribe((_) => {
+        const currentIndex = this.scrollPositionToIndex();
+        this.currentId = (currentIndex + this.contents.length) % this.contents.length;
+      }),
+    );
+    this.subscriptions.push(
+      fromEvent(scrollElement, 'scrollend').subscribe((_) => {
+        const currentIndex = this.scrollPositionToIndex();
+        if (currentIndex < 0) {
+          scrollElement.scrollBy({
+            left: this.contents.length * this.getContentSize(),
+            top: 0,
+            behavior: 'instant',
+          });
+        } else if (currentIndex >= this.contents.length) {
+          scrollElement.scrollBy({
+            left: -this.contents.length * this.getContentSize(),
+            top: 0,
+            behavior: 'instant',
+          });
+        }
+      }),
+    );
+  }
+
   onChangeIndex(delta: number) {
     if (this.contentControlDisable) return;
     if (this.currentId == 0 && delta == -1) {
-      this.scrollToIndex(this.contents.length, 'instant');
+      this.scrollToIndex(-1);
     } else if (this.currentId == this.contents.length - 1 && delta == 1) {
-      this.scrollToIndex(-1, 'instant');
+      this.scrollToIndex(this.contents.length);
+    } else {
+      this.scrollToIndex((this.currentId + delta + this.contents.length) % this.contents.length);
     }
-    this.currentId = (this.currentId + delta + this.contents.length) % this.contents.length;
-    this.scrollToIndex(this.currentId);
   }
 
   getContentSize() {
