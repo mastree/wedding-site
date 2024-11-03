@@ -49,7 +49,7 @@ export type GalleryContent = {
       <div class="relative mx-2 flex snap-x snap-mandatory flex-row justify-start overflow-x-scroll" #galleryScroll>
         <div class="relative my-5 flex flex-row gap-0" #galleryContainer>
           @for (content of contents!; track content; let id = $index) {
-            @if (id >= contents.length - 3) {
+            @if (id >= contents.length - kDummyPaddingSize) {
               <div
                 class="mx-1 h-[24rem] w-[18rem] snap-center rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
                 [id]="'content-dummy1-' + id"
@@ -82,7 +82,7 @@ export type GalleryContent = {
             </div>
           }
           @for (content of contents!; track content; let id = $index) {
-            @if (id < 3) {
+            @if (id < kDummyPaddingSize) {
               <div
                 class="mx-1 h-[24rem] w-[18rem] snap-center rounded-md shadow-primary ring-white transition-shadow hover:shadow-lg hover:ring-4 lg:h-[32rem] lg:w-[24rem]"
                 [id]="'content-dummy2-' + id"
@@ -163,6 +163,8 @@ export type GalleryContent = {
   styleUrl: './gallery.component.css',
 })
 export class GalleryComponent implements OnDestroy {
+  kDummyPaddingSize = 5;
+
   // Model related members
   logger = inject(LoggerService);
   @Inject({})
@@ -211,6 +213,7 @@ export class GalleryComponent implements OnDestroy {
     },
   ];
   currentId: number = 0;
+  rawCurrentId: number = 0;
   subscriptions: Subscription[] = [];
   selectedGallery?: GalleryContent | undefined;
   selectedGalleryId: number = -1;
@@ -300,14 +303,16 @@ export class GalleryComponent implements OnDestroy {
     this.subscriptions.push(
       fromEvent(scrollElement, 'scroll').subscribe((_) => {
         const currentIndex = this.scrollPositionToIndex();
-        // this.logger.debug(`[gallery][kamalshafi][scroll] auto currentId: ${currentIndex}`);
-        this.currentId = (currentIndex + this.contents.length) % this.contents.length;
+        this.rawCurrentId = currentIndex;
+        this.currentId = (this.rawCurrentId + this.contents.length) % this.contents.length;
+        // this.logger.debug(
+        //   `[gallery][kamalshafi][scroll] auto currentId: ${this.currentId},  rawCurrentId: ${this.rawCurrentId}`,
+        // );
       }),
     );
     this.subscriptions.push(
       fromEvent(scrollElement, 'scrollend').subscribe((_) => {
         const currentIndex = this.scrollPositionToIndex();
-        // this.logger.debug(`[gallery][kamalshafi][scrollend] auto currentId: ${currentIndex}`);
         if (currentIndex < 0) {
           scrollElement.scrollBy({
             left: this.contents.length * this.getContentSize(),
@@ -321,18 +326,27 @@ export class GalleryComponent implements OnDestroy {
             behavior: 'instant',
           });
         }
+        // this.logger.debug(
+        //   `[gallery][kamalshafi][scrollend] auto currentId: ${this.currentId},  rawCurrentId: ${this.rawCurrentId}`,
+        // );
       }),
     );
   }
 
   onChangeIndex(delta: number) {
     if (this.contentControlDisable) return;
-    if (this.currentId == 0 && delta == -1) {
-      this.scrollToIndex(-1);
-    } else if (this.currentId == this.contents.length - 1 && delta == 1) {
-      this.scrollToIndex(this.contents.length);
-    } else {
-      this.scrollToIndex((this.currentId + delta + this.contents.length) % this.contents.length);
+    const nextIndex = this.rawCurrentId + delta;
+    const numImageInView = this.getNumberOfContentsInScrollWindow();
+    const viewOffset = Math.ceil(numImageInView / 2);
+    // this.logger.debug(
+    //   `[gallery][kamalshafi] currentId: ${this.currentId}, rawCurrentId: ${this.rawCurrentId}, nextIndex: ${nextIndex}`,
+    // );
+    if (
+      (0 <= nextIndex && nextIndex < this.contents.length) ||
+      (-this.kDummyPaddingSize <= nextIndex - viewOffset &&
+        nextIndex + viewOffset < this.contents.length + this.kDummyPaddingSize)
+    ) {
+      this.scrollToIndex(nextIndex);
     }
   }
 
