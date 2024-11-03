@@ -157,7 +157,7 @@ export type GalleryContent = {
           />
         </div>
       </div>
-      <div class="-z-1 absolute left-0 top-0 h-screen w-screen overflow-auto bg-black opacity-70" #galleryModal></div>
+      <div class="-z-1 fixed left-0 top-0 h-[150vh] w-screen overflow-hidden bg-black opacity-70" #galleryModal></div>
     </div>
   `,
   styleUrl: './gallery.component.css',
