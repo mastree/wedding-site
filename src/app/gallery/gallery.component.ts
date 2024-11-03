@@ -300,12 +300,14 @@ export class GalleryComponent implements OnDestroy {
     this.subscriptions.push(
       fromEvent(scrollElement, 'scroll').subscribe((_) => {
         const currentIndex = this.scrollPositionToIndex();
+        // this.logger.debug(`[gallery][kamalshafi][scroll] auto currentId: ${currentIndex}`);
         this.currentId = (currentIndex + this.contents.length) % this.contents.length;
       }),
     );
     this.subscriptions.push(
       fromEvent(scrollElement, 'scrollend').subscribe((_) => {
         const currentIndex = this.scrollPositionToIndex();
+        // this.logger.debug(`[gallery][kamalshafi][scrollend] auto currentId: ${currentIndex}`);
         if (currentIndex < 0) {
           scrollElement.scrollBy({
             left: this.contents.length * this.getContentSize(),

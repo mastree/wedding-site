@@ -148,24 +148,28 @@ type State = {
           class="relative flex w-full flex-col items-center justify-center gap-8"
           [ngClass]="state.loading ? ['pointer-events-none', 'opacity-60'] : ''"
         >
-          <div class="flex w-full flex-row justify-start gap-2">
+          <div class="flex w-full flex-row items-center justify-start gap-2">
             <button
-              class="select-none rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md hover:ring-2 active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400 disabled:pointer-events-none disabled:opacity-60"
+              class="select-none rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md hover:ring-2 active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400 disabled:pointer-events-none disabled:opacity-40"
               [disabled]="state.page <= minPage"
               (click)="changePage(state.page - 1)"
             >
               <p class="font-manuale text-sm font-semibold text-primary">< prev</p>
             </button>
             <button
-              class="select-none rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md hover:ring-2 active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400 disabled:pointer-events-none disabled:opacity-60"
+              class="select-none rounded-md bg-white px-5 py-2 font-semibold drop-shadow-md hover:ring-2 active:bg-slate-200 active:shadow-inner active:ring-2 active:ring-sky-400 disabled:pointer-events-none disabled:opacity-40"
               [disabled]="state.page >= maxPage"
               (click)="changePage(state.page + 1)"
             >
               <p class="font-manuale text-sm font-semibold text-primary">next ></p>
             </button>
+            <p class="select-none text-center align-middle font-manuale font-semibold text-white">
+              page {{ state.page + 1 }} / {{ maxPage + 1 }}
+            </p>
+            <div class="flex-grow"></div>
 
             <button
-              class="absolute right-0 top-0 select-none rounded-md bg-primary p-3 font-semibold drop-shadow-md hover:ring-2 active:bg-light-primary active:shadow-inner active:ring-2 active:ring-white"
+              class="select-none rounded-md bg-primary p-3 font-semibold drop-shadow-md hover:ring-2 active:bg-light-primary active:shadow-inner active:ring-2 active:ring-white"
               (click)="onRefresh()"
             >
               <div class="size-4 fill-white">
