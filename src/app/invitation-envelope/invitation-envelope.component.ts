@@ -29,6 +29,7 @@ import { TypewriterService } from '../typewriter.service';
           class="absolute top-0 -z-10 h-full w-screen object-cover object-cover-image"
           loading="eager"
           fetchpriority="high"
+          (error)="reloadImage($event)"
         />
       </div>
       <div class="relative top-0 flex w-full flex-grow flex-col items-center justify-start" #root>
@@ -177,6 +178,15 @@ export class InvitationEnvelopeComponent {
         }
       },
     });
+  }
+
+  reloadImage(error: any) {
+    if (this.isBrowser()) {
+      setTimeout(() => {
+        const source = error.target.src;
+        error.target.src = source;
+      }, 1000);
+    }
   }
 
   get currentYear(): number {

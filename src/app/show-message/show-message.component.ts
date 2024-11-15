@@ -52,6 +52,7 @@ type State = {
             class="absolute bottom-0 right-0 h-[70%] max-h-[8rem] translate-x-[10%] translate-y-[30%] scale-[-100%]"
             loading="eager"
             fetchpriority="high"
+            (error)="reloadImage($event)"
           />
           <p class="font-manuale font-semibold">From: Faiza & Kamal</p>
           <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
@@ -77,6 +78,7 @@ type State = {
             class="absolute bottom-0 right-0 h-[70%] max-h-[8rem] translate-x-[10%] translate-y-[30%] scale-[-100%]"
             loading="eager"
             fetchpriority="high"
+            (error)="reloadImage($event)"
           />
           <p class="font-manuale font-semibold">QS. An-Nisa' Ayat 1</p>
           <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
@@ -102,6 +104,7 @@ type State = {
             class="absolute bottom-0 right-0 h-[70%] max-h-[8rem] translate-x-[10%] translate-y-[30%] scale-[-100%]"
             loading="eager"
             fetchpriority="high"
+            (error)="reloadImage($event)"
           />
           <p class="font-manuale font-semibold">QS. Az-Zariyat Ayat 49</p>
           <div class="mb-2 h-[0.5px] w-full bg-dark-secondary opacity-30"></div>
@@ -435,6 +438,15 @@ export class ShowMessageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.lastContentChangeTime += currentMillis - this.pauseStart;
         this.pauseStart = 0;
       }
+    }
+  }
+
+  reloadImage(error: any) {
+    if (this.isBrowser()) {
+      setTimeout(() => {
+        const source = error.target.src;
+        error.target.src = source;
+      }, 1000);
     }
   }
 

@@ -21,7 +21,7 @@ import { GalleryComponent } from '../gallery/gallery.component';
   standalone: true,
   template: `
     <div
-      class="delay-50 scale-0 scale-100 opacity-0 opacity-100 transition-all delay-1000 duration-700 delay-100"
+      class="delay-50 scale-0 scale-100 opacity-0 opacity-100 transition-all delay-100 delay-1000 duration-700"
       #dummyClass
     ></div>
     <div class="animate-fade-in h-full w-full">
@@ -105,7 +105,7 @@ import { GalleryComponent } from '../gallery/gallery.component';
                 class="active-go-up relative flex select-none gap-2 rounded-lg p-1 font-lato font-light text-white ring-white hover:cursor-pointer hover:ring-2 active:text-slate-300"
                 [ngClass]="invitation ? '' : ['hidden']"
               >
-                <img src="download.svg" loading="eager" fetchpriority="high" />
+                <img src="download.svg" loading="eager" fetchpriority="high" (error)="reloadImage($event)" />
                 <p class="line-2 text-sm lg:text-[1rem]">Download invitation as PDF</p>
               </div>
             </div>
@@ -154,18 +154,21 @@ import { GalleryComponent } from '../gallery/gallery.component';
                   class="h-full overflow-hidden rounded-lg object-cover"
                   loading="eager"
                   fetchpriority="high"
+                  (error)="reloadImage($event)"
                 />
                 <img
                   src="flower-deco-angle.png"
                   class="absolute left-0 top-0 w-[60%] translate-x-[-20%] translate-y-[-30%]"
                   loading="eager"
                   fetchpriority="high"
+                  (error)="reloadImage($event)"
                 />
                 <img
                   src="flower-deco-angle.png"
                   class="absolute bottom-0 right-0 w-[60%] translate-x-[20%] translate-y-[30%] scale-[-100%]"
                   loading="eager"
                   fetchpriority="high"
+                  (error)="reloadImage($event)"
                 />
               </div>
             </app-class-on-view>
@@ -219,13 +222,15 @@ import { GalleryComponent } from '../gallery/gallery.component';
             class="w-[80%] max-w-[25rem] object-fill"
             loading="eager"
             fetchpriority="high"
+            (error)="reloadImage($event)"
           />
         </div>
       </section>
 
       <section class="relative flex flex-col items-center justify-center gap-8 bg-bg-main-shaded py-8">
-        <div class="relative my-5 flex h-full w-full max-w-screen-2xl flex-col items-center justify-center gap-10">
-          <p class="text-center font-manuale text-xl font-semibold lg:text-2xl">GALLERY</p>
+        <div
+          class="relative mb-5 mt-12 flex h-full w-full max-w-screen-2xl flex-col items-center justify-center gap-10"
+        >
           <app-gallery class="w-full"></app-gallery>
         </div>
       </section>
@@ -251,7 +256,13 @@ import { GalleryComponent } from '../gallery/gallery.component';
             [oneShot]="true"
           >
             <div class="flex w-full max-w-screen-md scale-0 flex-row gap-8 opacity-0" #schedule>
-              <img class="max-h-32 max-w-[4.5rem]" src="calendar.svg" loading="eager" fetchpriority="high" />
+              <img
+                class="max-h-32 max-w-[4.5rem]"
+                src="calendar.svg"
+                loading="eager"
+                fetchpriority="high"
+                (error)="reloadImage($event)"
+              />
               <div class="flex flex-col items-start">
                 <p class="text-center font-manuale text-sm font-light lg:text-lg">Sunday,</p>
                 <p class="text-center font-manuale text-2xl font-light lg:text-4xl">15</p>
@@ -272,7 +283,13 @@ import { GalleryComponent } from '../gallery/gallery.component';
             >
               <div class="flex flex-col items-start border-t-[0.5px] border-t-gray-500 pt-8">
                 <div class="flex flex-row items-center justify-start gap-2">
-                  <img class="max-h-[1rem] max-w-[1rem]" src="location-pin.svg" loading="eager" fetchpriority="high" />
+                  <img
+                    class="max-h-[1rem] max-w-[1rem]"
+                    src="location-pin.svg"
+                    loading="eager"
+                    fetchpriority="high"
+                    (error)="reloadImage($event)"
+                  />
                   <p class="text-center font-manuale text-2xl font-light lg:text-4xl">Maxi's Resto</p>
                 </div>
                 <p class="text-left font-manuale text-sm font-light lg:text-lg">
@@ -439,6 +456,15 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
         }
       },
     });
+  }
+
+  reloadImage(error: any) {
+    if (this.isBrowser()) {
+      setTimeout(() => {
+        const source = error.target.src;
+        error.target.src = source;
+      }, 1000);
+    }
   }
 
   get getFirstSectionText() {
