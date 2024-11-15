@@ -40,8 +40,7 @@ import { GalleryComponent } from '../gallery/gallery.component';
               muted
               loop
             >
-              <source src="invitation-bg-video.mp4" type="video/mp4" />
-              <source src="invitation-bg-video.mp4" type="video/webm" />
+              <source src="invitation-bg-video.mp4?ngsw-bypass=true" type="video/mp4" />
               <img
                 src="invitation-bg-video.png"
                 title="Your browser does not support the <video> tag"
