@@ -341,6 +341,38 @@ import { GalleryComponent } from '../gallery/gallery.component';
 
       <app-footer></app-footer>
     </div>
+
+    <audio controls autoplay loop class="hidden" #music>
+      <source src="fly-me-to-the-moon.mp3" type="audio/mpeg" />
+      Your browser doesn't support this audio format.
+    </audio>
+
+    <div
+      class="music-container fixed bottom-5 right-5 flex size-10 items-center justify-center rounded-full bg-slate-400 md:size-12"
+      (click)="toggleMusicPlay()"
+      #musicPlayer
+    >
+      <div class="absolute size-[100%] rounded-full bg-white"></div>
+      <div class="absolute flex size-[80%] items-center justify-center rounded-full bg-primary">
+        <svg
+          class="animate animate-custom-spin relative h-[60%]"
+          [ngClass]="isMusicPlaying ? '' : 'paused'"
+          viewBox="0 0 14 17"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M9.18896 0.905273L9.25036 0.912476L9.24963 0.91687C11.9756 1.45178 13.7236 4.07715 13.275 6.73474C12.908 5.71838 11.4802 4.6864 9.61303 4.19861C9.31603 4.12097 9.02197 4.06091 8.73425 4.01746L7.0874 13.9257C7.08789 13.9946 7.08386 14.064 7.07519 14.1334C6.91735 15.3945 5.26953 16.2267 3.39465 15.9921C1.51965 15.7573 0.127802 14.5448 0.285639 13.2837C0.443476 12.0226 2.0913 11.1904 3.96618 11.4252C4.61132 11.5059 5.19946 11.7025 5.68676 11.9769L7.07495 0.658203L8.2091 0.790771L8.21252 0.777588L8.86816 0.856567C8.97656 0.869629 9.08337 0.885864 9.18896 0.905273Z"
+            fill="white"
+          />
+        </svg>
+      </div>
+      <div
+        class="animate-custom-ping animate absolute -z-10 size-[100%] rounded-full bg-dark-secondary shadow-dark-secondary/50"
+      ></div>
+    </div>
   `,
   styleUrl: './main-invitation.component.css',
   imports: [
@@ -376,7 +408,7 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   // View related members
-  @ViewChild('bigDay') bigDayElement: ElementRef | undefined;
+  @ViewChild('music') musicElement: ElementRef | undefined;
 
   eventDate: Date = new Date('2024-12-15T14:30:00.000+07:00');
 
@@ -429,6 +461,14 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
             this.logger.error(`can't play background video: ${err}`);
           }
         });
+        const musics = document.querySelectorAll('audio[autoplay]') as NodeListOf<HTMLAudioElement>;
+        musics.forEach(async (music) => {
+          try {
+            await music.play();
+          } catch (err) {
+            this.logger.error(`can't play music: ${err}`);
+          }
+        });
       });
     }
   }
@@ -465,6 +505,25 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
         error.target.src = source;
       }, 1000);
     }
+  }
+
+  toggleMusicPlay() {
+    this.setMusicPlay(!this.isMusicPlaying);
+  }
+
+  setMusicPlay(play: boolean) {
+    const music: HTMLAudioElement = this.musicElement?.nativeElement;
+    if (play) {
+      music.play();
+    } else {
+      music.pause();
+    }
+  }
+
+  get isMusicPlaying() {
+    const music: HTMLAudioElement = this.musicElement?.nativeElement;
+    if (!music) return false;
+    return !music.paused;
   }
 
   get getFirstSectionText() {
