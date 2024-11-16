@@ -343,7 +343,7 @@ import { GalleryComponent } from '../gallery/gallery.component';
     </div>
 
     <audio controls autoplay loop class="hidden" #music>
-      <source src="fly-me-to-the-moon.mp3" type="audio/mpeg" />
+      <source src="fly-me-to-the-moon-v2.mp3" type="audio/mpeg" />
       Your browser doesn't support this audio format.
     </audio>
 
