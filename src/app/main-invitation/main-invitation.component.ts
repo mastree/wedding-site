@@ -470,6 +470,26 @@ export class MainInvitationComponent implements OnInit, OnDestroy {
           }
         });
       });
+      document.addEventListener('visibilitychange', () => {
+        const musics = document.querySelectorAll('audio[autoplay]') as NodeListOf<HTMLAudioElement>;
+        if (document.hidden) {
+          musics.forEach(async (music) => {
+            try {
+              await music.pause();
+            } catch (err) {
+              this.logger.error(`can't pause music: ${err}`);
+            }
+          });
+        } else {
+          musics.forEach(async (music) => {
+            try {
+              await music.play();
+            } catch (err) {
+              this.logger.error(`can't play music: ${err}`);
+            }
+          });
+        }
+      });
     }
   }
 
